@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/andela/tesla-ah.svg?branch=ch-Integrate-Travic-with-ReadMe-166240980)](https://travis-ci.com/andela/tesla-ah)
+
 Authors Haven - A Social platform for the creative at heart.
 =======
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed%20by-Hound-green.svg)](https://houndci.com)
