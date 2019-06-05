@@ -4,10 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node src/index.js",
-    "build": "babel src --out-dir dist",
-    "serve": "node dist/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -31,12 +28,6 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3"
