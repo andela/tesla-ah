@@ -13,9 +13,9 @@ class Tokenizer {
   }
 
   static async decodeToken(token) {
-    const { userId } = await jwt.verify(token, process.env.SECRET_KEY);
+    const user = await jwt.verify(token, process.env.SECRET_KEY);
 
-    return userId;
+    return user;
   }
 }
 
