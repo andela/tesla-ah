@@ -1,1 +1,1 @@
-web: NODE_ENV=staging npm serve
+web: NODE_ENV=staging yarn serve
