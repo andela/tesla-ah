@@ -6,15 +6,16 @@ dotenv.config();
 
 class Tokenizer {
   static async generateToken(user) {
-    const token = await jwt.sign(user, process.env.SECRET_KEY, { expiresIn: '2 days' });
+    const { id } = user;
+    const token = await jwt.sign({ userId: id }, process.env.SECRET_KEY, { expiresIn: '2 days' });
 
     return token;
   }
 
   static async decodeToken(token) {
-    const user = await jwt.verify(token, process.env.SECRET_KEY);
+    const { userId } = await jwt.verify(token, process.env.SECRET_KEY);
 
-    return user;
+    return userId;
   }
 }
 
