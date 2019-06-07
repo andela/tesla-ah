@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable class-methods-use-this */
 import authHelper from '../api/helpers/Token.helper';
 import db from '../../models';
 
