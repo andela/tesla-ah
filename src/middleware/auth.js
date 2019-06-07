@@ -15,8 +15,8 @@ class Auth {
    * @returns {Object} The response object
    */
   async verifyToken(req, res, next) {
-    const bearerToken = req.headers.authorization;
-    const token = bearerToken.split(' ')[1];
+    this.bearerToken = req.headers.authorization;
+    const token = this.bearerToken.split(' ')[1];
     if (!token) {
       return res.status(400).send({
         status: 400,
