@@ -29,7 +29,11 @@ module.exports = {
             "MethodDefinition": true,
             "ClassDeclaration": true
         }
-    }]
+    }],
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
   }
   
 };
