@@ -7,6 +7,7 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/index.js",
+    "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -15,7 +16,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
+    "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
@@ -24,10 +25,14 @@
     "jsonwebtoken": "^8.5.1",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
+    "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
     "request": "^2.87.0",
     "sequelize": "^5.8.7",
+    "swagger-ui-express": "^4.0.6",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
@@ -36,14 +41,13 @@
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "chai": "^4.2.0",
-    "chai-http": "^4.3.0", "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "chai-http": "^4.3.0",
+    "coveralls": "^3.0.4",
+    "eslint": "^5.16.0",
+ "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
-    "morgan": "^1.9.1",
-    "nyc": "^14.1.1",
-    "coveralls": "^3.0.4",
-    "swagger-ui-express": "^4.0.6",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }

@@ -12,6 +12,8 @@ by leveraging the modern web.
 
 ---
 
+## Installation steps
+
 ## API Spec
 The preferred JSON object to be returned by the API should be structured as follows:
 
