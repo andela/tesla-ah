@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "stable"
+before_script:
+  - yarn add sequelize-cli
+  - sequelize db:migrate
+  - sequelize db:seed:all
 script: 
   - yarn test
 before_install:
