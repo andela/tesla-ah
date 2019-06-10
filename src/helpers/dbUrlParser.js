@@ -3,7 +3,11 @@ import url from 'url';
 
 dotenv.config();
 
-export default dbUrl => new Promise((resolve) => {
+export default dbUrl => new Promise((resolve, reject) => {
+  if (!dbUrl) {
+    reject(new Error('DB URL is missing'));
+  }
+
   const urlObj = url.parse(dbUrl);
   const {
     auth,
