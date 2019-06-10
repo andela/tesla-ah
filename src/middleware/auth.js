@@ -39,7 +39,7 @@ class Auth {
                 error: { message: 'The token you provided is invalid' }
               });
             }
-            req.user = { userId: result[0].id };
+            req.user = user;
             next();
           });
       })
