@@ -4,7 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import api from './api/routes';
 import globalMiddleware from './middleware/globalMiddleware';
 import swaggerDoc from '../swagger.json';
-import db from './sequelize/models';
+import db from './sequelize/models/index';
 
 const { sequelize } = db;
 
