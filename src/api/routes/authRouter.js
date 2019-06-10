@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authController from '../controllers/auth';
-import validateBody from '../../middleware/userValidations';
+import validateBody from '../../middleware/validateBody';
 import userValidation from '../../middleware/validUser';
 
 const authRouter = Router();
