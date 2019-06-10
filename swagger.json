@@ -17,113 +17,172 @@
    "produces":[
        "application/json"
    ],
-   "definitions": {
-     "user": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string"
+    "definitions": {
+        "user": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "M"
+                },
+                "dateOfBirth": {
+                    "type": "string"
+                }
+            }
         },
-        "lastName": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        },
-        "image": {
-          "type": "string"
-        },
-        "gender": {
-          "type": "M"
-        },
-        "dateOfBirth": {
-          "type": "string"
+        "signup": {
+            "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "username",
+                "password",
+                "confirmPassword"
+            ],
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "confirmPassword": {
+                    "type": "string"
+                }
+            }
         }
-      }
-     }
-   },
+    },
    "paths": {
-     "/user": {
-       "put": {
-         "tags": [
-           "Update User Profile"
-         ],
-         "description": "User profile update",
-         "parameters": [
-           {
-             "name": "token",
-             "in": "Headers",
-             "description": "Client authentication token",
-             "required": true
-           },
-           {
-             "name": "user",
-             "in": "Body",
-             "description": "Object containing user information to update",
-             "schema": "#/definitions/user"
-           }
-         ],
-         "produces":[
-           "application/json"
-         ],
-         "responses": {
-           "200": {
-             "description": "User profile sucessfully updated"
-           },
-           "404": {
-             "description": "User profile not found"
-           },
-           "500": {
-             "description": "Error while updating profile"
-           }
-         }
-       }
-     },
-     "/profiles/{username}": {
-      "get": {
-        "tags": [
-          "Profile"
-        ],
-        "description": "Get user profile",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "Headers",
-            "description": "Client authentication token",
-            "required": false
-          },
-          {
-            "name": "username",
-            "in": "path",
-            "description": "Username of user to get",
-            "required": true
-          }
-        ],
-        "produces":[
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "User profile returned"
-          },
-          "404": {
-            "description": "User profile not found"
-          },
-          "500": {
-            "description": "Error while fetching profile"
+      "/user": {
+        "put": {
+          "tags": [
+            "Update User Profile"
+          ],
+          "description": "User profile update",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "Headers",
+              "description": "Client authentication token",
+              "required": true
+            },
+            {
+              "name": "user",
+              "in": "Body",
+              "description": "Object containing user information to update",
+              "schema": "#/definitions/user"
+            }
+          ],
+          "produces":[
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "User profile sucessfully updated"
+            },
+            "404": {
+              "description": "User profile not found"
+            },
+            "500": {
+              "description": "Error while updating profile"
+            }
           }
         }
+      },
+      "/profiles/{username}": {
+        "get": {
+          "tags": [
+            "Profile"
+          ],
+          "description": "Get user profile",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "Headers",
+              "description": "Client authentication token",
+              "required": false
+            },
+            {
+              "name": "username",
+              "in": "path",
+              "description": "Username of user to get",
+              "required": true
+            }
+          ],
+          "produces":[
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "User profile returned"
+            },
+            "404": {
+              "description": "User profile not found"
+            },
+            "500": {
+              "description": "Error while fetching profile"
+            }
+          }
+        }
+      },
+      "/api/auth/signup": {
+          "post": {
+              "tags": [
+                  "Account Creation"
+              ],
+              "description": "User is able to create an account",
+              "parameters": [
+                  {
+                      "name": "user",
+                      "in": "body",
+                      "description": "User create a new account",
+                      "schema": {
+                          "$ref": "#/definitions/signup"
+                      }
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "201": {
+                      "description": " User Account created successfully",
+                      "schema": {
+                          "$ref": "#/definitions/signup"
+                      }
+                  }
+              }
+          }
       }
     }
-   }
-  }
+}
   

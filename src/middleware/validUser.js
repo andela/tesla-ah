@@ -14,9 +14,8 @@ const validUser = {
           message: 'This email is already in use',
         });
       }
+      next();
     });
-
-    next();
   },
   async usernameExists(req, res, next) {
     const { username } = req.body;
@@ -31,9 +30,8 @@ const validUser = {
           message: 'This username is not available, Please choose another one!',
         });
       }
+      next();
     });
-
-    next();
   },
 };
 
