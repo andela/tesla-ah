@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/andela/tesla-ah.svg?branch=ch-Integrate-Travic-with-ReadMe-166240980)](https://travis-ci.com/andela/tesla-ah)[![Coverage Status](https://coveralls.io/repos/github/andela/tesla-ah/badge.svg?branch=develop)](https://coveralls.io/github/andela/tesla-ah?branch=develop)[![Reviewed by Hound](https://img.shields.io/badge/Reviewed%20by-Hound-green.svg)](https://houndci.com)
+[![Build Status](https://travis-ci.com/andela/tesla-ah.svg?branch=ch-Integrate-Travic-with-ReadMe-166240980)](https://travis-ci.com/andela/tesla-ah)  [![Coverage Status](https://coveralls.io/repos/github/andela/tesla-ah/badge.svg?branch=develop)](https://coveralls.io/github/andela/tesla-ah?branch=develop)  [![Reviewed by Hound](https://img.shields.io/badge/Reviewed%20by-Hound-green.svg)](https://houndci.com)
 
 
 Authors Haven - A Social platform for the creative at heart.

@@ -1,5 +1,5 @@
 import authHelper from '../api/helpers/Token.helper';
-import db from '../../models';
+import db from '../sequelize/models/index';
 
 const { users } = db;
 /**
