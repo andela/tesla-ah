@@ -15,6 +15,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 globalMiddleware(app);
+
 app.use('/api', api);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 

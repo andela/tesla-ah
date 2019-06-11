@@ -4,6 +4,7 @@
 /* eslint-disable no-console */
 import articles from '../../helpers/articlesHelper';
 import models from '../../sequelize/models';
+import readTime from '../../helpers/ReadTime.helper';
 
 const { article, User } = models;
 
@@ -54,7 +55,8 @@ class articlesController {
 
     const oneArticle = await articles.getOneSlug(slug);
     res.status(200).send({
-      article: oneArticle
+      article: oneArticle,
+      readtime: readTime(oneArticle.body)
     });
   }
 
