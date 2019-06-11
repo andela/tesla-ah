@@ -70,6 +70,7 @@ describe('Comments', () => {
       slug: '73H7812',
       title: 'How to survive at Andela',
       description: 'YoYo',
+      readtime: '1min',
       body:
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       image: '',
@@ -83,6 +84,7 @@ describe('Comments', () => {
       slug: '73H99992',
       title: 'Wow',
       description: 'YoYo',
+      readtime: 'Less than a minute',
       body:
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       image: '',

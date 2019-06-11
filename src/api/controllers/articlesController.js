@@ -25,11 +25,12 @@ class articlesController {
 
     const dataValues = await articles.createNewArticle(req);
     const {
-      slug, title, description, body, tagList, author, updatedAt, createdAt
+      slug, title, description, body, tagList, author, updatedAt, createdAt, readtime
     } = dataValues;
 
     const result = {
-      slug, title, description, body, tagList, updatedAt, createdAt, author
+      // eslint-disable-next-line max-len
+      slug, title, description, body, tagList, updatedAt, createdAt, author, readtime
     };
     res.status(201).send({
       article: result
@@ -83,7 +84,6 @@ class articlesController {
     const oneArticle = await articles.getOneSlug(slug);
     res.status(200).send({
       status: 200,
-      readtime: readTime(oneArticle.body),
       article: oneArticle
     });
   }
@@ -116,6 +116,7 @@ class articlesController {
 
     // @generate an updated new slug
     const newSlug = await articles.createSlug(updateSlug.title);
+    const newReadTime = readTime(updateSlug.body);
 
     // @Updating the article's data in Database
     await Article.update(
@@ -124,7 +125,8 @@ class articlesController {
         title: updateSlug.title,
         body: updateSlug.body,
         description: updateSlug.description,
-        tagList: updateSlug.tagList
+        tagList: updateSlug.tagList,
+        readtime: newReadTime
       },
       { where: { slug } }
     );
