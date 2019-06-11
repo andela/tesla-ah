@@ -14,12 +14,18 @@ import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
+<<<<<<< HEAD
 import shareArticle from '../../middleware/shareArticle';
 import stats from '../controllers/stats';
 import highlight from '../controllers/highlightController';
 import highlightExist from '../../middleware/highlightExist';
 import textExist from '../../middleware/textExist';
 import upload from '../../handlers/multer';
+=======
+import shareArticle from '../../helpers/shareArticle';
+import isVerified from '../../middleware/isVerified';
+import checkArticleLikes from '../../middleware/checkArticleLikes';
+>>>>>>> feat(refactoring): Improve Code maintainablilty
 
 const articlesRouter = Router();
 const {
@@ -42,6 +48,7 @@ const {
   getBlockedArticles,
   getReportedArticles
 } = articlesController;
+const { checkLikes, checkDislikes } = checkArticleLikes;
 const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
@@ -55,7 +62,11 @@ const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
 
 articlesRouter
+<<<<<<< HEAD
   .post('/', verifyToken, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
+=======
+  .post('/', verifyToken, validateBody('createArticle'), isVerified, createArticle)
+>>>>>>> feat(refactoring): Improve Code maintainablilty
   .get('/', paginate, searchForArticle, getAllArticle);
 
 articlesRouter
@@ -64,19 +75,19 @@ articlesRouter
   .delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
 
 articlesRouter
-  .get('/:slug/like', getLikes)
-  .post('/:slug/like', verifyToken, likeArticle);
+  .get('/:slug/like', slugExist, getLikes)
+  .post('/:slug/like', verifyToken, slugExist, checkLikes, likeArticle);
 
 articlesRouter
-  .get('/:slug/dislike', getDislikes)
-  .post('/:slug/dislike', verifyToken, dislikeArticle);
+  .get('/:slug/dislike', slugExist, getDislikes)
+  .post('/:slug/dislike', verifyToken, slugExist, checkDislikes, dislikeArticle);
 
 // Comments routes
 articlesRouter.post('/:slug/comments', verifyToken, validateBody('checkComment'), articleExists, checkComment, createComment);
 articlesRouter.post('/:slug/comments/:commentId', verifyToken, validateBody('checkComment'), articleExists, checkComment, commentAcomment);
 articlesRouter.patch('/comments/:commentId', verifyToken, validateBody('checkComment'), checkParameter, editComment);
 articlesRouter.delete('/comments/:commentId', verifyToken, checkParameter, deleteComment);
-articlesRouter.get('/:slug/comments', getComment);
+articlesRouter.get('/:slug/comments', slugExist, getComment);
 articlesRouter.post('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, createRatings);
 articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, UpdateRatings);
 

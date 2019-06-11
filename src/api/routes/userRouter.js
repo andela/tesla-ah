@@ -21,4 +21,6 @@ userRouter
   .put(verifyToken, checkOwnership, upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'cover', maxCount: 1 }]), validateBody('updateUser'), updateProfile)
   .delete(verifyToken, checkIsAdmin, deleteProfile);
 
+userRouter.put('/', verifyToken, validateBody('updateUser'), upload.single('image'), updateProfile);
+
 export default userRouter;

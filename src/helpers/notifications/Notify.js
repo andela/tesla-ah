@@ -1,15 +1,21 @@
 import db from '../../sequelize/models';
 import sendMail from '../mailer/SendAnyEmail';
 import eventEmitter from './EventEmitter';
+import notificationTemplate from '../mailer/templates/Notification.template';
 
-const { Notification, Opt, User } = db;
-
+const {
+  Notification,
+  Opt,
+  User
+} = db;
 const notify = async (data) => {
   let inAppNotification = {};
   let emailNotification = {};
-
   const {
-    resource, user, inAppMessage, emailMessage
+    resource,
+    user,
+    inAppMessage,
+    emailMessage
   } = data;
   const optedin = await Opt.findAll({
     where: {
@@ -17,7 +23,9 @@ const notify = async (data) => {
     }
   });
   optedin.map(async (subscription) => {
-    const { dataValues } = await User.findOne({
+    const {
+      dataValues
+    } = await User.findOne({
       where: {
         id: user.userId
       }
@@ -30,9 +38,13 @@ const notify = async (data) => {
           message: emailMessage,
           type: subscription.type
         });
-        await sendMail(dataValues.email, 'notification', {
+        await sendMail({
+          lastName: dataValues.lastName,
+          email: dataValues.email
+        }, notificationTemplate({
+          lastName: dataValues.lastName,
           message: emailMessage
-        });
+        }), 'AuthorsHaven - Notification');
         break;
       case 'inapp':
         inAppNotification = await Notification.create({
@@ -53,5 +65,4 @@ const notify = async (data) => {
   };
   return response;
 };
-
 export default notify;

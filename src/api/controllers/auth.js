@@ -10,7 +10,10 @@ import workers from '../../workers';
 
 const { generateToken, decodeToken } = tokenHelper;
 const { User, Blacklist, Opt } = db;
+<<<<<<< HEAD
 const { queueEmailWorker } = workers;
+=======
+>>>>>>> feat(refactoring): Improve Code maintainablilty
 
 dotenv.config();
 
@@ -51,7 +54,10 @@ class AuthController {
         ...newUser.dataValues,
         password: null,
       });
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat(refactoring): Improve Code maintainablilty
       await Opt.create({
         userId: newUser.id,
         type: 'email'
@@ -60,6 +66,16 @@ class AuthController {
       await Opt.create({
         userId: newUser.id,
         type: 'inapp'
+<<<<<<< HEAD
+=======
+      });
+      Mailhelper.sendMail({
+        to: newUser.email,
+        names: `${newUser.firstName} ${newUser.lastName}`,
+        subject: 'Welcome to Authorshaven',
+        message: 'Thank you for choosing Authorshaven',
+        token
+>>>>>>> feat(refactoring): Improve Code maintainablilty
       });
 
       const htmlToSend = verifyTemplate.sendVerification(`${newUser.firstName} ${newUser.lastName}`, newUser.email, token);

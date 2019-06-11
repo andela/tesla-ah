@@ -1,16 +1,9 @@
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
+import mailer from './Mail.config';
 
 dotenv.config();
 
 const sendEmail = async (mail, htmlToSend, subject) => {
-  const transport = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.AUTHOSHAVEN_USER,
-      pass: process.env.AUTHOSHAVEN_PASS
-    }
-  });
   const mailOptions = {
     from: 'Authors Haven',
     to: `${mail.email}`,
@@ -19,7 +12,7 @@ const sendEmail = async (mail, htmlToSend, subject) => {
     html: htmlToSend
   };
 
-  transport.sendMail(mailOptions, async () => true);
+  mailer.sendMail(mailOptions, async () => true);
 };
 
 export default sendEmail;
