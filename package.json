@@ -57,6 +57,7 @@
     "sequelize": "^5.8.7",
     "slug": "^1.1.0",
     "social-share": "^0.1.0",
+    "socket.io": "^2.2.0",
     "swagger-ui-express": "^4.0.6",
     "underscore": "^1.9.1",
     "uniqid": "^5.0.3"
@@ -82,7 +83,9 @@
     "exclude": [
       "src/config/passportSetup.js",
       "src/sequelize/**/*.js",
-      "test/**/*.js"
+      "test/**/*.js",
+      "src/helpers/notifications/*.js",
+      "src/helpers/SocketIO.js"
     ]
   }
 }
