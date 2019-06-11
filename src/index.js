@@ -24,6 +24,7 @@ const app = express();
 const { sequelize } = db;
 const { purgeWorker, sendMailWorker } = workers;
 
+
 app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true
@@ -43,6 +44,7 @@ app.use((req, res) => {
     }
   });
 });
+
 
 sequelize.sync().then(() => {
   cron.schedule('*/59 * * * *', () => {
