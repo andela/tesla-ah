@@ -36,6 +36,7 @@
   "produces": [
     "application/json"
   ],
+ 
   "definitions": {
     "user": {
       "type": "object",
@@ -299,6 +300,7 @@
       "post": {
         "tags": [
           "article"
+         
         ],
         "description": "user should be able to create an article",
         "parameters": [
@@ -410,7 +412,7 @@
         "tags": [
           "article"
         ],
-        "description": "user should be able to delete a specific slug",
+        "description": "user should be able to view a specific slug",
         "parameters": [
           {
             "name": "token",
