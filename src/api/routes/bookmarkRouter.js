@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Auth from '../../middleware/auth';
-import BookmarkController from '../controllers/bookmark';
+import BookmarkController from '../controllers/bookmarkController';
 
 const router = Router();
 const { getOwnerBookmarks } = BookmarkController;

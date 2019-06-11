@@ -54,7 +54,7 @@ class chatController {
     const myId = req.user.id;
     const { username } = req.params;
     const { dataValues: { id } } = await User.findOne({ where: { username } });
-    Chat.findAll({
+    const messages = await Chat.findAll({
       where: {
         [Op.or]: [{
           senderId: myId,
@@ -77,10 +77,9 @@ class chatController {
           attributes: ['id', 'firstName', 'lastName', 'email', 'username']
         }
       ]
-    }).then((messages) => {
-      res.status(200).json({
-        messages
-      });
+    });
+    res.json({
+      messages
     });
   }
 

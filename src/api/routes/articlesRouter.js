@@ -1,21 +1,24 @@
 import { Router } from 'express';
 import articlesController from '../controllers/articlesController';
+import articleLikes from '../controllers/articleLikesController';
+import articleDislikes from '../controllers/articleDislikesController';
+import articleBlocks from '../controllers/articleBlocksController';
 import Auth from '../../middleware/auth';
 import check from '../../middleware/checkOwner';
 import validateBody from '../../middleware/validateBody';
 import search from '../../middleware/search';
-import commentsController from '../controllers/comments';
+import commentsController from '../controllers/commentsController';
 import comment from '../../middleware/validComment';
 import RatingController from '../controllers/ratingController';
 import slugExist from '../../middleware/slugExist';
 import isAlreadBlocked from '../../middleware/blockedarticleExist';
 import isNotBlocked from '../../middleware/articleNotBlocked';
 import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
-import bookmarkController from '../controllers/bookmark';
+import bookmarkController from '../controllers/bookmarkController';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
 import shareArticle from '../../middleware/shareArticle';
-import stats from '../controllers/stats';
+import stats from '../controllers/statsController';
 import highlight from '../controllers/highlightController';
 import highlightExist from '../../middleware/highlightExist';
 import textExist from '../../middleware/textExist';
@@ -23,6 +26,16 @@ import upload from '../../handlers/multer';
 import shareHighlight from '../../middleware/shareHighlights';
 import shareHighlightController from '../controllers/shareHighlights';
 import checkHighlight from '../../middleware/checkHighlight';
+
+import isVerified from '../../middleware/isVerified';
+import checkArticleLikes from '../../middleware/checkArticleLikes';
+import hasNested from '../../middleware/hasNestedComments';
+import deleteAllowed from '../../middleware/commentDeleteAllowed';
+import commentIsYours from '../../middleware/comment/isCommentYours';
+import updateLike from '../../middleware/comment/addLike';
+import updateDislike from '../../middleware/comment/addDislike';
+import hasHistory from '../../middleware/comment/hasHistory';
+import canViewHistory from '../../middleware/comment/canViewHistory';
 
 const articlesRouter = Router();
 const {
@@ -35,18 +48,23 @@ const {
   getOneArticle,
   updateArticle,
   deleteArticle,
-  likeArticle,
-  dislikeArticle,
-  getLikes,
-  getDislikes,
+  share
+} = articlesController;
+
+const {
   reportArticle,
   blockArticle,
   unBlockArticle,
-  share,
   getBlockedArticles,
   getReportedArticles
-} = articlesController;
+} = articleBlocks;
+
+const {
+  likeArticle, getLikes
+} = articleLikes;
+const { dislikeArticle, getDislikes } = articleDislikes;
 const { verifyToken, checkIsModerator } = Auth;
+const { checkLikes, checkDislikes } = checkArticleLikes;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
 const { createHighlights } = highlight;
@@ -60,7 +78,7 @@ const { liked, disliked } = checkLikesandDislikes;
 const { highlights } = checkHighlight;
 
 articlesRouter
-  .post('/', verifyToken, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
+  .post('/', verifyToken, isVerified, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
   .get('/', paginate, searchForArticle, getAllArticle);
 
 articlesRouter
@@ -69,19 +87,19 @@ articlesRouter
   .delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
 
 articlesRouter
-  .get('/:slug/like', getLikes)
-  .post('/:slug/like', verifyToken, likeArticle);
+  .get('/:slug/like', slugExist, getLikes)
+  .post('/:slug/like', verifyToken, slugExist, checkLikes, likeArticle);
 
 articlesRouter
-  .get('/:slug/dislike', getDislikes)
-  .post('/:slug/dislike', verifyToken, dislikeArticle);
+  .get('/:slug/dislike', slugExist, getDislikes)
+  .post('/:slug/dislike', verifyToken, slugExist, checkDislikes, dislikeArticle);
 
 // Comments routes
 articlesRouter.post('/:slug/comments', verifyToken, validateBody('checkComment'), articleExists, checkComment, createComment);
-articlesRouter.post('/:slug/comments/:commentId', verifyToken, validateBody('checkComment'), articleExists, checkComment, commentAcomment);
-articlesRouter.patch('/comments/:commentId', verifyToken, validateBody('checkComment'), checkParameter, editComment);
-articlesRouter.delete('/comments/:commentId', verifyToken, checkParameter, deleteComment);
-articlesRouter.get('/:slug/comments', getComment);
+articlesRouter.post('/:slug/comments/:commentId', verifyToken, validateBody('checkComment'), slugExist, articleExists, checkComment, commentAcomment);
+articlesRouter.patch('/comments/:commentId', verifyToken, validateBody('checkComment'), checkParameter, commentIsYours, editComment);
+articlesRouter.delete('/comments/:commentId', verifyToken, checkParameter, hasNested, deleteAllowed, deleteComment);
+articlesRouter.get('/:slug/comments', slugExist, getComment);
 articlesRouter.post('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, createRatings);
 articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, UpdateRatings);
 
@@ -89,8 +107,8 @@ articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'),
 
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 // like and dislike comments
-articlesRouter.post('/comments/:commentId/like', verifyToken, checkParameter, liked, likeComment);
-articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter, disliked, dislikeComment);
+articlesRouter.post('/comments/:commentId/like', verifyToken, checkParameter, liked, updateLike, likeComment);
+articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter, disliked, updateDislike, dislikeComment);
 
 // get likes and dislikes of comments
 
@@ -110,10 +128,10 @@ articlesRouter.get('/:slug/highlights/:highlightId/share/facebook', verifyToken,
 articlesRouter.get('/:slug/highlights/:highlightId/share/email', verifyToken, slugExist, highlights, shareHighlight, shareHighlights);
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
-articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
+articlesRouter.post('/:slug/report', verifyToken, isVerified, validateBody('checkComment'), slugExist, reportArticle);
 // get comment edit history
 
-articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, commentHistory);
+articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, hasHistory, canViewHistory, commentHistory);
 
 // articles reading stats
 

@@ -87,7 +87,10 @@
       "src/sequelize/**/*.js",
       "test/**/*.js",
       "src/helpers/notifications/*.js",
-      "src/helpers/SocketIO.js"
+      "src/helpers/SocketIO.js",
+      "src/helpers/stats/*.js",
+      "src/helpers/article/*.js",
+      "src/middleware/search.js"
     ]
   }
 }

@@ -1,6 +1,7 @@
 import { omit } from 'lodash';
 import models from '../../sequelize/models';
 import workers from '../../workers';
+import getFollowers from '../../helpers/user/getFollowers';
 
 const { User, follows } = models;
 const { uploadImageWorker } = workers;
@@ -51,24 +52,14 @@ export default class ProfilesController {
 
     const updatedProfile = { ...body };
 
-    try {
-      const updatedUser = await User.update(
-        updatedProfile,
-        { where: { id: params.id } },
-      );
+    const updatedUser = await User.update(
+      updatedProfile,
+      { where: { id: params.id } },
+    );
 
-      if (!updatedUser[0]) {
-        return res
-          .status(404)
-          .json({ message: `Could not find user with id: ${user.id}` });
-      }
+    uploadImageWorker(files, params.id, 'user', null);
 
-      uploadImageWorker(files, params.id, 'user', null);
-
-      return res.status(200).json({ user: { updatedUser } });
-    } catch (error) {
-      return res.status(500).json({ error: `${error}` });
-    }
+    return res.status(200).json({ user: { updatedUser } });
   }
 
   /**
@@ -125,7 +116,7 @@ export default class ProfilesController {
       }))
       .catch(error => (error.name === 'SequelizeUniqueConstraintError'
         ? res.status(400).send({
-          error: ` ${username} is already your follower `
+          error: ` You already follow ${username} `
         })
         : res.status(500).json({ error: 'something went wrong' })));
   }
@@ -149,11 +140,11 @@ export default class ProfilesController {
       })
       : null;
 
-    if (unfollowedUser && unfollowedUser.errors) {
-      return res
-        .status(500)
-        .json({ errors: 'Internal server error' });
-    }
+    // if (unfollowedUser && unfollowedUser.errors) {
+    //   return res
+    //     .status(500)
+    //     .json({ errors: 'Internal server error' });
+    // }
 
     return unfollowedUser
       ? res.status(200).json({
@@ -171,25 +162,11 @@ export default class ProfilesController {
    * @returns {Object} followers
    */
   static async followers(req, res) {
-    // eslint-disable-next-line no-unused-vars
-    const f = await follows.findAll();
-    follows
-      .findAll({
-        where: { userId: req.user.id },
-        include: [
-          {
-            model: User,
-            as: 'follower',
-            attributes: ['id', 'firstName', 'lastName', 'email', 'username']
-          }
-        ]
-      })
-      .then((data) => {
-        if (!data[0]) {
-          return res.status(200).json({ message: 'you do not have any followers currently', data });
-        }
-        return res.status(200).json({ followers: data });
-      });
+    const data = await getFollowers(req.user.id);
+    if (!data.length) {
+      return res.status(200).json({ message: 'you do not have any followers currently', data });
+    }
+    res.status(200).json({ followers: data });
   }
 
   /**
@@ -199,7 +176,7 @@ export default class ProfilesController {
    * @returns {Object} followers
    */
   static async following(req, res) {
-    follows
+    const data = await follows
       .findAll({
         where: { followerId: req.user.id },
         include: [
@@ -209,12 +186,13 @@ export default class ProfilesController {
             attributes: ['id', 'firstName', 'lastName', 'email', 'username']
           }
         ]
-      })
-      .then((data) => {
-        if (!data[0]) {
-          return res.status(200).json({ message: 'you do not following anyone currently', data });
-        }
-        return res.status(200).json({ following: data });
       });
+
+    return data.length ? res.json({
+      following: data
+    }) : res.json({
+      message: 'You do not follow anyone currently!',
+      following: data
+    });
   }
 }

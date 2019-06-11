@@ -1,6 +1,7 @@
 import db from '../../sequelize/models';
 import sendMail from '../mailer/SendAnyEmail';
 import eventEmitter from './EventEmitter';
+import notificationTemplate from '../mailer/templates/Notification.template';
 
 const { Notification, Opt, User } = db;
 
@@ -30,9 +31,7 @@ const notify = async (data) => {
           message: emailMessage,
           type: subscription.type
         });
-        await sendMail(dataValues.email, 'notification', {
-          message: emailMessage
-        });
+        await sendMail({ lastName: dataValues.lastName, email: dataValues.email }, notificationTemplate({ lastName: dataValues.lastName, message: emailMessage }), 'AuthorsHaven - Notification');
         break;
       case 'inapp':
         inAppNotification = await Notification.create({

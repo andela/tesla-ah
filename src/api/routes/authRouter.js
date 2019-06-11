@@ -1,15 +1,16 @@
 import { Router } from 'express';
 import passport from 'passport';
 // eslint-disable-next-line import/no-named-as-default
-import authController from '../controllers/auth';
+import authController from '../controllers/authController';
 import validateBody from '../../middleware/validateBody';
 import userValidation from '../../middleware/validUser';
 import validateGender from '../../middleware/validateGender';
 import Auth from '../../middleware/auth';
-import socialLogin from '../controllers/socialLogin';
+import socialLogin from '../controllers/socialLoginController';
 import socialAccount from '../../middleware/socialAccountExists';
 import socialMiddleware from '../../middleware/socialTest';
 import termsAndConditions from '../controllers/termsAndConditions';
+import userExists from '../../middleware/auth/userExists';
 
 const authRouter = Router();
 
@@ -89,7 +90,7 @@ authRouter.get(
 );
 
 authRouter.get('/signout', verifyToken, SignOut);
-authRouter.post('/login', validateBody('login'), login);
+authRouter.post('/login', validateBody('login'), userExists, login);
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.get('/verify', verifyAccount);
 authRouter.post('/reset', validateBody('passwordReset'), RequestPasswordReset);

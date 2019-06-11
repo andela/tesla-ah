@@ -1,15 +1,16 @@
 import models from '../../sequelize/models';
+import shareCount from '../../helpers/stats/shareCount';
+import commentCount from '../../helpers/stats/commentCount';
 
 const {
   Article,
-  Comment,
   Share
 } = models;
 
 /**
  * @Author - Mireille Niwemuhuza
  */
-class statsController {
+class StatsController {
   /**
    *  @description - Users should be able to view how many times an article has been viewed
    *  @param {object} req - Request object
@@ -40,18 +41,12 @@ class statsController {
   static async commentNumber(req, res) {
     const { slug } = req.params;
 
-    // Count comments
-    const countComment = await Comment.count({
-      where: {
-        slug
-      }
-    });
-
+    const count = await commentCount(slug);
     return res.status(200).json({
       status: 200,
       data: {
         slug,
-        countComment
+        comments: count
       }
     });
   }
@@ -65,15 +60,9 @@ class statsController {
   static async facebookShares(req, res) {
     const { slug } = req.params;
 
-    // Count facebook shares
-    const shares = await Share.count({
-      where: {
-        slug,
-        provider: 'facebook'
-      }
-    });
+    const shares = await shareCount(slug, 'facebook');
 
-    return res.status(200).json({
+    res.status(200).json({
       status: 200,
       data: {
         slug,
@@ -92,15 +81,8 @@ class statsController {
     const { slug } = req.params;
 
     // Count shares on twitter
-    const shares = await Share.count({
-      where: {
-        slug,
-        provider: 'twitter'
-      }
-    });
-
+    const shares = await shareCount(slug, 'twitter');
     return res.status(200).json({
-      status: 200,
       data: {
         slug,
         shares
@@ -118,18 +100,13 @@ class statsController {
     const { slug } = req.params;
 
     // Count shares on email
-    const shares = await Share.count({
-      where: {
-        slug,
-        provider: 'email'
-      }
-    });
+    const count = await shareCount(slug, 'email');
 
-    return res.status(200).json({
+    return res.json({
       status: 200,
       data: {
         slug,
-        shares
+        shares: count
       }
     });
   }
@@ -159,4 +136,4 @@ class statsController {
     });
   }
 }
-export default statsController;
+export default StatsController;
