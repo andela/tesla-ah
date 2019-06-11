@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import models from '../../sequelize/models';
+import eventEmitter from '../../helpers/notifications/EventEmitter';
 
 /**
  * @class
@@ -27,6 +28,7 @@ export default class comments {
       slug
     });
     const Id = commentAdded.dataValues.id;
+    eventEmitter.emit('commentArticle', commentAdded.dataValues);
     return res.status(201).json({
       message: `Dear ${firstName}, Thank you for contributing to this article`,
       data: {
@@ -173,17 +175,6 @@ export default class comments {
   */
   static async getComment(req, res) {
     const { slug } = req.params;
-    const findSlug = await models.Article.findAll({
-      attributes: ['id'],
-      where: {
-        slug
-      }
-    });
-    if (findSlug.length === 0) {
-      return res.status(404).json({
-        message: 'Not found!'
-      });
-    }
     await models.Article.findAll({
       attributes: [
         'title',
@@ -198,7 +189,7 @@ export default class comments {
           model: models.Comment,
           attributes: ['comment'],
           where: {
-            articleId: findSlug[0].dataValues.id
+            articleId: req.article.dataValues.id
           },
           include: [
             {

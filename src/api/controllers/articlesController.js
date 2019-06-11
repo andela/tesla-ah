@@ -1,6 +1,10 @@
+/* eslint-disable import/no-cycle */
 import articles from '../../helpers/articlesHelper';
 import models from '../../sequelize/models';
 import readTime from '../../helpers/ReadTime.helper';
+import eventEmitter from '../../helpers/notifications/EventEmitter';
+import findUser from '../../helpers/FindUser';
+
 
 const {
   Article,
@@ -53,7 +57,8 @@ class articlesController {
       createdAt,
       readtime
     } = dataValues;
-
+    const userInfo = await findUser(author.username);
+    eventEmitter.emit('publishArticle', userInfo.id, slug);
     const result = {
       // eslint-disable-next-line max-len
       slug,
@@ -94,13 +99,6 @@ class articlesController {
    */
   static async getOneArticle(req, res) {
     const { slug } = req.params;
-
-    // @check if the article's slug exist
-    const result = await Article.findOne({ where: { slug } });
-    if (result === null) {
-      return res.status(404).send({ error: 'This Slug Not found!' });
-    }
-
     const oneArticle = await articles.getOneSlug(slug);
     res.status(200).send({
       status: 200,
@@ -206,25 +204,8 @@ class articlesController {
     const { slug } = req.params;
 
     try {
-      // Find the article
-      const query = await Article.findAll({ where: { slug } });
+      const foundArticle = req.article;
 
-      if (!query[0]) {
-        return res
-          .status(404)
-          .json({ message: `Article with slug: ${slug} not found` });
-      }
-
-      const { dataValues: foundArticle } = query[0];
-
-      // Check the current user has not liked or disliked this article before
-      const hasLiked = await LikeDislike.findAll({
-        where: {
-          articleId: foundArticle.id,
-          userId: currentUser,
-          likes: 1
-        }
-      });
       const hasDisliked = await LikeDislike.findAll({
         where: {
           articleId: foundArticle.id,
@@ -232,13 +213,6 @@ class articlesController {
           dislikes: 1
         }
       });
-
-      // If the user has already liked send a response
-      if (hasLiked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already liked article: ${slug}`
-        });
-      }
 
       // If user has disliked before, remove dislike, add like.
       if (hasDisliked[0]) {
@@ -277,16 +251,7 @@ class articlesController {
     const { slug } = req.params;
 
     try {
-      // Find the article
-      const query = await Article.findAll({ where: { slug } });
-
-      if (!query[0]) {
-        return res
-          .status(404)
-          .json({ message: `Article with slug: ${slug} not found` });
-      }
-
-      const { dataValues: foundArticle } = query[0];
+      const foundArticle = req.article;
 
       // Check the current user has not liked or disliked this article before
       const hasLiked = await LikeDislike.findAll({
@@ -296,20 +261,6 @@ class articlesController {
           likes: 1
         }
       });
-      const hasDisliked = await LikeDislike.findAll({
-        where: {
-          articleId: foundArticle.id,
-          userId: currentUser,
-          dislikes: 1
-        }
-      });
-
-      // If the user has already disliked send a response
-      if (hasDisliked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already disliked article: ${slug}`
-        });
-      }
 
       // If user has liked before, remove like, add dislike.
       if (hasLiked[0]) {
@@ -345,17 +296,7 @@ class articlesController {
    */
   static async getLikes(req, res) {
     const { slug } = req.params;
-
-    // Find the article
-    const query = await Article.findAll({ where: { slug } });
-
-    if (!query[0]) {
-      return res
-        .status(404)
-        .json({ message: `Article with slug: ${slug} not found` });
-    }
-
-    const { dataValues: foundArticle } = query[0];
+    const foundArticle = req.article;
 
     // Get likes
     const likeCount = await LikeDislike.count({
@@ -378,17 +319,7 @@ class articlesController {
    */
   static async getDislikes(req, res) {
     const { slug } = req.params;
-
-    // Find the article
-    const query = await Article.findAll({ where: { slug } });
-
-    if (!query[0]) {
-      return res
-        .status(404)
-        .json({ message: `Article with slug: ${slug} not found` });
-    }
-
-    const { dataValues: foundArticle } = query[0];
+    const foundArticle = req.article;
 
     // Get likes
     const likeCount = await LikeDislike.count({
