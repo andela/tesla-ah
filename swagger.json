@@ -1,11 +1,11 @@
 {
-  "swagger":"2.0",
-  "info":{
-      "version":"2",
-      "title":"Tesla-AH",
-      "description":"Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
+  "swagger": "2.0",
+  "info": {
+    "version": "2",
+    "title": "Tesla-AH",
+    "description": "Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
   },
-  "host":"localhost:3000",
+  "host": "localhost:3000",
   "basePath": "/api/",
   "tags": [
     {
@@ -13,47 +13,47 @@
       "description": " User Authentication "
     }
   ],
-  "schemes":[
-      "http",
-      "https"
+  "schemes": [
+    "http",
+    "https"
   ],
-   "consumes":[
-       "application/json"
-   ],
-   "produces":[
-       "application/json"
-   ],
-   "definitions": {
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
     "user": {
       "type": "object",
       "properties": {
-          "firstName": {
-              "type": "string"
-          },
-          "lastName": {
-              "type": "string"
-          },
-          "username": {
-              "type": "string"
-          },
-          "email": {
-              "type": "string"
-          },
-          "password": {
-              "type": "string"
-          },
-          "bio": {
-              "type": "string"
-          },
-          "image": {
-              "type": "string"
-          },
-          "gender": {
-              "type": "M"
-          },
-          "dateOfBirth": {
-              "type": "string"
-          }
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "M"
+        },
+        "dateOfBirth": {
+          "type": "string"
+        }
       }
     },
     "signup": {
@@ -67,27 +67,32 @@
       ],
       "properties": {
         "firstName": {
-            "type": "string"
+          "type": "string"
         },
         "lastName": {
-            "type": "string"
+          "type": "string"
         },
         "email": {
-            "type": "string"
+          "type": "string"
         },
         "username": {
-            "type": "string"
+          "type": "string"
         },
         "password": {
-            "type": "string"
+          "type": "string"
         },
         "confirmPassword": {
-            "type": "string"
+          "type": "string"
         }
       }
     },
     "article": {
-      "required": ["title", "description", "body", "tagList"],
+      "required": [
+        "title",
+        "description",
+        "body",
+        "tagList"
+      ],
       "properties": {
         "title": {
           "type": "string"
@@ -109,7 +114,8 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "ericrukundo005@gmail.com" }
+          "example": "ericrukundo005@gmail.com"
+        }
       }
     },
     "login": {
@@ -129,7 +135,9 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to create an account",
         "parameters": [
           {
@@ -174,7 +182,7 @@
             "schema": "#/definitions/user"
           }
         ],
-        "produces":[
+        "produces": [
           "application/json"
         ],
         "responses": {
@@ -210,7 +218,7 @@
             "required": true
           }
         ],
-        "produces":[
+        "produces": [
           "application/json"
         ],
         "responses": {
@@ -228,7 +236,9 @@
     },
     "/auth/signout": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
         "parameters": [
           {
@@ -238,7 +248,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "You are now signed Out!"
@@ -254,7 +266,9 @@
     },
     "/articles": {
       "post": {
-        "tags": ["Articles Endpoints"],
+        "tags": [
+          "Articles Endpoints"
+        ],
         "description": "user should be able to create an article",
         "parameters": [
           {
@@ -272,7 +286,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Article created successfully",
@@ -283,9 +299,13 @@
         }
       },
       "get": {
-        "tags": ["Articles Endpoints"],
+        "tags": [
+          "Articles Endpoints"
+        ],
         "description": "user should be able to view all articles",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Articles fetched successfully"
@@ -295,7 +315,9 @@
     },
     "/articles/{slug}": {
       "get": {
-        "tags": ["Get a single Article's slug "],
+        "tags": [
+          "Get a single Article's slug "
+        ],
         "description": "user should be able to view a specific slug",
         "parameters": [
           {
@@ -305,7 +327,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Single Article fetched successfully"
@@ -313,7 +337,9 @@
         }
       },
       "put": {
-        "tags": ["Update a single Article's slug "],
+        "tags": [
+          "Update a single Article's slug "
+        ],
         "description": "user should be able to update his/her own article - slug",
         "parameters": [
           {
@@ -337,7 +363,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article updated successfully",
@@ -348,7 +376,9 @@
         }
       },
       "delete": {
-        "tags": ["Delete a single Article's slug "],
+        "tags": [
+          "Delete a single Article's slug "
+        ],
         "description": "user should be able to view a specific slug",
         "parameters": [
           {
@@ -364,7 +394,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
@@ -518,9 +550,13 @@
     },
     "/auth/reset": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to request password reset",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -579,9 +615,13 @@
     },
     "/auth/reset/:token": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "When user click on Reset Button on his/her email, Reset link will be generated.",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -634,9 +674,13 @@
     },
     "/auth/reset/:aprvToken": {
       "patch": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to apply password reset and change his or her password",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "aprvToken",

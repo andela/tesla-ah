@@ -5,12 +5,15 @@ import server from '../src/index';
 import db from '../src/sequelize/models';
 import tokenHelper from '../src/helpers/Token.helper';
 
+
 const { User } = db;
+
+
 const { expect } = chai;
 chai.use(chaiHttp);
+
 dotenv.config();
 let userToken;
-
 describe('User Registration', () => {
   before(async () => {
     await User.destroy({
@@ -137,7 +140,6 @@ describe('User SignOut', () => {
       password: 'Rukundo1!',
       confirmPassword: 'Rukundo1!'
     };
-
 
     const newUser = await User.create(user);
 

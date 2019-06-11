@@ -45,6 +45,7 @@ authRouter.get('/login/facebook/redirect', passport.authenticate('facebook', { s
 authRouter.get('/login/twitter', passport.authenticate('twitter', { scope: ['profile', 'email'] }));
 authRouter.get('/login/twitter/redirect', passport.authenticate('twitter', { session: false }), twitter, socialLogin.twitterLogin);
 
+authRouter.get('/signout', verifyToken, dropToken, SignOut);
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.post('/login', validateBody('login'), login);
 authRouter.get('/verify', verifyAccount);
