@@ -4,6 +4,8 @@ node_js:
 before_script:
   - yarn add sequelize-cli
   - sequelize db:migrate
+  - sequelize db:seed:all
+cache: yarn
 script: 
   - yarn test
 before_install:
