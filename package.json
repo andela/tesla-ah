@@ -8,8 +8,8 @@
     "build": "babel src --out-dir dist",
     "serve": "node dist/index.js",
     "start": "node dist/index.js",
-    "migrate": "sequelize db:migrate",
-    "undo": "sequelize db:migrate:undo:all",
+    "migrate": "npx sequelize-cli db:migrate",
+    "undo": "npx sequelize-cli db:migrate:undo:all",
     "test": "NODE_ENV=test yarn undo && NODE_ENV=test yarn migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require @babel/polyfill ./test/*.js --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
