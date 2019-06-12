@@ -1,21 +1,105 @@
 {
-  "swagger":"2.0",
-  "info":{
-      "version":"2",
-      "title":"Tesla-ah",
-      "description":"Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
+  "swagger": "2.0",
+  "info": {
+    "version": "2",
+    "title": "Tesla-ah",
+    "description": "Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
   },
-  "host":"localhost:3000",
-  "basepath":"",
-  "schemes":[
-      "http",
-      "https"
-  ],
-   "consumes":[
-       "application/json"
-   ],
-   "produces":[
-       "application/json"
-   ]
+  "host": "localhost:3000",
+  "basepath": "",
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "definitions": {
+    "signup": {
+      "required": ["bio", "username", "email"],
+      "properties": {
+        "bio": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "article": {
+      "required": ["title", "description", "body", "tagList"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "tagList": {
+          "type": "string",
+          "example": "reactJs, AngularJs, NodeJs"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["User create an account Endpoint"],
+        "description": "user should be able to create an article",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User create a new account",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": " User Account created successfully",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        }
+      }
+    },
+    "/api/articles": {
+      "post": {
+        "tags": ["Articles Endpoints"],
+        "description": "user should be able to create an article",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "Article",
+            "in": "body",
+            "description": "create an article on author's haven",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Article created successfully",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        }
+      }
+    }
   }
-  
+}

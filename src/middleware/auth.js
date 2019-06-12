@@ -1,12 +1,12 @@
 import authHelper from '../api/helpers/Token.helper';
-import db from '../sequelize/models/index';
+import db from '../sequelize/models';
 
-const { users } = db;
+const { User } = db;
 /**
  * @class Auth
  * @description Authentication based class
- *  */
-class Auth {
+ */
+export default class Auth {
   /**
    * Verify token middleware
    * @param {Object} req - Request
@@ -14,39 +14,27 @@ class Auth {
    * @param {Function} next -Next
    * @returns {Object} The response object
    */
-  async verifyToken(req, res, next) {
-    this.bearerToken = req.headers.authorization;
-    const token = this.bearerToken.split(' ')[1];
+  static async verifyToken(req, res, next) {
+    const { token } = req.headers;
     if (!token) {
-      return res.status(400).send({
-        status: 400,
-        error: 'Token is not provided'
-      });
+      return res.status(401).json({ status: 401, error: 'Token is missing' });
     }
-    authHelper
-      .decodeToken(token)
-      .then((user) => {
-        users
-          .findAll({
-            where: {
-              id: user.userId
-            }
-          })
-          .then((result) => {
-            if (!result[0]) {
-              return res.status(404).send({
-                status: 404,
-                error: { message: 'The token you provided is invalid' }
-              });
-            }
-            req.user = user;
-            next();
-          });
-      })
-      .catch(error => res.status(400).send({
-        status: 400,
-        error
-      }));
+
+    try {
+      const decoded = await authHelper.decodeToken(token);
+      try {
+        const user = await User.findAll({ where: { id: decoded.id } });
+        if (!user[0]) {
+          return res.status(401).json({ status: 401, error: 'Token is invalid' });
+        }
+        req.token = token;
+        req.user = user[0].dataValues;
+        return next();
+      } catch (error) {
+        return res.status(500).json({ token: 'dfdfd' });
+      }
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
   }
 }
-export default new Auth();

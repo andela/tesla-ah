@@ -8,13 +8,15 @@
     "build": "babel src --out-dir dist",
     "serve": "node dist/index.js",
     "start": "node dist/index.js",
-    "test": "nyc --reporter=text ./node_modules/.bin/mocha --recursive ./test/* --exit --require @babel/register --require @babel/polyfill ",
+    "migrate": "sequelize db:migrate",
+    "undo": "sequelize db:migrate:undo:all",
+    "test": "NODE_ENV=test yarn undo && NODE_ENV=test yarn migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require @babel/polyfill ./test/*.js --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
-    "@hapi/joi": "^15.0.3",
+    "@babel/polyfill": "^7.4.4",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
@@ -24,7 +26,6 @@
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.5.1",
-    "joi": "^14.3.1",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
@@ -34,8 +35,10 @@
     "pg-hstore": "^2.3.3",
     "request": "^2.87.0",
     "sequelize": "^5.8.7",
+    "slug": "^1.1.0",
     "swagger-ui-express": "^4.0.6",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "uniqid": "^5.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -47,7 +50,7 @@
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
- "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
