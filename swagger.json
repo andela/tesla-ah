@@ -99,6 +99,19 @@
             }
           }
         }
+      },
+      "get":{
+        "tags": ["Articles Endpoints"],
+        "description": "user should be able to view all articles",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Articles fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        }
       }
     }
   }
