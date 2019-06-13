@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import api from './api/routes';
+import api from './api/routes/index';
 import globalMiddleware from './middleware/globalMiddleware';
 import swaggerDoc from '../swagger.json';
 import db from './sequelize/models/index';
@@ -12,10 +12,11 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-globalMiddleware(app);
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+globalMiddleware(app);
 app.use('/api', api);
+app.get('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
@@ -23,3 +24,5 @@ sequelize.sync().then(() => {
     console.log(`Database succesfully connected\nServer listening on port: ${port} in ${process.env.NODE_ENV} mode`);
   });
 });
+
+export default app;
