@@ -1,9 +1,14 @@
 import chaiHttp from 'chai-http';
 import chai from 'chai';
+import dotenv from 'dotenv';
 import server from '../src/index';
+
+
+dotenv.config();
 
 const { expect } = chai;
 chai.use(chaiHttp);
+
 
 describe('User Registration', () => {
   it('should not let a user signup without valid credentials ', (done) => {

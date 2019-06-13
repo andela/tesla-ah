@@ -1,8 +1,8 @@
 import Joi from '@hapi/joi';
 import _ from 'lodash';
-import Schemas from '../helpers/userSchema';
+import Schemas from '../helpers/validationSchemas';
 
-const validateUser = schema => (req, res, next) => {
+const validateBody = schema => (req, res, next) => {
   const data = req.body;
 
   if (_.has(Schemas, schema)) {
@@ -25,7 +25,6 @@ const validateUser = schema => (req, res, next) => {
       });
     }
   }
-  next();
 };
 
-export default validateUser;
+export default validateBody;

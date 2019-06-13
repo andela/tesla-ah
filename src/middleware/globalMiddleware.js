@@ -8,6 +8,8 @@ export default (app) => {
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
     // Allow cross origin requests
-    .use(cors())
-    .use(morgan('dev'));
+    .use(cors());
+  if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan('dev'));
+  }
 };

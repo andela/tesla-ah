@@ -12,11 +12,9 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-
 globalMiddleware(app);
 app.use('/api', api);
-app.get('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 sequelize.sync().then(() => {
   app.listen(port, () => {

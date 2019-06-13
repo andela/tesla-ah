@@ -3,11 +3,10 @@ import dotenv from 'dotenv';
 const config = {};
 dotenv.config();
 config.development = {
-  username: process.env.LOCAL_DB_USER,
-  password: process.env.LOCAL_DB_PASSWORD,
-  database: process.env.LOCAL_DB_NAME,
+  use_env_variable: 'DEV_DATABASE_URL',
   host: '127.0.0.1',
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 };
 
 config.staging = {
@@ -16,6 +15,7 @@ config.staging = {
 
 config.test = {
   use_env_variable: 'TEST_DATABASE_URL',
+  logging: false
 };
 
 config.production = {

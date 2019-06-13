@@ -2,11 +2,11 @@
   "swagger":"2.0",
   "info":{
       "version":"2",
-      "title":"Tesla-ah",
+      "title":"Tesla-AH",
       "description":"Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
   },
   "host":"localhost:3000",
-  "basepath":"",
+  "basePath": "/api/",
   "schemes":[
       "http",
       "https"
@@ -16,6 +16,114 @@
    ],
    "produces":[
        "application/json"
-   ]
+   ],
+   "definitions": {
+     "user": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "M"
+        },
+        "dateOfBirth": {
+          "type": "string"
+        }
+      }
+     }
+   },
+   "paths": {
+     "/user": {
+       "put": {
+         "tags": [
+           "Update User Profile"
+         ],
+         "description": "User profile update",
+         "parameters": [
+           {
+             "name": "token",
+             "in": "Headers",
+             "description": "Client authentication token",
+             "required": true
+           },
+           {
+             "name": "user",
+             "in": "Body",
+             "description": "Object containing user information to update",
+             "schema": "#/definitions/user"
+           }
+         ],
+         "produces":[
+           "application/json"
+         ],
+         "responses": {
+           "200": {
+             "description": "User profile sucessfully updated"
+           },
+           "404": {
+             "description": "User profile not found"
+           },
+           "500": {
+             "description": "Error while updating profile"
+           }
+         }
+       }
+     },
+     "/profiles/{username}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Get user profile",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "Headers",
+            "description": "Client authentication token",
+            "required": false
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Username of user to get",
+            "required": true
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile returned"
+          },
+          "404": {
+            "description": "User profile not found"
+          },
+          "500": {
+            "description": "Error while fetching profile"
+          }
+        }
+      }
+    }
+   }
   }
   
