@@ -2,8 +2,11 @@ import 'regenerator-runtime';
 import express from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import passport from 'passport';
+import session from 'express-session';
 import api from './api/routes/index';
 import globalMiddleware from './middleware/globalMiddleware';
+import './config/passportSetup';
 import swaggerDoc from '../swagger.json';
 import db from './sequelize/models/index';
 
@@ -15,8 +18,16 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 globalMiddleware(app);
+
+app.use(session({
+  secret: process.env.SECRET,
+  saveUninitialized: true
+}));
+
 app.use('/api', api);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 sequelize.sync().then(() => {
