@@ -1,3 +1,4 @@
+import 'regenerator-runtime';
 import express from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
@@ -16,6 +17,7 @@ const app = express();
 globalMiddleware(app);
 app.use('/api', api);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
