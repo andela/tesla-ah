@@ -3,6 +3,8 @@ import chai from 'chai';
 import dotenv from 'dotenv';
 import server from '../src/index';
 import db from '../src/sequelize/models';
+import tokenHelper from '../src/helpers/Token.helper';
+
 
 const { User } = db;
 
@@ -122,6 +124,44 @@ describe('User Registration', () => {
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.equal(202);
+        done();
+      });
+  });
+});
+
+describe('User SignOut', () => {
+  let token;
+  before(async () => {
+    const user = {
+      firstName: 'Emy',
+      lastName: 'Rukundo',
+      username: 'mifeillee',
+      email: 'nimilleer@gmail.com',
+      password: 'Rukundo1!',
+      confirmPassword: 'Rukundo1!'
+    };
+
+    const newUser = await User.create(user);
+
+    token = await tokenHelper.generateToken({ id: newUser.id });
+  });
+
+  it('should logout with a valid token', (done) => {
+    chai.request(server)
+      .get('/api/auth/signout')
+      .set('token', token)
+      .end((err, res) => {
+        res.should.have.status(200);
+        expect(res.body.message).to.be.a('string');
+        done();
+      });
+  });
+  it('should return an error when there is no token', (done) => {
+    chai.request(server)
+      .get('/api/auth/signout')
+      .set('token', ' ')
+      .end((err, res) => {
+        res.should.have.status(401);
         done();
       });
   });

@@ -15,7 +15,7 @@ config.staging = {
 
 config.test = {
   use_env_variable: 'TEST_DATABASE_URL',
-  logging: false
+  logging: false,
 };
 
 config.production = {
