@@ -3,10 +3,11 @@
 module.exports = {
   up: queryInterface =>
   /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-      */
+        Add altering commands here.
+        Return a promise to correctly handle asynchronicity.
+        */
 
+    // eslint-disable-next-line implicit-arrow-linebreak
     queryInterface.bulkInsert('Users', [{
       firstName: 'Mireille',
       lastName: 'Niwemuhuza',

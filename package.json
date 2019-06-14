@@ -9,12 +9,17 @@
     "serve": "node dist/index.js",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit --require @babel/register --require regenerator-runtime",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test:local": "yarn undo && yarn migrate && yarn seed && yarn test",
+    "migrate": "sequelize db:migrate",
+    "undo": "sequelize db:migrate:undo",
+    "seed": "sequelize db:seed:all"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^15.0.3",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
@@ -29,6 +34,7 @@
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.11.0",
