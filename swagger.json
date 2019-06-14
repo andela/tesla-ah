@@ -17,206 +17,334 @@
    "produces":[
        "application/json"
    ],
-    "definitions": {
-        "user": {
-            "type": "object",
-            "properties": {
-                "firstName": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "bio": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "gender": {
-                    "type": "M"
-                },
-                "dateOfBirth": {
-                    "type": "string"
-                }
-            }
-        },
-        "signup": {
-            "required": [
-                "firstName",
-                "lastName",
-                "email",
-                "username",
-                "password",
-                "confirmPassword"
-            ],
-            "properties": {
-                "firstName": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "confirmPassword": {
-                    "type": "string"
-                }
-            }
-        }
+   "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+          "firstName": {
+              "type": "string"
+          },
+          "lastName": {
+              "type": "string"
+          },
+          "username": {
+              "type": "string"
+          },
+          "email": {
+              "type": "string"
+          },
+          "password": {
+              "type": "string"
+          },
+          "bio": {
+              "type": "string"
+          },
+          "image": {
+              "type": "string"
+          },
+          "gender": {
+              "type": "M"
+          },
+          "dateOfBirth": {
+              "type": "string"
+          }
+      }
     },
-   "paths": {
-      "/user": {
-        "put": {
-          "tags": [
-            "Update User Profile"
-          ],
-          "description": "User profile update",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "Headers",
-              "description": "Client authentication token",
-              "required": true
-            },
-            {
-              "name": "user",
-              "in": "Body",
-              "description": "Object containing user information to update",
-              "schema": "#/definitions/user"
-            }
-          ],
-          "produces":[
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "User profile sucessfully updated"
-            },
-            "404": {
-              "description": "User profile not found"
-            },
-            "500": {
-              "description": "Error while updating profile"
-            }
-          }
+    "signup": {
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "username",
+        "password",
+        "confirmPassword"
+      ],
+      "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
+        "confirmPassword": {
+            "type": "string"
         }
-      },
-      "/profiles/{username}": {
-        "get": {
-          "tags": [
-            "Profile"
-          ],
-          "description": "Get user profile",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "Headers",
-              "description": "Client authentication token",
-              "required": false
-            },
-            {
-              "name": "username",
-              "in": "path",
-              "description": "Username of user to get",
-              "required": true
-            }
-          ],
-          "produces":[
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "User profile returned"
-            },
-            "404": {
-              "description": "User profile not found"
-            },
-            "500": {
-              "description": "Error while fetching profile"
-            }
-          }
-        }
-      },
-      "/api/auth/signup": {
-          "post": {
-              "tags": [
-                  "Account Creation"
-              ],
-              "description": "User is able to create an account",
-              "parameters": [
-                  {
-                      "name": "user",
-                      "in": "body",
-                      "description": "User create a new account",
-                      "schema": {
-                          "$ref": "#/definitions/signup"
-                      }
-                  }
-              ],
-              "produces": [
-                  "application/json"
-              ],
-              "responses": {
-                  "201": {
-                      "description": " User Account created successfully",
-                      "schema": {
-                          "$ref": "#/definitions/signup"
-                      }
-                  }
-              }
-          }
-      },
-      "/auth/signout": {
-        "get": {
-          "tags": [
-            "User SignOut"
-          ],
-          "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "You are now signed Out!"
-            },
-            "401": {
-              "description": " You are not Authorised to blacklist this token "
-            },
-            "500": {
-              "description": "Server Error"
-            },
-            "security": [
-              {
-                "api_key": []
-              }
-            ]
-          } 
-        }
-      },
-      "securityDefinitions": {
-        "api_key": {
-          "type": "apiKey",
-          "name": "token",
-          "in": "header"
+      }
+    },
+    "article": {
+      "required": ["title", "description", "body", "tagList"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "tagList": {
+          "type": "string",
+          "example": "reactJs, AngularJs, NodeJs"
         }
       }
     }
+  },
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["Account Creation"],
+        "description": "User is able to create an account",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User create a new account",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": " User Account created successfully",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "put": {
+        "tags": [
+          "Update User Profile"
+        ],
+        "description": "User profile update",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "Headers",
+            "description": "Client authentication token",
+            "required": true
+          },
+          {
+            "name": "user",
+            "in": "Body",
+            "description": "Object containing user information to update",
+            "schema": "#/definitions/user"
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile sucessfully updated"
+          },
+          "404": {
+            "description": "User profile not found"
+          },
+          "500": {
+            "description": "Error while updating profile"
+          }
+        }
+      }
+    },
+    "/api/profiles/{username}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Get user profile",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "Headers",
+            "description": "Client authentication token",
+            "required": false
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Username of user to get",
+            "required": true
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile returned"
+          },
+          "404": {
+            "description": "User profile not found"
+          },
+          "500": {
+            "description": "Error while fetching profile"
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "get": {
+        "tags": ["User SignOut"],
+        "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "You are now signed Out!"
+          },
+          "401": {
+            "description": " You are not Authorised to blacklist this token "
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/articles": {
+      "post": {
+        "tags": ["Articles Endpoints"],
+        "description": "user should be able to create an article",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "Article",
+            "in": "body",
+            "description": "create an article on author's haven",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Article created successfully",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Articles Endpoints"],
+        "description": "user should be able to view all articles",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Articles fetched successfully"
+          }
+        }
+      }
+    },
+    "/api/articles/{slug}": {
+      "get": {
+        "tags": ["Get a single Article's slug "],
+        "description": "user should be able to view a specific slug",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "The article's slug",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Single Article fetched successfully"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Update a single Article's slug "],
+        "description": "user should be able to update his/her own article - slug",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "The article's slug",
+            "required": true
+          },
+          {
+            "name": "Article",
+            "in": "body",
+            "description": "update your own article on author's haven",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Article updated successfully",
+            "schema": {
+              "$ref": "#/definitions/article"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Delete a single Article's slug "],
+        "description": "user should be able to view a specific slug",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "The article's slug",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Article deleted successfully!"
+          }
+        }
+      }
+    }
+  }
 }
   

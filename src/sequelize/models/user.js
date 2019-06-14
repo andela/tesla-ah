@@ -1,5 +1,4 @@
-
-
+/* eslint-disable func-names */
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: DataTypes.STRING,
@@ -15,5 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     socialId: DataTypes.STRING,
     verified: DataTypes.BOOLEAN
   }, {});
+
+  User.associate = function (models) {
+    // associations can be defined here
+    User.hasMany(models.article, {
+      as: 'author',
+      foreignKey: 'authorid',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+  };
   return User;
 };
