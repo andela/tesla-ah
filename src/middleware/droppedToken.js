@@ -1,7 +1,6 @@
 import db from '../sequelize/models';
 
 const { Blacklist } = db;
-
 const dropToken = async (req, res, next) => {
   const { id } = req.user;
   const token = await Blacklist.findAll({

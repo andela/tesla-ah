@@ -75,6 +75,7 @@ class AuthController {
     }
   }
 
+
   /**
    * Verifies account
    * @param {Object} req - Request
