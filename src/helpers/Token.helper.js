@@ -17,6 +17,4 @@ class Tokenizer {
     return user;
   }
 }
-
-
 export default Tokenizer;

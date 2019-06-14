@@ -3,7 +3,7 @@ import url from 'url';
 
 dotenv.config();
 
-export default async (dbUrl) => {
+export default (dbUrl) => {
   const urlObj = url.parse(dbUrl);
   const {
     auth,
