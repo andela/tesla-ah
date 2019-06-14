@@ -3,7 +3,7 @@ import TokenHelper from '../../helpers/Token.helper';
 import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
 
-const { User } = db;
+const { User, Blacklist } = db;
 
 /**
  * @author Elie Mugenzi
@@ -81,6 +81,27 @@ class AuthController {
       res.status(400).json({
         status: 400,
         error: 'Invalid Request'
+      });
+    }
+  }
+
+  /**
+   * User should be able to sign out
+   * @param {Object} req - Request object
+   * @param {Object} res - Response Object
+   * @returns {Object} - Response object
+   */
+  static async SignOut(req, res) {
+    const { user: { id }, token } = req;
+    const droppedToken = await Blacklist.create({
+      userId: id,
+      token
+    });
+    if (droppedToken) {
+      res.json({
+        status: 200,
+        message: 'You are now signed Out!',
+
       });
     }
   }

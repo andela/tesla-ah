@@ -182,6 +182,40 @@
                   }
               }
           }
+      },
+      "/auth/signout": {
+        "get": {
+          "tags": [
+            "User SignOut"
+          ],
+          "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "You are now signed Out!"
+            },
+            "401": {
+              "description": " You are not Authorised to blacklist this token "
+            },
+            "500": {
+              "description": "Server Error"
+            },
+            "security": [
+              {
+                "api_key": []
+              }
+            ]
+          } 
+        }
+      },
+      "securityDefinitions": {
+        "api_key": {
+          "type": "apiKey",
+          "name": "token",
+          "in": "header"
+        }
       }
     }
 }
