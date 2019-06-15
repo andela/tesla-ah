@@ -39,7 +39,7 @@ class AuthController {
       verified: false
     });
     if (newUser) {
-      const token = await TokenHelper.generateToken({ user: newUser });
+      const token = await TokenHelper.generateToken(newUser.dataValues);
       Mailhelper.sendMail({
         to: newUser.email,
         names: `${newUser.firstName} ${newUser.lastName}`,
@@ -70,7 +70,7 @@ class AuthController {
         verified: true
       }, {
         where: {
-          email: user.user.email
+          email: user.email
         }
       });
       res.status(202).json({
