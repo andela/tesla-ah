@@ -7,6 +7,12 @@
   },
   "host":"localhost:3000",
   "basePath": "/api/",
+  "tags": [
+    {
+      "name": "auth",
+      "description": " User Authentication "
+    }
+  ],
   "schemes":[
       "http",
       "https"
@@ -97,12 +103,20 @@
           "example": "reactJs, AngularJs, NodeJs"
         }
       }
+    },
+    "requestPasswordReset": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "ericrukundo005@gmail.com" }
+      }
     }
   },
   "paths": {
     "/api/auth/signup": {
       "post": {
-        "tags": ["Account Creation"],
+        "tags": ["auth"],
         "description": "User is able to create an account",
         "parameters": [
           {
@@ -201,7 +215,7 @@
     },
     "/api/auth/signout": {
       "get": {
-        "tags": ["User SignOut"],
+        "tags": ["auth"],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
         "parameters": [
           {
@@ -344,7 +358,176 @@
           }
         }
       }
+    },
+    "/auth/reset": {
+      "post": {
+        "tags": ["auth"],
+        "description": "User is able to request password reset",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestPasswordReset"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "Reset link sent to your email <gprestein055@gmail.com>"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "child email fails because [email must be a valid email]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset/:token": {
+      "get": {
+        "tags": ["auth"],
+        "description": "When user click on Reset Button on his/her email, Reset link will be generated.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": "Below is your reset link",
+                    "link": "http://localhost:3000/auth/reset/eyJhbGciOiJIUzI1NiIsInR5cCI6IpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU1OTg5NDQ1OCwiZXhwIjoxNTYwMDY3MjU4fQ.yLEX1WeDAwcjVzvag5guJGz-GmzwecVUOZYVYyeYajM"
+                  }
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 304
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "token is invalid or expired"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset/:aprvToken": {
+      "patch": {
+        "tags": ["auth"],
+        "description": "User is able to apply password reset and change his or her password",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "aprvToken",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": "Password changed successful"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "child newpassword fails because [newpassword length must be at least 8 characters long]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
-  

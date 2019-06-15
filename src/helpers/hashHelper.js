@@ -5,10 +5,10 @@ import bcrypt from 'bcrypt';
  */
 class HashHelper {
   /**
-     * Hashes password
-     * @param {String} password - Password to hash
-     * @returns {String} - hashed Password
-     */
+   * Hashes password
+   * @param {String} password - Password to hash
+   * @returns {String} - hashed Password
+   */
   static hashPassword(password) {
     return bcrypt.hashSync(password, 8);
   }
