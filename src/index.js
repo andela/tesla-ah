@@ -24,11 +24,16 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use('/api', api);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/api', api);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use('*', (req, res) => {
+  res.status(404).send({
+    error: 'Page Not found'
+  });
+});
 
 sequelize.sync().then(() => {
   app.listen(port, () => {

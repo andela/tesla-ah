@@ -66,7 +66,7 @@ module.exports = {
     firstName: 'Eric',
     lastName: 'Prestein',
     username: 'ericprestein',
-    email: 'ericrukundo005@gmail.com',
+    email: 'gprestein055@gmail.com',
     password: 'ericprestein',
     bio: 'nan',
     image: 'nan',
