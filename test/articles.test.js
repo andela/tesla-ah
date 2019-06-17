@@ -1,13 +1,13 @@
-/* eslint-disable prefer-destructuring */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/index';
 import models from '../src/sequelize/models';
-import token from '../src/helpers/Token.helper';
+import authHelper from '../src/helpers/Token.helper';
 import signupMock from './mock/signup';
 import articleMock from './mock/articles';
 
-const { User } = models;
+const { User, Article } = models;
+const { generateToken } = authHelper;
 
 // @Mock-Data
 const { validInfo, unverifiedInfo, invalidInfo } = signupMock;
@@ -31,8 +31,8 @@ describe('POST and GET /api/articles', () => {
       username: unverifiedInfo.username,
       verified: false
     });
-    validToken = await token.generateToken(user.dataValues);
-    unverifiedToken = await token.generateToken(user1.dataValues);
+    validToken = await generateToken(user.dataValues);
+    unverifiedToken = await generateToken(user1.dataValues);
   });
 
   it('it should return an error if there is no any article', (done) => {
@@ -68,7 +68,7 @@ describe('POST and GET /api/articles', () => {
       .send(invalidArticle)
       .end((err, res) => {
         expect(res.body).to.be.an('object');
-        expect(res.body.error).to.be.an('string');
+        expect(res.body.data.message).to.be.an('array');
         done();
       });
   });
@@ -80,6 +80,7 @@ describe('POST and GET /api/articles', () => {
       .set('token', `${validToken}`)
       .send(validArticle)
       .end((err, res) => {
+        // eslint-disable-next-line prefer-destructuring
         slug = res.body.article.slug;
         expect(res.body).to.be.an('object');
         expect(res.body.article).to.be.an('object');
@@ -125,8 +126,8 @@ describe('PUT and DELETE /api/articles/:slug', () => {
       username: unverifiedInfo.username,
       verified: false
     });
-    invalidToken = await token.generateToken(user.dataValues);
-    unverifiedToken = await token.generateToken(user1.dataValues);
+    invalidToken = await generateToken(user.dataValues);
+    unverifiedToken = await generateToken(user1.dataValues);
   });
 
   it('', (done) => {
@@ -195,7 +196,7 @@ describe('PUT and DELETE /api/articles/:slug', () => {
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.deep.equal(400);
-        expect(res.body.error).to.be.an('string');
+        expect(res.body.data.message).to.be.an('array');
         done();
       });
   });
@@ -224,6 +225,98 @@ describe('PUT and DELETE /api/articles/:slug', () => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.deep.equal(200);
         expect(res.body.message).to.deep.equal('Article deleted successfully!');
+        done();
+      });
+  });
+});
+
+describe('Like/Unlike articles', () => {
+  let userToken;
+  let userObject;
+  let articleObject;
+  let testUser;
+  let testArticle;
+
+  before(async () => {
+    // create test user
+    userObject = {
+      firstName: 'Luffyiu',
+      lastName: 'Monkeyf',
+      username: 'thep_irate_king',
+      email: 'monkeyd@luffy.co',
+      password: 'qwerty123445',
+      confirmPassword: 'qwerty123445',
+    };
+
+    testUser = await User.create(userObject);
+
+    // generate test token
+    userToken = await generateToken({ id: testUser.dataValues.id });
+
+    await Article.destroy({
+      where: {},
+      truncate: false
+    });
+
+    articleObject = {
+      title: 'this is article one',
+      body: 'this is article is supposed to have two paragraph',
+      description: 'the paragraph one has many character than before',
+      tagList: ['reactjs', 'angularjs', 'expressjs'],
+      slug: 'lsug',
+      authorId: testUser.dataValues.id,
+    };
+
+    // create test article
+    testArticle = await Article.create(articleObject);
+  });
+
+  it('it should like an article for an authenticated user', (done) => {
+    chai
+      .request(app)
+      .post(`/api/articles/${testArticle.slug}/like`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+  it('it should dislike an article for an authenticated user', (done) => {
+    chai
+      .request(app)
+      .post(`/api/articles/${testArticle.slug}/dislike`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
+  it('it should not like an article which does not exist', (done) => {
+    chai
+      .request(app)
+      .post(`/api/articles/${testArticle.slug + 10}/like`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+
+  it('it should not dislike an article which does not exist', (done) => {
+    chai
+      .request(app)
+      .post(`/api/articles/${testArticle.slug + 10}/dislike`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(404);
         done();
       });
   });

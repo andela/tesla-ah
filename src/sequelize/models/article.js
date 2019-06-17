@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 module.exports = (sequelize, DataTypes) => {
-  const article = sequelize.define(
-    'article',
+  const Article = sequelize.define(
+    'Article',
     {
       slug: {
         type: DataTypes.STRING,
@@ -27,22 +27,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      authorid: {
+      authorId: {
         type: DataTypes.INTEGER,
         allowNull: false
-      }
+      },
     },
     {}
   );
-  article.associate = function (models) {
+  Article.associate = function (models) {
     // associations can be defined here
-    article.belongsTo(models.User, {
+    Article.belongsTo(models.User, {
       as: 'author',
-      foreignKey: 'authorid',
+      foreignKey: 'authorId',
       targetKey: 'id',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
   };
-  return article;
+  return Article;
 };
