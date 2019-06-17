@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import articlesController from '../controllers/articlesController';
+import articlesController from '../controllers/Article';
 import Auth from '../../middleware/auth';
 import check from '../../middleware/checkOwner';
 import validateBody from '../../middleware/validateBody';
@@ -14,6 +14,7 @@ import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
+import shareArticle from '../../helpers/shareArticle';
 
 const articlesRouter = Router();
 const {
@@ -28,7 +29,8 @@ const {
   getDislikes,
   reportArticle,
   blockArticle,
-  unBlockArticle
+  unBlockArticle,
+  share
 } = articlesController;
 const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
@@ -60,7 +62,6 @@ articlesRouter
   .post('/:slug/dislike', verifyToken, dislikeArticle);
 
 // Comments routes
-
 articlesRouter.post('/:slug/comments', verifyToken, validateBody('checkComment'), articleExists, checkComment, createComment);
 articlesRouter.post('/:slug/comments/:commentId', verifyToken, validateBody('checkComment'), articleExists, checkComment, commentAcomment);
 articlesRouter.patch('/comments/:commentId', verifyToken, validateBody('checkComment'), checkParameter, editComment);
@@ -80,6 +81,12 @@ articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter,
 
 articlesRouter.get('/comments/:commentId/dislikes', checkParameter, countDislikes);
 articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
+// sharing articles
+articlesRouter.get('/:slug/share/twitter', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/facebook', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/linkedin', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/pinterest', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/email', verifyToken, slugExist, shareArticle, share);
 
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 

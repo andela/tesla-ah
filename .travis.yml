@@ -1,3 +1,6 @@
+env:
+  global:
+    - APP_URL_FRONTEND=http://localhost:3000/api
 language: node_js
 node_js:
   - 'stable'

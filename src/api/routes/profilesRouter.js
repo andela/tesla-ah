@@ -1,4 +1,5 @@
 import { Router } from 'express';
+// eslint-disable-next-line import/no-named-as-default
 import ProfilesController from '../controllers/profiles';
 import Auth from '../../middleware/auth';
 import validUser from '../../middleware/validUser';
