@@ -167,6 +167,26 @@ describe('User SignOut', () => {
   });
 });
 describe('Social Login', () => {
+  before('Before any test, Create A new user', async () => {
+    await User.destroy({
+      where: {
+        email: 'nimilii@yahoo.fr'
+      },
+      truncate: false
+    });
+    await User.destroy({
+      where: {
+        socialId: '56789'
+      },
+      truncate: false
+    });
+    await User.destroy({
+      where: {
+        email: 'nimillr@yahoo.fr'
+      },
+      truncate: false
+    });
+  });
   it('should let a user log in with google, test! ', (done) => {
     chai.request(server)
       .post('/api/auth/login/google/test')
@@ -175,7 +195,7 @@ describe('Social Login', () => {
         email: 'nimilii@yahoo.fr',
       })
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         done();
       });
@@ -201,7 +221,7 @@ describe('Social Login', () => {
         email: 'nimillr@yahoo.fr',
       })
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         done();
       });
@@ -227,7 +247,7 @@ describe('Social Login', () => {
         email: 'nimil@yahoo.fr',
       })
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         done();
       });

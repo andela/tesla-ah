@@ -20,8 +20,7 @@ const userInfo = {
         }
       } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(201).json({
-        status: 201,
+      return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
         data: {
           token, id, firstName, lastName, email, provider
@@ -48,7 +47,7 @@ const userInfo = {
         }
       } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(201).json({
+      return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
         data: {
           token, id, firstName, lastName, email, provider
@@ -77,7 +76,7 @@ const userInfo = {
         }
       } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(201).json({
+      return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
         data: {
           token, id, firstName, lastName, email, provider
