@@ -5,15 +5,12 @@ import server from '../src/index';
 import db from '../src/sequelize/models';
 import tokenHelper from '../src/helpers/Token.helper';
 
-
 const { User } = db;
-
-
 const { expect } = chai;
 chai.use(chaiHttp);
-
 dotenv.config();
 let userToken;
+
 describe('User Registration', () => {
   before(async () => {
     await User.destroy({
@@ -162,6 +159,86 @@ describe('User SignOut', () => {
       .set('token', ' ')
       .end((err, res) => {
         res.should.have.status(401);
+        done();
+      });
+  });
+});
+describe('Social Login', () => {
+  it('should let a user log in with google, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/google/test')
+      .send({
+        id: '1234',
+        email: 'nimilii@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let save a user if he is already in the database, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/google/test')
+      .send({
+        id: '1234',
+        email: 'nimilii@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let a user log in with facebook, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/facebook/test')
+      .send({
+        id: '12345',
+        email: 'nimillr@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let save a user if he is already in the database, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/facebook/test')
+      .send({
+        id: '12345',
+        email: 'nimillr@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let a user log in with twitter, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/twitter/test')
+      .send({
+        id: '56789',
+        email: 'nimil@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let save a user if he is already in the database, test! ', (done) => {
+    chai.request(server)
+      .post('/api/auth/login/twitter/test')
+      .send({
+        id: '56789',
+        email: 'nimil@yahoo.fr',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
         done();
       });
   });
