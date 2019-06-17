@@ -18,7 +18,8 @@ const {
   ApplyPasswordReset,
   register,
   verifyAccount,
-  SignOut
+  SignOut,
+  login
 } = authController;
 const { usernameExists, emailExists } = userValidation;
 const { verifyToken } = Auth;
@@ -45,9 +46,10 @@ authRouter.get('/login/twitter', passport.authenticate('twitter', { scope: ['pro
 authRouter.get('/login/twitter/redirect', passport.authenticate('twitter', { session: false }), twitter, socialLogin.twitterLogin);
 
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
+authRouter.post('/login', validateBody('login'), login);
 authRouter.get('/verify', verifyAccount);
-authRouter.post('/reset', RequestPasswordReset);
+authRouter.post('/reset', validateBody('passwordReset'), RequestPasswordReset);
 authRouter.get('/reset/:token', ConfirmPasswordReset);
-authRouter.patch('/reset/:aprvToken', ApplyPasswordReset);
+authRouter.patch('/reset/:aprvToken', validateBody('applyPassword'), ApplyPasswordReset);
 
 export default authRouter;

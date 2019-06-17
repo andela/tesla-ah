@@ -21,7 +21,8 @@ const validateBody = schema => (req, res, next) => {
         }
       });
       return res.status(400).send({
-        message: allErrors,
+        status: 400,
+        data: { message: allErrors },
       });
     }
   }
