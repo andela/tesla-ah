@@ -31,7 +31,7 @@ describe('Password reset', () => {
       chai
         .request(app)
         .post('/api/auth/reset')
-        .send({ email: 'gprestein055@gmail.com' })
+        .send({ email: 'nimilleer@gmail.com' })
         .end(async (err, res) => {
           expect(res.body.status).to.eql(201);
           ({ token } = res.body.data);
