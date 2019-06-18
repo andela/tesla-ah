@@ -171,7 +171,6 @@
         }
       }
     },
-    "/user": {
     "/api/user": {
       "put": {
         "tags": [
@@ -740,163 +739,123 @@
         }
       }
     },
-      "/articles/{slug}/comments": {
-        "post": {
-          "tags": [
-            "comment"
-          ],
-          "description": "User is able to add a comment on an article",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "Client authentication token",
-              "required": true
-            },
-            {
-              "name": "slug",
-              "in": "path",
-              "description": "Article slug",
-              "required": true
-            },
-            {
-              "name": "comment",
-              "in": "body",
-              "required": true,
-              "description": "User comments an article",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Dear ..., Thank you for contributing to this article",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          }
-        },
-        "get": {
-          "tags": [
-            "comment"
-          ],
-          "description": "User is able to get an article with its comments",
-          "parameters": [
-            {
-              "name": "slug",
-              "in": "path",
-              "description": "Article slug",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-            }
-          }
-        }
-      },
-      "/articles/{slug}/comments/{commentId}": {
-        "post": {
-          "tags": [
-            "comment"
-          ],
-          "description": "User is able to comment a comment",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "Client authentication token",
-              "required": true
-            },
-            {
-              "name": "slug",
-              "in": "path",
-              "description": "Article slug",
-              "required": true
-            },
-            {
-              "name": "commentId",
-              "in": "path",
-              "description": "The comment Id",
-              "required": true
-            },
-            {
-              "name": "comment",
-              "in": "body",
-              "required": true,
-              "description": "User comments a comment",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Dear ..., Thank you for contributing to this comment",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          }
-        }
-      },
-      "/articles/comments/{commentId}": {
-        "patch": {
-          "tags": [
-            "comment"
-          ],
-          "description": "User is able to edit a comment",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "Client authentication token",
-              "required": true
-            },
-            {
-              "name": "commentId",
-              "in": "path",
-              "description": "The comment Id",
-              "required": true
-            },
-            {
-              "name": "comment",
-              "in": "body",
-              "required": true,
-              "description": "User edits a comment",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Your comment has been edited",
-              "schema": {
-                "$ref": "#/definitions/comment"
-              }
-            }
-          }
-        },
-      "delete": {
+    "/articles/{slug}/comments": {
+      "post": {
         "tags": [
           "comment"
         ],
-        "description": "User is able to delete a comment",
+        "description": "User is able to add a comment on an article",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Client authentication token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          },
+          {
+            "name": "comment",
+            "in": "body",
+            "required": true,
+            "description": "User comments an article",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Dear ..., Thank you for contributing to this article",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "description": "User is able to get an article with its comments",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+          }
+        }
+      }
+    },
+    "/articles/{slug}/comments/{commentId}": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "description": "User is able to comment a comment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Client authentication token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "The comment Id",
+            "required": true
+          },
+          {
+            "name": "comment",
+            "in": "body",
+            "required": true,
+            "description": "User comments a comment",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Dear ..., Thank you for contributing to this comment",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+    "/articles/comments/{commentId}": {
+      "patch": {
+        "tags": [
+          "comment"
+        ],
+        "description": "User is able to edit a comment",
         "parameters": [
           {
             "name": "token",
@@ -909,18 +868,76 @@
             "in": "path",
             "description": "The comment Id",
             "required": true
+          },
+          {
+            "name": "comment",
+            "in": "body",
+            "required": true,
+            "description": "User edits a comment",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
           }
         ],
         "produces": [
           "application/json"
         ],
         "responses": {
+          "201": {
+            "description": "Your comment has been edited",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      },
+    "delete": {
+      "tags": [
+        "comment"
+      ],
+      "description": "User is able to delete a comment",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client authentication token",
+          "required": true
+        },
+        {
+          "name": "commentId",
+          "in": "path",
+          "description": "The comment Id",
+          "required": true
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Comment deleted!"
+        }
+      }
+    }
+    },
+    "/profiles":{
+      "get": {
+        "tags": [
+          "Listing All Users Profiles"
+        ],
+        "description": "Any User will be able to view a list of User's Profiles",
+        "parameters": [
+          
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
           "200": {
-            "description": "Comment deleted!"
+            "description": "the list of All User's profile has been successfully fetched"
           }
         }
       }
     }
   }
-}
 }
