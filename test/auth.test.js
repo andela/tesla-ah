@@ -138,6 +138,7 @@ describe('User SignOut', () => {
       confirmPassword: 'Rukundo1!'
     };
 
+
     const newUser = await User.create(user);
 
     token = await tokenHelper.generateToken({ id: newUser.id });

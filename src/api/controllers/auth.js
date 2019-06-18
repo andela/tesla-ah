@@ -108,17 +108,15 @@ class AuthController {
    */
   static async SignOut(req, res) {
     const { user: { id }, token } = req;
-    const droppedToken = await Blacklist.create({
+    await Blacklist.create({
       userId: id,
       token
     });
-    if (droppedToken) {
-      res.json({
-        status: 200,
-        message: 'You are now signed Out!',
+    res.json({
+      status: 200,
+      message: 'You are now signed Out!',
 
-      });
-    }
+    });
   }
 
   /**
