@@ -21,17 +21,13 @@ const dropToken = async (req, res, next) => {
     }
   });
   if (user.length) {
-    const deleted = await Blacklist.destroy({
+    await Blacklist.destroy({
       where: {
         userId: id
       }
     });
-    if (deleted) {
-      next();
-    }
-  } else {
-    next();
   }
+  next();
 };
 
 export default dropToken;
