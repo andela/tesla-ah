@@ -1,4 +1,5 @@
 import models from '../../sequelize/models';
+import uploadHelper from '../../helpers/uploadHelper';
 
 const { User } = models;
 
@@ -29,11 +30,21 @@ export default class ProfilesController {
    * @return {object} returns an object containing the updated user profile
    */
   static async updateProfile(req, res) {
-    const { body, user } = req;
+    const { body, user, file } = req;
+    let uploadedImage;
+
+    const updatedProfile = { ...body };
+
+    // Upload image to cloudinary if available
+    if (file) {
+      uploadedImage = await uploadHelper(file);
+      Object.assign(updatedProfile, { image: uploadedImage.secure_url });
+    }
+
     try {
-      if (Object.keys(body) < 1) return res.status(400).send({ message: 'Nothing Changed to your Profile' });
+      if (!file && Object.keys(body) < 1) return res.status(400).send({ message: 'Nothing changed in your Profile' });
       const updatedUser = await User.update(
-        { ...body },
+        updatedProfile,
         { where: { id: user.id } },
       );
       return res.status(200).json({ user: { updatedUser } });

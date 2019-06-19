@@ -46,8 +46,8 @@ authRouter.get('/login/twitter', passport.authenticate('twitter', { scope: ['pro
 authRouter.get('/login/twitter/redirect', passport.authenticate('twitter', { session: false }), twitter, socialLogin.twitterLogin);
 
 authRouter.get('/signout', verifyToken, dropToken, SignOut);
-authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.post('/login', validateBody('login'), login);
+authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.get('/verify', verifyAccount);
 authRouter.post('/reset', validateBody('passwordReset'), RequestPasswordReset);
 authRouter.get('/reset/:token', ConfirmPasswordReset);
