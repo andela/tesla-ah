@@ -1,3 +1,4 @@
+import { v2 as cloudinary } from 'cloudinary';
 import models from '../../sequelize/models';
 
 const { User } = models;
@@ -29,10 +30,17 @@ export default class ProfilesController {
    * @return {object} returns an object containing the updated user profile
    */
   static async updateProfile(req, res) {
-    const { body, user } = req;
+    const { body, user, file } = req;
+    let uploadedImage;
+
+    if (file) {
+      // Upload image to cloudinary
+      uploadedImage = await cloudinary.uploader.upload(file.path);
+    }
+
     try {
       const updatedUser = await User.update(
-        { ...body },
+        { ...body, image: uploadedImage.secure_url || '' },
         { where: { id: user.id } },
       );
 

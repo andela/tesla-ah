@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import { v2 as cloudinary } from 'cloudinary';
 import TokenHelper from '../../helpers/Token.helper';
 import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
@@ -34,12 +35,21 @@ class AuthController {
       bio,
       gender
     } = req.body;
+    const { file } = req;
+    let uploadedImage;
+
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({
         status: 400,
         error: 'No data sent'
       });
     }
+
+    if (file) {
+      // Upload image to cloudinary
+      uploadedImage = await cloudinary.uploader.upload(file.path);
+    }
+
     const newUser = await User.create({
       firstName,
       lastName,
@@ -49,8 +59,10 @@ class AuthController {
       dob,
       bio,
       gender,
+      image: uploadedImage.secure_url || '',
       verified: false
     });
+
     if (newUser) {
       const token = await TokenHelper.generateToken(newUser.dataValues);
       Mailhelper.sendMail({
