@@ -6,8 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     ratings: DataTypes.INTEGER
   }, {});
-  ArticleRatings.associate = () => {
-    // associations can be defined here
-  };
+  ArticleRatings.associate = () => {};
   return ArticleRatings;
 };
