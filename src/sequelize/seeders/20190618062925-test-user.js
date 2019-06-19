@@ -67,7 +67,7 @@ module.exports = {
     lastName: 'Prestein',
     username: 'ericprestein',
     email: 'gprestein055@gmail.com',
-    password: 'ericprestein',
+    password: '$2b$08$aKninSz.39G5SxBE5QOro.xBJXIEtnXkrOBriWfVCpqND8AzeJMaC',
     bio: 'nan',
     image: 'nan',
     dateOfBirth: new Date(),
@@ -77,5 +77,22 @@ module.exports = {
     verified: true,
     createdAt: new Date(),
     updatedAt: new Date()
-  }], {}),
+  },
+  {
+    firstName: 'Eric',
+    lastName: 'Prestein',
+    username: 'ericprestein',
+    email: 'ericprestein005@gmail.com',
+    password: '$2b$08$aKninSz.39G5SxBE5QOro.xBJXIEtnXkrOBriWfVCpqND8AzeJMaC',
+    bio: 'nan',
+    image: 'nan',
+    dateOfBirth: new Date(),
+    gender: 'male',
+    provider: 'nan',
+    socialId: '3434343',
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+  ], {}),
 };

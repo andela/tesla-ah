@@ -244,3 +244,57 @@ describe('Social Login', () => {
       });
   });
 });
+describe('User login', () => {
+  it('Should return 400 when user entered invalid creditial', (done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .send({
+        email: 'rukundogmail.com',
+        password: 'Rukundo1!',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('Should return 404 when email does not exist', (done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .send({
+        email: 'hhhhhhhhehhhhh@gmail.com',
+        password: 'Rukundo1!',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('Should return 400 when user entered wrong password', (done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .send({
+        email: 'gprestein055@gmail.com',
+        password: 'Eric.0000566'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('Should return 200 when user logged in successful', (done) => {
+    chai.request(server)
+      .post('/api/auth/login')
+      .send({
+        email: 'ericprestein005@gmail.com',
+        password: 'Eric.00005'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+});
