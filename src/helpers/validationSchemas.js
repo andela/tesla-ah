@@ -1,6 +1,29 @@
 import Joi from '@hapi/joi';
 
+const password = Joi.string()
+  .trim()
+  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/)
+  .required()
+  .label('Password is required and must be at least 8 letters containing'
+  + ' at least a number a Lowercase letter and an Uppercase letter');
+const email = Joi.string()
+  .trim()
+  .lowercase()
+  .email()
+  .required()
+  .label('Email is required and should look like this : example@email.com!');
+
 export default {
+  passwordReset: Joi.object().keys({
+    email
+  }),
+  applyPassword: Joi.object().keys({
+    newpassword: password,
+  }),
+  login: Joi.object().keys({
+    email,
+    password,
+  }),
   signup: Joi.object().keys({
     firstName: Joi.string()
       .trim()
@@ -21,18 +44,8 @@ export default {
       .regex(/^[a-zA-Z0-9_.-]+$/)
       .min(3)
       .label('Username is required, it must have at least 3 letters and must contain only letters, numbers, underscores(_), hyphens (-) and points (.)'),
-    email: Joi.string()
-      .trim()
-      .lowercase()
-      .email()
-      .required()
-      .label('Email is required and should look like this : example@email.com!'),
-    password: Joi.string()
-      .trim()
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/)
-      .required()
-      .label('Password is required and must be at least 8 letters containing'
-        + ' at least a number a Lowercase letter and an Uppercase letter'),
+    email,
+    password,
     confirmPassword: Joi.any()
       .required()
       .valid(Joi.ref('password'))

@@ -12,7 +12,6 @@ import db from './sequelize/models/index';
 
 const { sequelize } = db;
 
-
 dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
@@ -23,7 +22,6 @@ app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 

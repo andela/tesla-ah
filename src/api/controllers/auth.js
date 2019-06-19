@@ -1,4 +1,3 @@
-import joi from 'joi';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
@@ -7,7 +6,6 @@ import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
 import templete from '../../helpers/emailTemplete';
-import Validation from '../../middleware/resetValidation';
 
 const { User, Blacklist } = db;
 
@@ -131,6 +129,51 @@ class AuthController {
   }
 
   /**
+  * signup controller
+  * @param {Object} req - Response
+  * @param {Object} res - Response
+  * @param {Function} next -Next
+  * @returns {Object} The response object
+  */
+  static async login(req, res) {
+    User.findAll({
+      where: {
+        email: req.body.email
+      }
+    }).then((users) => {
+      if (users[0]) {
+        if (
+          !HashHelper.comparePassword(req.body.password, users[0].dataValues.password)
+        ) {
+          res.status(400).send({
+            status: 400,
+            error: {
+              message: 'Incorrect password'
+            }
+          });
+        } else {
+          TokenHelper.generateToken(users[0].dataValues).then((token) => {
+            res.status(200).send({
+              status: 200,
+              data: {
+                message: 'User logged in successful',
+                token
+              }
+            });
+          });
+        }
+      } else {
+        res.status(404).send({
+          status: 404,
+          error: {
+            message: 'User with that email does not exist.'
+          }
+        });
+      }
+    });
+  }
+
+  /**
    * RequestPasswordReset controller
    * @param {Object} req - Request
    * @param {Object} res  - Response
@@ -138,78 +181,68 @@ class AuthController {
    * @returns {Object} The response object
    */
   static async RequestPasswordReset(req, res) {
-    joi
-      .validate(req.body, Validation.passwordResetShema)
-      .then(() => {
-        User.findAll({
-          where: {
-            email: req.body.email
-          }
-        }).then(async (response) => {
-          if (response[0]) {
-            const token = await jwt.sign(
-              {
-                userId: response[0].id,
-                userName: response[0].username,
-                userEmail: response[0].emial
-              },
-              process.env.SECRET_KEY,
-              { expiresIn: 60 * 10 }
-            );
+    User.findAll({
+      where: {
+        email: req.body.email
+      }
+    }).then(async (response) => {
+      if (response[0]) {
+        const token = await jwt.sign(
+          {
+            userId: response[0].id,
+            userName: response[0].username,
+            userEmail: response[0].emial
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: 60 * 10 }
+        );
 
-            const user = response[0];
-            const { firstName, lastName, email } = user.dataValues;
-            const link = `${process.env.BASE_URL}/api/auth/reset/${token}`;
-            const mail = {
-              firstName,
-              lastName,
-              link,
-              email
-            };
+        const user = response[0];
+        const { firstName, lastName, email } = user.dataValues;
+        const link = `${process.env.BASE_URL}/api/auth/reset/${token}`;
+        const mail = {
+          firstName,
+          lastName,
+          link,
+          email
+        };
 
-            const transport = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: process.env.AUTHOSHAVEN_USER,
-                pass: process.env.AUTHOSHAVEN_PASS
-              }
-            });
-            const htmlToSend = templete.getPasswordResetTemplete(
-              mail.firstName,
-              mail.lastName,
-              mail.link
-            );
-            const mailOptions = {
-              from: 'Authors Haven',
-              to: `${mail.email}`,
-              subject: ' Password Reset',
-              text: 'Hello there',
-              html: htmlToSend
-            };
-            transport.sendMail(mailOptions, async () => {
-              res.status(201).send({
-                status: 201,
-                data: {
-                  message: `Reset link sent to your email <${mail.email}>`,
-                  email: `${mail.email}`,
-                  token
-                }
-              });
-            });
-          } else {
-            res.status(404).send({
-              status: 404,
-              data: { message: 'User with that email in not exist' }
-            });
+        const transport = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.AUTHOSHAVEN_USER,
+            pass: process.env.AUTHOSHAVEN_PASS
           }
         });
-      })
-      .catch(error => res.status(400).send({
-        status: 400,
-        error: {
-          message: error.message.replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
-        }
-      }));
+        const htmlToSend = templete.getPasswordResetTemplete(
+          mail.firstName,
+          mail.lastName,
+          mail.link
+        );
+        const mailOptions = {
+          from: 'Authors Haven',
+          to: `${mail.email}`,
+          subject: ' Password Reset',
+          text: 'Hello there',
+          html: htmlToSend
+        };
+        transport.sendMail(mailOptions, async () => {
+          res.status(201).send({
+            status: 201,
+            data: {
+              message: `Reset link sent to your email <${mail.email}>`,
+              email: `${mail.email}`,
+              token
+            }
+          });
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          data: { message: 'User with that email in not exist' }
+        });
+      }
+    });
   }
 
   /**
@@ -256,35 +289,25 @@ class AuthController {
    * @returns {Object} The response object
    */
   static async ApplyPasswordReset(req, res) {
-    joi
-      .validate(req.body, Validation.applyPasswordShema)
-      .then(async () => {
-        const { aprvToken } = req.params;
-        const token = await jwt.verify(aprvToken, process.env.SECRET_KEY);
-        const password = HashHelper.hashPassword(req.body.newpassword);
-        User.update(
-          {
-            password
-          },
-          {
-            where: {
-              id: token.userId
-            }
-          }
-        )
-          .then(() => {
-            res.status(201).send({
-              status: 201,
-              data: { message: 'Password changed successful' }
-            });
-          });
-      })
-      .catch(error => res.status(error.status || 400).send({
-        status: error.status || 400,
-        error: {
-          message: error.message.replace(/[&/\\#,+()$~%.'":*?<>{}]/g, '')
+    const { aprvToken } = req.params;
+    const token = await jwt.verify(aprvToken, process.env.SECRET_KEY);
+    const password = HashHelper.hashPassword(req.body.newpassword);
+    User.update(
+      {
+        password
+      },
+      {
+        where: {
+          id: token.userId
         }
-      }));
+      }
+    )
+      .then(() => {
+        res.status(201).send({
+          status: 201,
+          data: { message: 'Password changed successful' }
+        });
+      });
   }
 }
 

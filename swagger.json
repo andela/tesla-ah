@@ -111,6 +111,19 @@
           "type": "string",
           "example": "ericrukundo005@gmail.com" }
       }
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "ericrukundo005@gmail.com" 
+        },
+        "password": {
+          "type": "string",
+          "example": "eric@12345" 
+        }
+      }
     }
   },
   "paths": {
@@ -355,6 +368,92 @@
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "description": "User is able to login",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "User logged in successful"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDU3LCJmaXJzdE5hbWUiOiJFcmljIiwibGFzdE5hbWUiOiJQcmVzdGVpbiIsInVzZXJuYW1lIjoiZXJpY3ByZXN0ZWluIiwiZW1haWwiOiJncHJlc3RlaW4wNTVAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMDgkemlUU3RqL0piU2NWb2M3R2tTaksxT1VqalgyNnh3UnBWSUdTeC9QVDVpUXBoeXduVFJSRkMiLCJiaW8iOiJuYW4iLCJpbWFnZSI6Im5hbiIsImRhdGVPZkJpcnRoIjoiMjAxOS0wNi0xN1QxMzo0MDozMi4yODJaIiwiZ2VuZGVyIjoibWFsZSIsInByb3ZpZGVyIjoibmFuIiwic29jaWFsSWQiOiIzNDM0MzQzIiwidmVyaWZpZWQiOnRydWUsImNyZWF0ZWRBdCI6IjIwMTktMDYtMTdUMTM6NDA6MzIuMjgyWiIsInVwZGF0ZWRBdCI6IjIwMTktMDYtMTdUMTM6NDA6MzIuMjgyWiIsImlhdCI6MTU2MDc3ODg0OCwiZXhwIjoxNTYwOTUxNjQ4fQ.uLQmiZZ0u7TQYYAkvb9_XjhBQp88xJbSb_84Bt9BfRw"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "child email fails because [email must be a valid email]"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "User with that email does not exist"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
