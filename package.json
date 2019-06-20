@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
-    "serve": "node dist/index.js",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --timeout 80000 --exit --require @babel/register --require regenerator-runtime",
     "coverage": "nyc report --reporter=text-lcov | coveralls",

@@ -4,7 +4,7 @@ import slug from 'slug';
 import uniqid from 'uniqid';
 import models from '../sequelize/models';
 
-const { article, User } = models;
+const { Article, User } = models;
 
 /**
  * @description Helpers for articles
@@ -30,13 +30,13 @@ class ArticlesHelper {
     } = req.body;
     const { id } = req.user;
     const newSlug = this.createSlug(title);
-    const { dataValues } = await article.create({
+    const { dataValues } = await Article.create({
       slug: newSlug,
       title,
       description,
       body,
       tagList: tagList.split(','),
-      authorid: parseInt(id, 10)
+      authorId: parseInt(id, 10)
     });
     const userInfo = await this.getUserInfo(id);
     const { username, bio, image } = userInfo;
@@ -51,7 +51,7 @@ class ArticlesHelper {
   }
 
   static async getAllArticle() {
-    const result = await article.findAll({
+    const result = await Article.findAll({
       include: [{
         as: 'author',
         model: User,
@@ -63,7 +63,7 @@ class ArticlesHelper {
   }
 
   static async getOneSlug(newSlug) {
-    const result = await article.findOne({
+    const result = await Article.findOne({
       where: { slug: newSlug },
       include: [{
         as: 'author',

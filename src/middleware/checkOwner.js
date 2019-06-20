@@ -1,7 +1,7 @@
 /* eslint-disable valid-jsdoc */
 import models from '../sequelize/models';
 
-const { article, User } = models;
+const { Article, User } = models;
 
 /**
  * @description Helpers for articles
@@ -21,11 +21,11 @@ class checkOwner {
     if (dataValues.verified === false) return res.status(403).send({ error: 'Please Verify your account, first!' });
 
     // @check if the article's slug exist
-    const result = await article.findOne({ where: { slug } });
+    const result = await Article.findOne({ where: { slug } });
     if (result === null) return res.status(404).send({ error: 'Slug Not found!' });
 
     // @check if the user who logged in - is the owner of that slug
-    const response = await article.findOne({ where: { slug, authorid: id } });
+    const response = await Article.findOne({ where: { slug, authorId: id } });
     if (!response) return res.status(403).send({ error: 'Sorry!, you are not the owner of this slug' });
 
     req.foundArticle = response.dataValues;

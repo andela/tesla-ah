@@ -31,7 +31,7 @@ export default class Auth {
         req.user = user[0].dataValues;
         return next();
       } catch (error) {
-        return res.status(500).json({ token: 'dfdfd' });
+        return res.status(500).json({ error: `${error}` });
       }
     } catch (error) {
       return res.status(500).json({ error });

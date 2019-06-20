@@ -62,28 +62,55 @@ export default {
       .trim()
       .regex(/^[A-Za-z_-]+$/)
       .min(3)
-      .label('First name is required, it must have at least 3 letters and must contain only letters, underscores(_) and hyphens (-)'),
+      .label('First name should have at least 3 letters and must contain only letters, underscores(_) and hyphens (-)'),
     lastName: Joi.string()
       .trim()
       .regex(/^[A-Za-z_.-]+$/)
       .min(3)
-      .label('Last name is required, it must have at least 3 letters and must contain only letters, underscores(_) and hyphens (-)'),
+      .label('Last name should have at least 3 letters and must contain only letters, underscores(_) and hyphens (-)'),
     username: Joi.string()
       .trim()
       .lowercase()
       .regex(/^[a-zA-Z0-9_.-]+$/)
       .min(3)
-      .label('Username is required, it must have at least 3 letters and must contain only letters, numbers, underscores(_), hyphens (-) and points (.)'),
+      .label('Username should have at least 3 letters and must contain only letters, numbers, underscores(_), hyphens (-) and points (.)'),
     email: Joi.string()
       .trim()
       .lowercase()
       .email()
-      .label('Email is required and should look like this : example@email.com!'),
+      .label('Email should look like this : example@email.com!'),
     bio: Joi.string(),
     image: Joi.string(),
     dateOfBirth: Joi.string(),
     gender: Joi.string(),
     socialId: Joi.string(),
     provider: Joi.string()
+  }),
+  createArticle: Joi.object().keys({
+    title: Joi
+      .string()
+      .required()
+      .label('title is required and should be a string'),
+    body: Joi
+      .string()
+      .required()
+      .label('body is required and shoud be a string'),
+    description: Joi
+      .string()
+      .required()
+      .label('description is required and should be a string'),
+    tagList: Joi.string(),
+  }),
+  updateArticle: Joi.object().keys({
+    title: Joi
+      .string()
+      .label('title should be a string'),
+    body: Joi
+      .string()
+      .label('body should be a string'),
+    description: Joi
+      .string()
+      .label('description should be a string'),
+    tagList: Joi.string(),
   }),
 };

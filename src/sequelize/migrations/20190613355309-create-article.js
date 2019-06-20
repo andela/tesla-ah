@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('articles', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Articles', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -32,7 +32,7 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: true
     },
-    authorid: {
+    authorId: {
       type: Sequelize.INTEGER,
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
@@ -50,5 +50,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('articles')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Articles')
 };
