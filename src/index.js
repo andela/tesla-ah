@@ -16,7 +16,6 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-globalMiddleware(app);
 
 app.use(session({
   secret: process.env.SECRET,
@@ -24,7 +23,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+globalMiddleware(app);
 app.use('/api', api);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('*', (req, res) => {
@@ -32,6 +31,7 @@ app.use('*', (req, res) => {
     error: 'Page Not found'
   });
 });
+
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
