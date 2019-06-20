@@ -1,0 +1,11 @@
+version: '2'
+plugins:
+  eslint:
+    enabled: true
+exclude_patterns:
+- "src/config/"
+- "src/sequelize/models/"
+- "src/sequelize/migrations/"
+- "src/sequelize/seeders/"
+- "**/node_modules/"
+- "src/test/"

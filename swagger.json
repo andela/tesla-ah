@@ -127,7 +127,7 @@
     }
   },
   "paths": {
-    "/api/auth/signup": {
+    "/auth/signup": {
       "post": {
         "tags": ["auth"],
         "description": "User is able to create an account",
@@ -154,7 +154,7 @@
         }
       }
     },
-    "/api/user": {
+    "/user": {
       "put": {
         "tags": [
           "Update User Profile"
@@ -190,7 +190,7 @@
         }
       }
     },
-    "/api/profiles/{username}": {
+    "/profiles/{username}": {
       "get": {
         "tags": [
           "Profile"
@@ -226,7 +226,7 @@
         }
       }
     },
-    "/api/auth/signout": {
+    "/auth/signout": {
       "get": {
         "tags": ["auth"],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
@@ -252,7 +252,7 @@
         }
       }
     },
-    "/api/articles": {
+    "/articles": {
       "post": {
         "tags": ["Articles Endpoints"],
         "description": "user should be able to create an article",
@@ -293,7 +293,7 @@
         }
       }
     },
-    "/api/articles/{slug}": {
+    "/articles/{slug}": {
       "get": {
         "tags": ["Get a single Article's slug "],
         "description": "user should be able to view a specific slug",
@@ -368,6 +368,64 @@
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
+          }
+        }
+      }
+    },
+    "/articles/{slug}/like": {
+      "post": {
+        "tags": ["Like article"],
+        "description": "User should be able to like an article",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Article liked successfully"
+          },
+          "403": {
+            "description": "Article already liked"
+          }
+        }
+      }
+    },
+    "/articles/{slug}/dislike": {
+      "post": {
+        "tags": ["Dislike article"],
+        "description": "User should be able to dislike an article",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Article disliked successfully"
+          },
+          "403": {
+            "description": "Article already disliked"
           }
         }
       }
