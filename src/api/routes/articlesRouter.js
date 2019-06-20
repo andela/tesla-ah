@@ -15,21 +15,32 @@ const {
   deleteArticle,
   likeArticle,
   dislikeArticle,
+  getLikes,
+  getDislikes,
 } = articlesController;
 const { verifyToken } = Auth;
 
-articlesRouter.post('/', verifyToken, validateBody('createArticle'), createArticle);
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
 
-articlesRouter.get('/', getAllArticle);
-articlesRouter.get('/:slug', getOneArticle);
-articlesRouter.put('/:slug', verifyToken, check.articleOwner, validateBody('updateArticle'), updateArticle);
-articlesRouter.delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
-articlesRouter.post('/:slug/like', verifyToken, likeArticle);
-articlesRouter.post('/:slug/dislike', verifyToken, dislikeArticle);
+articlesRouter
+  .post('/', verifyToken, validateBody('createArticle'), createArticle)
+  .get('/', getAllArticle);
+
+articlesRouter
+  .get('/:slug', getOneArticle)
+  .put('/:slug', verifyToken, check.articleOwner, validateBody('updateArticle'), updateArticle)
+  .delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
+
+articlesRouter
+  .get('/:slug/like', getLikes)
+  .post('/:slug/like', verifyToken, likeArticle);
+
+articlesRouter
+  .get('/:slug/dislike', getDislikes)
+  .post('/:slug/dislike', verifyToken, dislikeArticle);
 
 // Comments routes
 

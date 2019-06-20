@@ -230,7 +230,7 @@ describe('PUT and DELETE /api/articles/:slug', () => {
   });
 });
 
-describe('Like/Unlike articles', () => {
+describe('Like/Unlike Articles', () => {
   let userToken;
   let userObject;
   let articleObject;
@@ -314,6 +314,50 @@ describe('Like/Unlike articles', () => {
       .request(app)
       .post(`/api/articles/${testArticle.slug + 10}/dislike`)
       .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+
+  it('it should get the number of likes for an article', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/like`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        done();
+      });
+  });
+
+  it('it should get the number of dislikes for an article', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/dislike`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        done();
+      });
+  });
+
+  it('it should not get dislikes for an article which does not exist', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug + 10}/dislike`)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+
+  it('it should not get likes for an article which does not exist', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug + 10}/like`)
       .send()
       .end((err, res) => {
         res.should.have.status(404);
