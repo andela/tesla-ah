@@ -1,0 +1,13 @@
+.slideshow{
+  height: 80vh;
+  .carousel{
+    height: 70%;
+    &-item{
+      height: 80vh;
+    }
+  }
+}
+
+.slide-controls{
+  transform:translateY(20px);
+}
