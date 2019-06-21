@@ -34,13 +34,15 @@ class AuthController {
       bio,
       gender
     } = req.body;
+
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({
         status: 400,
         error: 'No data sent'
       });
     }
-    const newUser = await User.create({
+
+    const userObject = {
       firstName,
       lastName,
       email,
@@ -51,7 +53,10 @@ class AuthController {
       gender,
       verified: false,
       isAdmin: false
-    });
+    };
+
+    const newUser = await User.create(userObject);
+
     if (newUser) {
       const token = await TokenHelper.generateToken(newUser.dataValues);
       Mailhelper.sendMail({

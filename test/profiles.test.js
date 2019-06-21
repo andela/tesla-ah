@@ -1,5 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import fs from 'fs';
 import app from '../src';
 import db from '../src/sequelize/models';
 import authHelper from '../src/helpers/Token.helper';
@@ -50,7 +51,20 @@ describe('User Profiles', () => {
         });
     });
 
-    it('It should return an error message, Once you don\'t update anything to your profile', () => {
+    it('it should update user profile with an image', (done) => {
+      chai
+        .request(app)
+        .put('/api/user')
+        .set('token', userToken)
+        .attach('image', fs.readFileSync(`${__dirname}/mock/sample.png`), 'sample.png')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+
+    it('it should return an error message, Once you don\'t update anything to your profile', (done) => {
       chai
         .request(app)
         .put('/api/user')
@@ -58,13 +72,15 @@ describe('User Profiles', () => {
         .send()
         .end((err, res) => {
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.deep.equal('Nothing Changed to your Profile');
+          expect(res.body.message).to.deep.equal('Nothing changed in your Profile');
           expect(res.statusCode).to.deep.equal(400);
+          done();
         });
     });
   });
+});
 
-  describe('Get a user profile', () => {
+describe('Get a user profile', () => {
     it('it should get a user profile', (done) => {
       chai
         .request(app)
@@ -85,7 +101,6 @@ describe('User Profiles', () => {
           done();
         });
     });
-  });
 });
 
 describe('GET All Profile', () => {
