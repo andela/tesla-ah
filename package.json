@@ -13,7 +13,10 @@
     "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
-    "destroy": "babel-node src/helpers/destroyUser"
+    "destroy": "babel-node src/helpers/destroyUser",
+    "sass":"node-sass --include-path scss UI/scss/style.scss UI/css/style.css",
+    "watch-sass":"nodemon -e scss -x \"npm run sass\"",
+    "deploy":"gh-pages -d UI"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -35,6 +38,7 @@
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
+    "node-sass": "^4.12.0",
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
     "passport-facebook": "^3.0.0",
