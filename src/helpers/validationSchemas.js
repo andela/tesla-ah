@@ -110,5 +110,14 @@ export default {
       .required()
       .min(3)
       .label('The comment is required and should have at least 3 letters!')
+  }),
+  validateRating: Joi.object().keys({
+    rating: Joi.number()
+      .integer()
+      .positive()
+      .min(1)
+      .max(5)
+      .required()
+      .label('Rating must be from 1 to 5 ')
   })
 };

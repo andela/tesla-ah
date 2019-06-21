@@ -5,6 +5,9 @@ import check from '../../middleware/checkOwner';
 import validateBody from '../../middleware/validateBody';
 import commentsController from '../controllers/comments';
 import comment from '../../middleware/validComment';
+import RatingController from '../controllers/ratingController';
+import slugExist from '../../middleware/slugExist';
+
 
 const articlesRouter = Router();
 const {
@@ -19,6 +22,8 @@ const {
   getDislikes,
 } = articlesController;
 const { verifyToken } = Auth;
+const { createRatings, UpdateRatings } = RatingController;
+
 
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment
@@ -49,5 +54,8 @@ articlesRouter.post('/:slug/comments/:commentId', verifyToken, validateBody('che
 articlesRouter.patch('/comments/:commentId', verifyToken, validateBody('checkComment'), checkParameter, editComment);
 articlesRouter.delete('/comments/:commentId', verifyToken, checkParameter, deleteComment);
 articlesRouter.get('/:slug/comments', getComment);
+articlesRouter.post('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, createRatings);
+articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, UpdateRatings);
+
 
 export default articlesRouter;
