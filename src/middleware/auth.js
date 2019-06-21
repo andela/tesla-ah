@@ -1,7 +1,7 @@
 import authHelper from '../helpers/Token.helper';
 import db from '../sequelize/models';
 
-const { User } = db;
+const { User, Blacklist } = db;
 /**
  * @class Auth
  * @description Authentication based class
@@ -24,7 +24,8 @@ export default class Auth {
       const decoded = await authHelper.decodeToken(token);
       try {
         const user = await User.findAll({ where: { id: decoded.id } });
-        if (!user[0]) {
+        const blackListed = await Blacklist.findAll({ where: { token } });
+        if (!user[0] || blackListed[0]) {
           return res.status(401).json({ status: 401, error: 'Token is invalid' });
         }
         req.token = token;

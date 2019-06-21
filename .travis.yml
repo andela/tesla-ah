@@ -5,7 +5,6 @@ node_js:
 before_script:
   - yarn add sequelize-cli
   - sequelize db:migrate
-  - yarn destroy
   - sequelize db:seed:all
 cache: yarn
 script: 
