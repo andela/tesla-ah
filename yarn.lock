@@ -4293,6 +4293,11 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
+ratingpercentage@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/ratingpercentage/-/ratingpercentage-1.0.7.tgz#73d9d6b281696217217bae91997e79071df6158b"
+  integrity sha512-dyIGqIAL+OZ5fz7I/1Ekho8WD86PjbXuUUWUptXcFFi6fg6bzNQbp+ClUuLD4bnaYjK1SZBs3ATm0sHhniEvlw==
+
 raw-body@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.4.0.tgz#a1ce6fb9c9bc356ca52e89256ab59059e13d0332"

@@ -8,12 +8,13 @@
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --timeout 80000 --exit --require @babel/register --require regenerator-runtime",
+    "devtest": "NODE_ENV=test & yarn destroy & yarn run seed & yarn run test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:local": "yarn undo && yarn migrate && yarn seed && yarn test",
     "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
-    "destroy": "babel-node src/helpers/destroyUser"
+    "destroy": "babel-node src/helpers/destroyTables"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -45,6 +46,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
+    "ratingpercentage": "^1.0.7",
     "regenerator-runtime": "^0.13.2",
     "request": "^2.88.0",
     "sequelize": "^5.8.7",
@@ -71,6 +73,9 @@
   },
   "repository": "https://github.com/andela/tesla-ah.git",
   "nyc": {
-    "exclude": ["build/src/config/passportSetup.js","build/sequelize/**/*.js"]
+    "exclude": [
+      "build/src/config/passportSetup.js",
+      "build/sequelize/**/*.js"
+    ]
   }
 }
