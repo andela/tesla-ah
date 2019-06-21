@@ -100,6 +100,7 @@ describe('User Registration', () => {
         done();
       });
   });
+
   it('should let user signup', (done) => {
     chai.request(server).post('/api/auth/signup')
       .send({
@@ -119,6 +120,7 @@ describe('User Registration', () => {
         done();
       });
   });
+
   it('should verify account', (done) => {
     chai.request(server).get(`/api/auth/verify/?token=${userToken}`)
       .end((err, res) => {
