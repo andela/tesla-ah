@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src';
 import db from '../src/sequelize/models';
@@ -49,6 +49,19 @@ describe('User Profiles', () => {
           done();
         });
     });
+
+    it('It should return an error message, Once you don\'t update anything to your profile', () => {
+      chai
+        .request(app)
+        .put('/api/user')
+        .set('token', userToken)
+        .send()
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.deep.equal('Nothing Changed to your Profile');
+          expect(res.statusCode).to.deep.equal(400);
+        });
+    });
   });
 
   describe('Get a user profile', () => {
@@ -72,5 +85,17 @@ describe('User Profiles', () => {
           done();
         });
     });
+  });
+});
+
+describe('GET All Profile', () => {
+  it('should get all profile', () => {
+    chai
+      .request(app)
+      .get('/api/profiles')
+      .end((err, res) => {
+        expect(res.body).to.be.an('object');
+        expect(res.body.profiles).to.be.an('array');
+      });
   });
 });
