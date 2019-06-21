@@ -16,7 +16,10 @@
     "undo": "sequelize db:migrate:undo",
     "undo:all": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
-    "destroy": "babel-node src/helpers/destroyTables"
+    "destroy": "babel-node src/helpers/destroyTables",
+    "sass":"node-sass --include-path scss UI/scss/style.scss UI/css/style.css",
+    "watch-sass":"nodemon -e scss -x \"npm run sass\"",
+    "deploy":"gh-pages -d UI"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -42,6 +45,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "node-cron": "^2.0.3",
+    "node-sass": "^4.12.0",
     "nodemailer": "^6.2.1",
     "open": "^6.3.0",
     "passport": "^0.4.0",

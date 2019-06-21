@@ -1,0 +1,26 @@
+footer{
+  background:$dark;
+  color:$white;
+  padding: 15px;
+
+  .social-links{
+    // margin-left:20%;
+    margin-right:20%;
+    display: flex;
+    justify-content: space-around;
+  }
+  .social-links__item{
+    margin-right: 10px;
+    .social-icon{
+      width: 20px;
+      height: 20px;
+      border:1px solid $blue;
+      i.fab{
+        font-size: 35px;
+      }
+    }
+  }
+  hr{
+    color:$blue;
+  }
+}
