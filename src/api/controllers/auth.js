@@ -49,7 +49,8 @@ class AuthController {
       dob,
       bio,
       gender,
-      verified: false
+      verified: false,
+      isAdmin: false
     });
     if (newUser) {
       const token = await TokenHelper.generateToken(newUser.dataValues);

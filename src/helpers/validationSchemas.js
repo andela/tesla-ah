@@ -18,11 +18,11 @@ export default {
     email
   }),
   applyPassword: Joi.object().keys({
-    newpassword: password,
+    newpassword: password
   }),
   login: Joi.object().keys({
     email,
-    password,
+    password
   }),
   signup: Joi.object().keys({
     firstName: Joi.string()
@@ -87,30 +87,28 @@ export default {
     provider: Joi.string()
   }),
   createArticle: Joi.object().keys({
-    title: Joi
-      .string()
+    title: Joi.string()
       .required()
       .label('title is required and should be a string'),
-    body: Joi
-      .string()
+    body: Joi.string()
       .required()
       .label('body is required and shoud be a string'),
-    description: Joi
-      .string()
+    description: Joi.string()
       .required()
       .label('description is required and should be a string'),
-    tagList: Joi.string(),
+    tagList: Joi.string()
   }),
   updateArticle: Joi.object().keys({
-    title: Joi
-      .string()
-      .label('title should be a string'),
-    body: Joi
-      .string()
-      .label('body should be a string'),
-    description: Joi
-      .string()
-      .label('description should be a string'),
-    tagList: Joi.string(),
+    title: Joi.string().label('title should be a string'),
+    body: Joi.string().label('body should be a string'),
+    description: Joi.string().label('description should be a string'),
+    tagList: Joi.string()
   }),
+  checkComment: Joi.object().keys({
+    comment: Joi.string()
+      .trim()
+      .required()
+      .min(3)
+      .label('The comment is required and should have at least 3 letters!')
+  })
 };
