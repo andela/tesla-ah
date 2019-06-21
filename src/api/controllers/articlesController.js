@@ -272,6 +272,69 @@ class articlesController {
       return res.status(500).json({ error: `${error}` });
     }
   }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
+  static async getLikes(req, res) {
+    const { slug } = req.params;
+
+    // Find the article
+    const query = await Article.findAll({ where: { slug } });
+
+    if (!query[0]) {
+      return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+    }
+
+    const { dataValues: foundArticle } = query[0];
+
+    // Get likes
+    const likeCount = await LikeDislike.count({ where: { articleId: foundArticle.id, likes: 1 } });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        articleSlug: slug,
+        numberOfLikes: likeCount
+      },
+    });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
+  static async getDislikes(req, res) {
+    const { slug } = req.params;
+
+    // Find the article
+    const query = await Article.findAll({ where: { slug } });
+
+    if (!query[0]) {
+      return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+    }
+
+    const { dataValues: foundArticle } = query[0];
+
+    // Get likes
+    const likeCount = await LikeDislike.count({
+      where: {
+        articleId: foundArticle.id,
+        dislikes: 1,
+      },
+    });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        articleSlug: slug,
+        numberOfDislikes: likeCount
+      },
+    });
+  }
 }
 
 export default articlesController;
