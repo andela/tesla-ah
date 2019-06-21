@@ -265,6 +265,7 @@ describe('Like/Unlike Articles', () => {
       tagList: ['reactjs', 'angularjs', 'expressjs'],
       slug: 'lsug',
       authorId: testUser.dataValues.id,
+      readtime: '1 min'
     };
 
     // create test article

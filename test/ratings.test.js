@@ -40,7 +40,8 @@ describe('Rating Article', () => {
       body: 'Andela Rwanda, a technology company specializing in training software engineers on Thursday last week launched its Kigali office. Its new offices are housed within the University of Rwanda - College of Science and Technology, in Muhabura Block. The firm made their debut in Rwanda in July last year, with pan-African hub, the first of its kind. This was followed by the announcement in October of Clement Uwajeneza as the Country Director. The firm has a Memorandum of Understanding with the government to recruit, train and connect to market about 500 young software engineers in the country',
       tagList: ['Tech', 'Kigali'],
       authorId: newUser.id,
-      slug: 'slyg'
+      slug: 'slyg',
+      readtime: '1 min'
     };
     newArticle = await Article.create(article);
   });
