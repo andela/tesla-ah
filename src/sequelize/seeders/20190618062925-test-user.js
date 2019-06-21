@@ -104,7 +104,8 @@ module.exports = {
         socialId: '3434343',
         verified: true,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        isAdmin: false
       },
       {
         firstName: 'Eric',
@@ -121,7 +122,8 @@ module.exports = {
         socialId: '3434343',
         verified: true,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        isAdmin: false
       }
     ],
     {}

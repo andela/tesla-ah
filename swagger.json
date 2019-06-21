@@ -11,6 +11,14 @@
     {
       "name": "auth",
       "description": " User Authentication "
+    },
+    {
+      "name": "article",
+      "description": " Articles "
+    },
+    {
+      "name": "profile",
+      "description": " User profile "
     }
   ],
   "schemes": [
@@ -174,7 +182,7 @@
     "/api/user": {
       "put": {
         "tags": [
-          "Update User Profile"
+          "profile"
         ],
         "description": "User profile update",
         "parameters": [
@@ -210,7 +218,7 @@
     "/profiles/{username}": {
       "get": {
         "tags": [
-          "Profile"
+          "profile"
         ],
         "description": "Get user profile",
         "parameters": [
@@ -275,9 +283,7 @@
     },
     "/articles": {
       "post": {
-        "tags": [
-          "Articles Endpoints"
-        ],
+        "tags": ["article"],
         "description": "user should be able to create an article",
         "parameters": [
           {
@@ -308,9 +314,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Articles Endpoints"
-        ],
+        "tags": ["article"],
         "description": "user should be able to view all articles",
         "produces": [
           "application/json"
@@ -324,9 +328,7 @@
     },
     "/articles/{slug}": {
       "get": {
-        "tags": [
-          "Get a single Article's slug "
-        ],
+        "tags": ["article"],
         "description": "user should be able to view a specific slug",
         "parameters": [
           {
@@ -346,9 +348,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Update a single Article's slug "
-        ],
+        "tags": ["article"],
         "description": "user should be able to update his/her own article - slug",
         "parameters": [
           {
@@ -385,10 +385,8 @@
         }
       },
       "delete": {
-        "tags": [
-          "Delete a single Article's slug "
-        ],
-        "description": "user should be able to view a specific slug",
+        "tags": ["article"],
+        "description": "user should be able to delete a specific slug",
         "parameters": [
           {
             "name": "token",
@@ -415,7 +413,7 @@
     },
     "/articles/{slug}/like": {
       "post": {
-        "tags": ["Like article"],
+        "tags": ["article"],
         "description": "User should be able to like an article",
         "parameters": [
           {
@@ -444,7 +442,7 @@
     },
     "/articles/{slug}/dislike": {
       "post": {
-        "tags": ["Dislike article"],
+        "tags": ["article"],
         "description": "User should be able to dislike an article",
         "parameters": [
           {
@@ -467,6 +465,132 @@
           },
           "403": {
             "description": "Article already disliked"
+          }
+        }
+      }
+    },
+    "/ratings/articles/:slug": {
+      "post": {
+        "tags": ["article"],
+        "description": "User is able to view ratings report on a specific article",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "example":"This_is_andela_2433546h34",
+            "description": "Authentication key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "report": {
+                      "type": "object",
+                      "properties": {
+                        "1st": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "2st": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "3st": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "4st": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "5st": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "Number of User": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "Total Ratings": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "Average": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
+                    },
+                    "percentage": {
+                      "type": "object",
+                      "properties": {
+                        "1st": {
+                          "type": "string",
+                          "example": "10%"
+                        },
+                        "2st": {
+                          "type": "string",
+                          "example": "0%"
+                        },
+                        "3st": {
+                          "type": "string",
+                          "example": "0%"
+                        },
+                        "4st": {
+                          "type": "string",
+                          "example": "30%"
+                        },
+                        "5st": {
+                          "type": "string",
+                          "example": "60%"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No rating found for specific article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "No any rating found for that article"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
