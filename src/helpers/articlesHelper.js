@@ -3,6 +3,7 @@
 import slug from 'slug';
 import uniqid from 'uniqid';
 import models from '../sequelize/models';
+import readTime from './ReadTime.helper';
 
 const { Article, User } = models;
 
@@ -30,13 +31,15 @@ class ArticlesHelper {
     } = req.body;
     const { id } = req.user;
     const newSlug = this.createSlug(title);
+    const readtime = readTime(body);
     const { dataValues } = await Article.create({
       slug: newSlug,
       title,
       description,
       body,
       tagList: tagList.split(','),
-      authorId: parseInt(id, 10)
+      authorId: parseInt(id, 10),
+      readtime
     });
     const userInfo = await this.getUserInfo(id);
     const { username, bio, image } = userInfo;
@@ -57,7 +60,8 @@ class ArticlesHelper {
         model: User,
         attributes: ['username', 'bio', 'image']
       }],
-      attributes: ['slug', 'title', 'description', 'body', 'tagList', 'updatedAt', 'createdAt']
+      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt'],
+      limit: 10
     });
     return result;
   }
@@ -70,7 +74,7 @@ class ArticlesHelper {
         model: User,
         attributes: ['username', 'bio', 'image']
       }],
-      attributes: ['slug', 'title', 'description', 'body', 'tagList', 'updatedAt', 'createdAt']
+      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt']
     });
     return result;
   }
