@@ -10,11 +10,13 @@ import './config/passportSetup';
 import swaggerDoc from '../swagger.json';
 import db from './sequelize/models/index';
 
-const { sequelize } = db;
+import './handlers/cloudinary';
 
 dotenv.config();
+
 const port = process.env.PORT || 3000;
 const app = express();
+const { sequelize } = db;
 
 
 app.use(session({
