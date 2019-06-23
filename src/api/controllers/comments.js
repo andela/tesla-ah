@@ -138,12 +138,13 @@ export default class comments {
     if (nestedComments[0]) {
       await models.Comment.update(
         {
-          comment: 'This comment has been deleted!'
+          comment:
+            'This comment has been deleted!'
         },
         { where: { id: commentId } }
       ).then(() => {
         return res.status(200).json({
-          message: 'Comment deleted',
+          message: 'Comment deleted'
         });
       });
     } else if (userId === id || isAdmin === true) {
@@ -181,38 +182,161 @@ export default class comments {
         message: 'Not found!'
       });
     }
-    await models.Article
-      .findAll({
-        attributes: [
-          'title',
-          'description',
-          'body'
-        ],
-        where: {
-          slug
-        },
-        include: [
-          {
-            model: models.Comment,
-            attributes: ['comment'],
-            where: {
-              articleId: findSlug[0].dataValues.id
-            },
-            include: [
-              {
-                model: models.Comment,
-                attributes: ['comment']
-              }
-            ]
-          }
-        ]
-      })
-      .then((data) => {
-        if (data) {
-          return res.status(200).json({
-            data
-          });
+    await models.Article.findAll({
+      attributes: [
+        'title',
+        'description',
+        'body'
+      ],
+      where: {
+        slug
+      },
+      include: [
+        {
+          model: models.Comment,
+          attributes: ['comment'],
+          where: {
+            articleId: findSlug[0].dataValues.id
+          },
+          include: [
+            {
+              model: models.Comment,
+              attributes: ['comment']
+            }
+          ]
         }
+      ]
+    }).then((data) => {
+      if (data) {
+        return res.status(200).json({
+          data
+        });
+      }
+    });
+  }
+
+  /**
+  * @description - Users should be able to like a comment
+  * @param {Object} req - Request Object
+  * @param {Object} res  - Response Object
+  * @returns {Object} - Response object
+  */
+  static async likeComment(req, res) {
+    const { commentId } = req.params;
+    const { id, firstName } = req.user;
+    const hasDisliked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+        userId: id,
+        dislikes: 1
+      }
+    });
+    if (hasDisliked[0]) {
+      await models.LikeDislike.update(
+        { dislikes: 0, likes: 1 },
+        { where: { id: hasDisliked[0].id } }
+      );
+      return res.status(200).json({
+        message: `Dear ${firstName}, Thank you for liking this comment!`
       });
+    }
+    await models.LikeDislike.create({
+      userId: id,
+      commentId,
+      dislikes: 0,
+      likes: 1
+    });
+
+    return res.status(201).json({
+      message: `Dear ${firstName}, Thank you for liking this comment!`
+    });
+  }
+
+  /**
+  * @description - Users should be able to dislike a comment
+  * @param {Object} req - Request Object
+  * @param {Object} res  - Response Object
+  * @returns {Object} - Response object
+  */
+  static async dislikeComment(req, res) {
+    const { commentId } = req.params;
+    const { id, firstName } = req.user;
+    const hasLiked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+        userId: id,
+        likes: 1
+      }
+    });
+    if (hasLiked[0]) {
+      await models.LikeDislike.update(
+        { dislikes: 1, likes: 0 },
+        { where: { id: hasLiked[0].id } }
+      );
+      return res.status(200).json({
+        message: `Dear ${firstName}, Thank you for disliking this comment!`
+      });
+    }
+    await models.LikeDislike.create({
+      userId: id,
+      commentId,
+      dislikes: 1,
+      likes: 0
+    });
+
+    return res.status(201).json({
+      message: `Dear ${firstName}, Thank you for disliking this comment!`
+    });
+  }
+
+  /**
+  * @description - Users should be able to like a comment
+  * @param {Object} req - Request Object
+  * @param {Object} res  - Response Object
+  * @returns {Object} - Response object
+  */
+  static async countLikes(req, res) {
+    const { commentId } = req.params;
+
+    // Get comment likes
+    const likeCount = await models.LikeDislike.count({
+      where: {
+        commentId,
+        likes: 1
+      }
+    });
+    return res.status(200).json({
+      status: 200,
+      data: {
+        commentId,
+        likes: likeCount
+      }
+    });
+  }
+
+  /**
+  * @description - Users should be able to dislike a comment
+  * @param {Object} req - Request Object
+  * @param {Object} res  - Response Object
+  * @returns {Object} - Response object
+  */
+  static async countDislikes(req, res) {
+    const { commentId } = req.params;
+
+    // Get comment dislikes
+    const dislikeCount = await models.LikeDislike.count({
+      where: {
+        commentId,
+        dislikes: 1
+      }
+    });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        commentId,
+        dislikes: dislikeCount
+      }
+    });
   }
 }
