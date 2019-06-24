@@ -14,7 +14,7 @@ class Bookmark {
    * @param {Object} res - Response object
    * @returns {Object} - Response object
    */
-  static async Bookmark(req, res) {
+  static async bookmark(req, res) {
     const { id } = req.user;
     const { slug } = req.params;
     const data = {
