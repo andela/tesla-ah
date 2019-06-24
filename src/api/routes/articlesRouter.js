@@ -24,7 +24,7 @@ const {
 } = articlesController;
 const { verifyToken } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
-const { Bookmark } = bookmarkController;
+const { bookmark } = bookmarkController;
 
 
 const {
@@ -61,6 +61,6 @@ articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'),
 
 // Bookmarks routes
 
-articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, Bookmark);
+articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
 export default articlesRouter;
