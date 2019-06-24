@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ratingsController from '../controllers/ratingContoller';
+import ratingsController from '../controllers/ratingController';
 import auth from '../../middleware/auth';
 
 const { verifyToken } = auth;

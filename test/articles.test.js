@@ -215,7 +215,20 @@ describe('PUT and DELETE /api/articles/:slug', () => {
         done();
       });
   });
-
+  it('Should Return 201 when article reported successfully', (done) => {
+    chai
+      .request(app)
+      .post(`/api/articles/${updatedSlug}/report`)
+      .set('token', `${validToken}`)
+      .send({
+        comment: 'some thing'
+      })
+      .end((err, res) => {
+        expect(res.body).to.be.an('object');
+        expect(res.status).to.deep.equal(201);
+        done();
+      });
+  });
   it('it should delete an existing article', (done) => {
     chai
       .request(app)
@@ -366,3 +379,4 @@ describe('Like/Unlike Articles', () => {
       });
   });
 });
+

@@ -22,6 +22,7 @@ const {
   dislikeArticle,
   getLikes,
   getDislikes,
+  reportArticle,
 } = articlesController;
 const { verifyToken } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
@@ -74,5 +75,8 @@ articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter,
 articlesRouter.get('/comments/:commentId/dislikes', checkParameter, countDislikes);
 articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
 
+articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
+
+articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
 
 export default articlesRouter;

@@ -1,15 +1,14 @@
 import 'regenerator-runtime';
 import express from 'express';
 import dotenv from 'dotenv';
-import swaggerUi from 'swagger-ui-express';
 import passport from 'passport';
 import session from 'express-session';
+import swaggerUi from 'swagger-ui-express';
 import api from './api/routes/index';
 import globalMiddleware from './middleware/globalMiddleware';
 import './config/passportSetup';
-import swaggerDoc from '../swagger.json';
 import db from './sequelize/models/index';
-
+import swaggerDoc from '../swagger.json';
 import './handlers/cloudinary';
 
 dotenv.config();
@@ -19,9 +18,6 @@ const app = express();
 const { sequelize } = db;
 
 globalMiddleware(app);
-app.use('/api', api);
-app.get('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-
 app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true
@@ -29,11 +25,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 globalMiddleware(app);
+app.get('/', (req, res) => { res.redirect('/docs'); });
 app.use('/api', api);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).send({
-    error: 'Page Not found'
+    status: 404,
+    error: {
+      message: 'Page Not found',
+    }
   });
 });
 
