@@ -116,12 +116,7 @@ export default class comments {
   * @returns {Object} - Response object
   */
   static async deleteComment(req, res) {
-    const { id, firstName } = req.user;
-    const findUser = await models.User.findAll({
-      where: {
-        id
-      }
-    });
+    const { id, firstName, roles } = req.user;
     const { commentId } = req.params;
     const findComment = await models.Comment.findAll({
       where: {
@@ -133,7 +128,6 @@ export default class comments {
         commentId
       }
     });
-    const { isAdmin } = findUser[0].dataValues;
     const { userId } = findComment[0].dataValues;
     if (nestedComments[0]) {
       await models.Comment.update(
@@ -147,14 +141,14 @@ export default class comments {
           message: 'Comment deleted'
         });
       });
-    } else if (userId === id || isAdmin === true) {
+    } else if (userId === id || roles.includes('moderator' || 'admin')) {
       await models.Comment.destroy({
         where: {
           id: commentId
         }
       }).then(() => {
         return res.status(200).json({
-          message: 'Comment deleted!'
+          message: roles.includes('moderator' || 'admin') ? 'Comment deleted by moderator' : 'Comment deleted!'
         });
       });
     }

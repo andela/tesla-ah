@@ -39,7 +39,7 @@ describe('User Registration', () => {
       });
   });
 
-  it('should let user signup', (done) => {
+  it('it should let user signup', (done) => {
     chai
       .request(server)
       .post('/api/auth/signup')
@@ -128,10 +128,8 @@ describe('User Registration', () => {
       });
   });
 
-  it('should verify account', (done) => {
-    chai
-      .request(server)
-      .get(`/api/auth/verify/?token=${userToken}`)
+  it('it should verify account', (done) => {
+    chai.request(server).get(`/api/auth/verify/?token=${userToken}`)
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.equal(202);

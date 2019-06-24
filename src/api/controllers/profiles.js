@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import models from '../../sequelize/models';
 import uploadHelper from '../../helpers/uploadHelper';
 
@@ -32,8 +33,13 @@ export default class ProfilesController {
    * @return {object} returns an object containing the updated user profile
    */
   static async updateProfile(req, res) {
-    const { body, user, file } = req;
+    let { body } = req;
     let uploadedImage;
+    const { user, file } = req;
+
+    if (!user.roles.includes('admin')) {
+      body = await omit(body, ['roles']);
+    }
 
     const updatedProfile = { ...body };
 
@@ -59,6 +65,21 @@ export default class ProfilesController {
       return res.status(200).json({ user: { updatedUser } });
     } catch (error) {
       return res.status(500).json({ error: `${error}` });
+    }
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a res status with message
+   */
+  static async deleteProfile(req, res) {
+    const { params } = req;
+    try {
+      await User.destroy({ where: { id: params.id } });
+      return res.status(200).json({ status: 200, message: `User ${params.id} deleted.` });
+    } catch (error) {
+      return res.status(500).json({ status: 500, error: `${error}` });
     }
   }
 

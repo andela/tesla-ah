@@ -5,9 +5,12 @@ import validateBody from '../../middleware/validateBody';
 import upload from '../../handlers/multer';
 
 const userRouter = Router();
-const { updateProfile } = ProfilesController;
-const { verifyToken } = Auth;
+const { updateProfile, deleteProfile } = ProfilesController;
+const { verifyToken, checkOwnership, checkIsAdmin } = Auth;
 
-userRouter.put('/', verifyToken, validateBody('updateUser'), upload.single('image'), updateProfile);
+userRouter
+  .route('/:id')
+  .put(verifyToken, checkOwnership, validateBody('updateUser'), upload.single('image'), updateProfile)
+  .delete(verifyToken, checkIsAdmin, deleteProfile);
 
 export default userRouter;
