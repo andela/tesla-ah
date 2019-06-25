@@ -152,6 +152,81 @@ describe('Comments', () => {
         done();
       });
   });
+  it('should let the user like a comment!', (done) => {
+    chai
+      .request(server)
+      .post(`/api/articles/comments/${commentId}/like`)
+      .set('token', userTwoToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should not let a user like a comment twice!', (done) => {
+    chai
+      .request(server)
+      .post(`/api/articles/comments/${commentId}/like`)
+      .set('token', userTwoToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let the user dislike a comment!', (done) => {
+    chai
+      .request(server)
+      .post(`/api/articles/comments/${commentId}/dislike`)
+      .set('token', userTwoToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let the user dislike a comment!', (done) => {
+    chai
+      .request(server)
+      .post(`/api/articles/comments/${commentId}/dislike`)
+      .set('token', userOneToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should not let a user dislike a comment twice!', (done) => {
+    chai
+      .request(server)
+      .post(`/api/articles/comments/${commentId}/dislike`)
+      .set('token', userTwoToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should get all likes on a comment!', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/comments/${commentId}/dislikes`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should get all dislikes on a comment!', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/comments/${commentId}/likes`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
   it('should let the owner of the comment delete it!', (done) => {
     chai
       .request(server)
