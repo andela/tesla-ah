@@ -10,7 +10,8 @@ module.exports = {
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     image: '',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    readtime: '1min'
   }, {
     slug: '73H99992',
     title: 'Wow',
@@ -20,7 +21,8 @@ module.exports = {
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     image: '',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    readtime: '1min'
 
   }]),
 
