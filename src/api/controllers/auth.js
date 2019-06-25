@@ -86,13 +86,16 @@ class AuthController {
     const { token } = req.query;
     try {
       const user = await TokenHelper.decodeToken(token);
-      await User.update({
-        verified: true
-      }, {
-        where: {
-          email: user.email
+      await User.update(
+        {
+          verified: true
+        },
+        {
+          where: {
+            email: user.email
+          }
         }
-      });
+      );
       res.status(202).json({
         status: 202,
         message: 'Account is now verified!'
@@ -112,15 +115,17 @@ class AuthController {
    * @returns {Object} - Response object
    */
   static async SignOut(req, res) {
-    const { user: { id }, token } = req;
+    const {
+      user: { id },
+      token
+    } = req;
     await Blacklist.create({
       userId: id,
       token
     });
     res.json({
       status: 200,
-      message: 'You are now signed Out!',
-
+      message: 'You are now signed Out!'
     });
   }
 
@@ -283,7 +288,9 @@ class AuthController {
     } catch (error) {
       res.status(error.status || 500).send({
         status: error.status || 500,
-        error: { message: 'Token is invalid or expired, Please request  another one' }
+        error: {
+          message: 'Token is invalid or expired, Please request  another one'
+        }
       });
     }
   }
@@ -317,5 +324,4 @@ class AuthController {
       });
   }
 }
-
 export default AuthController;
