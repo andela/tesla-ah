@@ -4,6 +4,7 @@ import userRouter from './userRouter';
 import profilesRouter from './profilesRouter';
 import articlesRouter from './articlesRouter';
 import ratingsRouter from './ratingsRouter';
+import bookmarkRouter from './bookmark';
 
 const api = express();
 
@@ -13,4 +14,7 @@ api.use('/user', userRouter);
 api.use('/profiles', profilesRouter);
 api.use('/articles', articlesRouter);
 api.use('/ratings', ratingsRouter);
+api.use('/bookmarks', bookmarkRouter);
+
+
 export default api;

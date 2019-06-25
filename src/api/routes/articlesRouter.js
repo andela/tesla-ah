@@ -7,6 +7,7 @@ import commentsController from '../controllers/comments';
 import comment from '../../middleware/validComment';
 import RatingController from '../controllers/ratingController';
 import slugExist from '../../middleware/slugExist';
+import bookmarkController from '../controllers/bookmark';
 
 
 const articlesRouter = Router();
@@ -23,6 +24,7 @@ const {
 } = articlesController;
 const { verifyToken } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
+const { Bookmark } = bookmarkController;
 
 
 const {
@@ -57,5 +59,8 @@ articlesRouter.get('/:slug/comments', getComment);
 articlesRouter.post('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, createRatings);
 articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'), slugExist, UpdateRatings);
 
+// Bookmarks routes
+
+articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, Bookmark);
 
 export default articlesRouter;
