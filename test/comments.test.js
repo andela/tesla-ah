@@ -12,6 +12,7 @@ dotenv.config();
 let userOneToken,
   userTwoToken,
   adminToken,
+  adminToken1,
   userOneObject,
   userTwoObject,
   adminObject,
@@ -59,7 +60,7 @@ describe('Comments', () => {
       email: 'admin@luffy.co',
       password: process.env.TEST_USER_PSW,
       confirmPassword: process.env.TEST_USER_PSW,
-      isAdmin: process.env.IS_ADMIN
+      roles: ['admin'],
     };
 
     testAdmin = await models.User.create(adminObject);
@@ -124,6 +125,17 @@ describe('Comments', () => {
         done();
       });
   });
+  it('should notify the use if the comment to track does not exist', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/comments/${commentId}/history`)
+      .set('token', userOneToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
   it('should let a user edit a comment', (done) => {
     chai
       .request(server)
@@ -134,6 +146,28 @@ describe('Comments', () => {
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let a user track edit history', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/comments/${commentId}/history`)
+      .set('token', userOneToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should let only the owner of the comment track it', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/comments/${commentId}/history`)
+      .set('token', userTwoToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(403);
         expect(res.body).to.be.an('object');
         done();
       });
@@ -280,12 +314,19 @@ describe('Comments', () => {
   it('should let the admin delete any comment!', (done) => {
     chai
       .request(server)
-      .delete(`/api/articles/comments/${commentTwoId}`)
-      .set('token', adminToken)
-      .end((err, res) => {
-        expect(res.status).to.equal(200);
-        expect(res.body).to.be.an('object');
-        done();
+      .post('/api/auth/login')
+      .send({ email: 'superuser@gmail.com', password: process.env.SUPER_ADMIN_PSW })
+      .end(async (err, res) => {
+        adminToken1 = res.body.data.token;
+        chai
+          .request(server)
+          .delete(`/api/articles/comments/${commentTwoId}`)
+          .set('token', adminToken1)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body).to.be.an('object');
+            done();
+          });
       });
   });
   it('should let the user get an article with its comments!', (done) => {

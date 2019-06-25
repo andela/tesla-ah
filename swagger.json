@@ -1053,11 +1053,19 @@
         }
       }
     },
-    "/articles/comments/{commentId}/likes": {
+    "/articles/comments/{commentId}/history": {
       "get": {
-        "tags": ["comment"],
-        "description": "Authors Haven visitors and users should be able see all likes on a comment",
+        "tags": [
+          "comment"
+        ],
+        "description": "Authors Haven users should be able see all track their comments edit history",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
           {
             "name": "commentId",
             "in": "path",
@@ -1071,7 +1079,29 @@
         }
       }
     },
-    "/profiles": {
+    "/articles/comments/{commentId}/likes": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "description": "Authors Haven visitors and users should be able to see all likes on a comment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/profiles":{
       "get": {
         "tags": ["profile"],
         "description": "Any User will be able to view a list of User's Profiles",

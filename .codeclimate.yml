@@ -8,4 +8,4 @@ exclude_patterns:
 - "src/sequelize/migrations/"
 - "src/sequelize/seeders/"
 - "**/node_modules/"
-- "src/test/"
+- "test/"

@@ -89,12 +89,18 @@ export default class comments {
     const { userId } = findComment[0].dataValues;
     const { id, firstName } = req.user;
     if (userId === id) {
+      const oldComment = findComment[0].dataValues.comment;
       await models.Comment.update(
         {
           comment
         },
         { where: { id: commentId } }
-      ).then(() => {
+      ).then(async () => {
+        await models.CommentsHistory.create({
+          userId: id,
+          editedComment: oldComment,
+          commentId: findComment[0].dataValues.id
+        });
         return res.status(200).json({
           message: 'Your comment has been edited',
           data: {
@@ -129,28 +135,30 @@ export default class comments {
       }
     });
     const { userId } = findComment[0].dataValues;
-    if (nestedComments[0]) {
-      await models.Comment.update(
-        {
-          comment:
-            'This comment has been deleted!'
-        },
-        { where: { id: commentId } }
-      ).then(() => {
-        return res.status(200).json({
-          message: 'Comment deleted'
+    if (userId === id || roles.includes('moderator' || 'admin')) {
+      if (nestedComments[0]) {
+        await models.Comment.update(
+          {
+            comment:
+              'This comment has been deleted!'
+          },
+          { where: { id: commentId } }
+        ).then(() => {
+          return res.status(200).json({
+            message: roles.includes('moderator' || 'admin') ? 'Comment deleted by moderator' : 'Comment deleted!'
+          });
         });
-      });
-    } else if (userId === id || roles.includes('moderator' || 'admin')) {
-      await models.Comment.destroy({
-        where: {
-          id: commentId
-        }
-      }).then(() => {
-        return res.status(200).json({
-          message: roles.includes('moderator' || 'admin') ? 'Comment deleted by moderator' : 'Comment deleted!'
+      } else {
+        await models.Comment.destroy({
+          where: {
+            id: commentId
+          }
+        }).then(() => {
+          return res.status(200).json({
+            message: 'Comment deleted!'
+          });
         });
-      });
+      }
     }
     return res.status(403).json({
       message: `Dear ${firstName}, You do not have the right to delete this comment!`
@@ -331,6 +339,37 @@ export default class comments {
         commentId,
         dislikes: dislikeCount
       }
+    });
+  }
+
+  /**
+  * @description - Users should be able to track edit history
+  * @param {Object} req - Request Object
+  * @param {Object} res  - Response Object
+  * @returns {Object} - Response object
+  */
+  static async commentHistory(req, res) {
+    const { commentId } = req.params;
+    const { id, roles } = req.user;
+    const findHistory = await models.CommentsHistory.findAll({
+      where: {
+        commentId
+      }
+    });
+    if (findHistory.length === 0) {
+      return res.status(404).json({
+        message: 'No edit history for this comment!'
+      });
+    }
+    if (findHistory[0].dataValues.userId === id || roles.includes('moderator' || 'admin')) {
+      return res.status(200).json({
+        data: {
+          findHistory
+        }
+      });
+    }
+    return res.status(403).json({
+      message: 'You do not have the right to view this history!'
     });
   }
 }
