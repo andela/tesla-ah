@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
+// eslint-disable-next-line import/no-named-as-default
 import authController from '../controllers/auth';
 import validateBody from '../../middleware/validateBody';
 import userValidation from '../../middleware/validUser';
@@ -30,20 +31,59 @@ authRouter.get('/signout', verifyToken, dropToken, SignOut);
 
 // social login test routes
 
-authRouter.post('/login/google/test', socialMiddleware, google, socialLogin.googleLogin);
-authRouter.post('/login/facebook/test', socialMiddleware, google, socialLogin.facebookLogin);
-authRouter.post('/login/twitter/test', socialMiddleware, twitter, socialLogin.twitterLogin);
+authRouter.post(
+  '/login/google/test',
+  socialMiddleware,
+  google,
+  socialLogin.googleLogin
+);
+authRouter.post(
+  '/login/facebook/test',
+  socialMiddleware,
+  google,
+  socialLogin.facebookLogin
+);
+authRouter.post(
+  '/login/twitter/test',
+  socialMiddleware,
+  twitter,
+  socialLogin.twitterLogin
+);
 
 // social login
 
-authRouter.get('/login/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
-authRouter.get('/login/google/redirect', passport.authenticate('google', { session: false }), google, socialLogin.googleLogin);
+authRouter.get(
+  '/login/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+authRouter.get(
+  '/login/google/redirect',
+  passport.authenticate('google', { session: false }),
+  google,
+  socialLogin.googleLogin
+);
 
-authRouter.get('/login/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-authRouter.get('/login/facebook/redirect', passport.authenticate('facebook', { session: false }), google, socialLogin.facebookLogin);
+authRouter.get(
+  '/login/facebook',
+  passport.authenticate('facebook', { scope: ['email'] })
+);
+authRouter.get(
+  '/login/facebook/redirect',
+  passport.authenticate('facebook', { session: false }),
+  google,
+  socialLogin.facebookLogin
+);
 
-authRouter.get('/login/twitter', passport.authenticate('twitter', { scope: ['profile', 'email'] }));
-authRouter.get('/login/twitter/redirect', passport.authenticate('twitter', { session: false }), twitter, socialLogin.twitterLogin);
+authRouter.get(
+  '/login/twitter',
+  passport.authenticate('twitter', { scope: ['profile', 'email'] })
+);
+authRouter.get(
+  '/login/twitter/redirect',
+  passport.authenticate('twitter', { session: false }),
+  twitter,
+  socialLogin.twitterLogin
+);
 
 authRouter.get('/signout', verifyToken, dropToken, SignOut);
 authRouter.post('/login', validateBody('login'), login);

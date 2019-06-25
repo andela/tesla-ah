@@ -18,7 +18,10 @@
     },
     {
       "name": "profile",
-      "description": " User profile "
+      "description": " User profile "},
+      {
+      "name": "follow",
+      "description": " User should be able to follow and unfollow each other."
     }
   ],
   "schemes": [
@@ -1059,6 +1062,223 @@
         "responses": {
           "200": {
             "description": "the list of All User's profile has been successfully fetched"
+          }
+        }
+      }
+    },
+    "/profiles/:username/follow": {
+      "patch": {
+        "tags": ["follow"],
+        "description": "User should be able to follow other users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "follow",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": "Congratulation, now you followed the person"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "you already follow this person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/:username/unfollow": {
+      "patch": {
+        "tags": ["follow"],
+        "description": "User should be able to unfollow other users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "unfollow",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": " you unfollowed the person"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "you do not follow this person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    "/profiles/:username/following": {
+      "get": {
+        "tags": ["follow"],
+        "description": "User should be able to fetch all users he or she follows",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "following",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": " these are the people you follow"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "you do not follow any person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/:username/followers": {
+      "get": {
+        "tags": ["follow"],
+        "description": "User should be able to fetch all users who follow him or her",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "followers",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "message": " these are the people you follow"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or Expired token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "error": {
+                  "type": "object",
+                  "example": {
+                    "message": "you do not follow any person"
+                  }
+                }
+              }
+            }
           }
         }
       }

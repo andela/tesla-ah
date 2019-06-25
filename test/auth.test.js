@@ -5,9 +5,7 @@ import server from '../src/index';
 import db from '../src/sequelize/models';
 import tokenHelper from '../src/helpers/Token.helper';
 
-
 const { User } = db;
-
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -23,7 +21,8 @@ describe('User Registration', () => {
     });
   });
   it('should not let a user signup without valid credentials ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/signup')
       .send({
         firstName: 'Emy',
@@ -40,69 +39,10 @@ describe('User Registration', () => {
       });
   });
 
-  it('should not let a user signup with an already existing email ', (done) => {
-    chai.request(server)
-      .post('/api/auth/signup')
-      .send({
-        firstName: 'Emy',
-        lastName: 'Rukundo',
-        username: 'mifeillee',
-        email: 'nimilleer@gmail.com',
-        password: 'Rukundo1!',
-        confirmPassword: 'Rukundo1!'
-      })
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.body).to.be.an('object');
-        done();
-      });
-  });
-
-  it('should not let a user signup with an already existing username ', (done) => {
-    chai.request(server)
-      .post('/api/auth/signup')
-      .send({
-        firstName: 'Emy',
-        lastName: 'Rukundo',
-        username: 'mifeille',
-        email: 'nimiller@gmail.com',
-        password: 'Rukundo1!',
-        confirmPassword: 'Rukundo1!'
-      })
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.body).to.be.an('object');
-        done();
-      });
-  });
-
-  it('should not let a user signup with gender chich is not M or F', (done) => {
-    chai.request(server).post('/api/auth/signup')
-      .send({
-        firstName: 'Elie',
-        lastName: 'Mugenzi',
-        username: 'elie',
-        email: 'elie@gmail.com',
-        password: 'Rukundo1!',
-        confirmPassword: 'Rukundo1!',
-        gender: 'G'
-      })
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
-  });
-  it('should not verify an account because of invalid token', (done) => {
-    chai.request(server).get('/api/auth/verify/?token=ffhsfjsf')
-      .end((err, res) => {
-        expect(res.body).to.be.an('object');
-        expect(res.status).to.equal(400);
-        done();
-      });
-  });
-
   it('should let user signup', (done) => {
-    chai.request(server).post('/api/auth/signup')
+    chai
+      .request(server)
+      .post('/api/auth/signup')
       .send({
         firstName: 'Elie',
         lastName: 'Mugenzi',
@@ -121,8 +61,77 @@ describe('User Registration', () => {
       });
   });
 
+  it('should not let a user signup with an already existing email ', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        firstName: 'Emy',
+        lastName: 'Rukundo',
+        username: 'mifeillee',
+        email: 'elie@gmail.com',
+        password: 'Rukundo1!',
+        confirmPassword: 'Rukundo1!'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+
+  it('should not let a user signup with an already existing username ', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        firstName: 'Emy',
+        lastName: 'Rukundo',
+        username: 'elie',
+        email: 'nimiller@gmail.com',
+        password: 'Rukundo1!',
+        confirmPassword: 'Rukundo1!'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+
+  it('should not let a user signup with gender chich is not M or F', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        firstName: 'Elie',
+        lastName: 'Mugenzi',
+        username: 'elie',
+        email: 'elie@gmail.com',
+        password: 'Rukundo1!',
+        confirmPassword: 'Rukundo1!',
+        gender: 'G'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        done();
+      });
+  });
+  it('should not verify an account because of invalid token', (done) => {
+    chai
+      .request(server)
+      .get('/api/auth/verify/?token=ffhsfjsf')
+      .end((err, res) => {
+        expect(res.body).to.be.an('object');
+        expect(res.status).to.equal(400);
+        done();
+      });
+  });
+
   it('should verify account', (done) => {
-    chai.request(server).get(`/api/auth/verify/?token=${userToken}`)
+    chai
+      .request(server)
+      .get(`/api/auth/verify/?token=${userToken}`)
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.equal(202);
@@ -149,7 +158,8 @@ describe('User SignOut', () => {
   });
 
   it('should logout with a valid token', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .get('/api/auth/signout')
       .set('token', token)
       .end((err, res) => {
@@ -159,7 +169,8 @@ describe('User SignOut', () => {
       });
   });
   it('should return an error when there is no token', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .get('/api/auth/signout')
       .set('token', ' ')
       .end((err, res) => {
@@ -190,11 +201,12 @@ describe('Social Login', () => {
     });
   });
   it('should let a user log in with google, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/google/test')
       .send({
         id: '1234',
-        email: 'nimilii@yahoo.fr',
+        email: 'nimilii@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -203,11 +215,12 @@ describe('Social Login', () => {
       });
   });
   it('should let save a user if he is already in the database, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/google/test')
       .send({
         id: '1234',
-        email: 'nimilii@yahoo.fr',
+        email: 'nimilii@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -216,11 +229,12 @@ describe('Social Login', () => {
       });
   });
   it('should let a user log in with facebook, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/facebook/test')
       .send({
         id: '12345',
-        email: 'nimillr@yahoo.fr',
+        email: 'nimillr@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -229,11 +243,12 @@ describe('Social Login', () => {
       });
   });
   it('should let save a user if he is already in the database, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/facebook/test')
       .send({
         id: '12345',
-        email: 'nimillr@yahoo.fr',
+        email: 'nimillr@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -242,11 +257,12 @@ describe('Social Login', () => {
       });
   });
   it('should let a user log in with twitter, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/twitter/test')
       .send({
         id: '56789',
-        email: 'nimil@yahoo.fr',
+        email: 'nimil@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -255,11 +271,12 @@ describe('Social Login', () => {
       });
   });
   it('should let save a user if he is already in the database, test! ', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login/twitter/test')
       .send({
         id: '56789',
-        email: 'nimil@yahoo.fr',
+        email: 'nimil@yahoo.fr'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -270,11 +287,12 @@ describe('Social Login', () => {
 });
 describe('User login', () => {
   it('Should return 400 when user entered invalid creditial', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
         email: 'rukundogmail.com',
-        password: 'Rukundo1!',
+        password: 'Rukundo1!'
       })
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -283,11 +301,12 @@ describe('User login', () => {
       });
   });
   it('Should return 404 when email does not exist', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
         email: 'hhhhhhhhehhhhh@gmail.com',
-        password: 'Rukundo1!',
+        password: 'Rukundo1!'
       })
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -296,11 +315,12 @@ describe('User login', () => {
       });
   });
   it('Should return 400 when user entered wrong password', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
-        email: 'gprestein055@gmail.com',
-        password: 'Eric.0000566'
+        email: 'elie@gmail.com',
+        password: 'Rukundo1!esdfjksh'
       })
       .end((err, res) => {
         expect(res.status).to.equal(400);
@@ -309,11 +329,12 @@ describe('User login', () => {
       });
   });
   it('Should return 200 when user logged in successful', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
-        email: 'ericprestein005@gmail.com',
-        password: 'Eric.00005'
+        email: 'elie@gmail.com',
+        password: 'Rukundo1!'
       })
       .end((err, res) => {
         expect(res.status).to.equal(200);

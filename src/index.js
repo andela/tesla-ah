@@ -37,7 +37,6 @@ app.use('*', (req, res) => {
   });
 });
 
-
 sequelize.sync().then(() => {
   app.listen(port, () => {
     // eslint-disable-next-line no-console
