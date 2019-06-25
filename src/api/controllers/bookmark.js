@@ -14,7 +14,7 @@ class Bookmark {
    * @param {Object} res - Response object
    * @returns {Object} - Response object
    */
-  static async Bookmark(req, res) {
+  static async bookmark(req, res) {
     const { id } = req.user;
     const { slug } = req.params;
     const data = {
@@ -30,12 +30,12 @@ class Bookmark {
 
     });
     if (!response[0]) {
-      const NewBookmark = await Bookmarks.create({
+      const newBookmark = await Bookmarks.create({
         slug: data.slug,
         userId: data.userId
       });
       return res.status(201).json({
-        data: NewBookmark,
+        data: newBookmark,
         message: 'Bookmark created'
       });
     }
@@ -53,13 +53,13 @@ class Bookmark {
    */
   static async getOwnerBookmarks(req, res) {
     const { id } = req.user;
-    const YourBookmarks = await Bookmarks.findAll({
+    const yourBookmarks = await Bookmarks.findAll({
       where: {
         userId: id
       }
     });
     res.status(200).json({
-      data: YourBookmarks
+      data: yourBookmarks
     });
   }
 }

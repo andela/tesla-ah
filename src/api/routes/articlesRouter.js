@@ -8,6 +8,7 @@ import comment from '../../middleware/validComment';
 import RatingController from '../controllers/ratingController';
 import slugExist from '../../middleware/slugExist';
 import bookmarkController from '../controllers/bookmark';
+import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 
 
 const articlesRouter = Router();
@@ -24,13 +25,15 @@ const {
 } = articlesController;
 const { verifyToken } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
-const { Bookmark } = bookmarkController;
+const { bookmark } = bookmarkController;
 
 
 const {
-  createComment, editComment, deleteComment, getComment, commentAcomment
+  createComment, editComment, deleteComment, getComment, commentAcomment,
+  likeComment, dislikeComment, countLikes, countDislikes
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
+const { liked, disliked } = checkLikesandDislikes;
 
 articlesRouter
   .post('/', verifyToken, validateBody('createArticle'), createArticle)
@@ -61,6 +64,15 @@ articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'),
 
 // Bookmarks routes
 
-articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, Bookmark);
+articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
+// like and dislike comments
+articlesRouter.post('/comments/:commentId/like', verifyToken, checkParameter, liked, likeComment);
+articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter, disliked, dislikeComment);
+
+// get likes and dislikes of comments
+
+articlesRouter.get('/comments/:commentId/dislikes', checkParameter, countDislikes);
+articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
+
 
 export default articlesRouter;

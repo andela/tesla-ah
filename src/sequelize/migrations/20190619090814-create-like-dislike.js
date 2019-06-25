@@ -8,7 +8,7 @@ export default {
         type: Sequelize.INTEGER
       },
       articleId: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Articles',
@@ -30,12 +30,10 @@ export default {
       likes: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        default: 1,
       },
       dislikes: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        default: 1,
       },
       createdAt: {
         allowNull: false,

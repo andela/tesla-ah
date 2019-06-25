@@ -1047,6 +1047,117 @@
       }
     }
     },
+    "/articles/comments/{commentId}/dislike": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "description": "User should be able to dislike a comment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Dear ..., Thank you for disliking this comment"
+          },
+          "403": {
+            "description": "Dear ..., You have already disliked this comment!"
+          }
+        }
+      }
+    },
+    "/articles/comments/{commentId}/like": {
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "description": "User should be able to like a comment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The user token",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Dear ..., Thank you for liking this comment"
+          },
+          "403": {
+            "description": "Dear ..., You have already liked this comment!"
+          }
+        }
+      }
+    },
+  "/articles/comments/{commentId}/dislikes": {
+    "get": {
+      "tags": [
+        "comment"
+      ],
+      "description": "Authors Haven visitors and users should be able see all dislikes on a comment",
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "description": "Comment Id",
+          "required": true
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {}
+      }
+    }
+  },
+    "/articles/comments/{commentId}/likes": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "description": "Authors Haven visitors and users should be able see all likes on a comment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+          }
+        }
+      }
+    },
     "/profiles":{
       "get": {
         "tags": [
