@@ -78,9 +78,14 @@ export default class Auth {
    */
   static async checkIsModerator(req, res, next) {
     const { user } = req;
-    if (user && user.roles.includes('moderator' || 'admin')) {
+    if (user.roles.includes('moderator') || user.roles.includes('admin')) {
       return next();
     }
-    return res.status(401).json({ message: 'You are not a moderator!' });
+    return res.status(401).send({
+      status: 401,
+      data: {
+        message: 'Access denied, You are not a moderator or admin!',
+      }
+    });
   }
 }

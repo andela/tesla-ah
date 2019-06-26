@@ -15,6 +15,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 let userToken;
+let userToken2;
 let userObject;
 let userObject2;
 let testUser;
@@ -83,6 +84,7 @@ describe('User Profiles', () => {
     testUser2 = await User.create(userObject2);
     // generate test token
     userToken = await authHelper.generateToken({ id: testUser.id });
+    userToken2 = await authHelper.generateToken({ id: testUser2.id });
 
     ftest = await User.create(fobject);
     ftoken = await authHelper.generateToken({ id: ftest.id });
@@ -167,7 +169,24 @@ describe('User Profiles', () => {
           done();
         });
     });
+    it('it should not update user profile', (done) => {
+      const data = {
+        username: 'northern_lights',
+        bio: 'Stargazing and Food',
+        image: 'image'
+      };
 
+      chai
+        .request(app)
+        .put(`/api/user/${testUser.id}`)
+        .set('token', userToken2)
+        .send(data)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
     it('it should update user profile with an image', (done) => {
       chai
         .request(app)

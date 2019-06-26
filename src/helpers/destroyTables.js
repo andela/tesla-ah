@@ -2,7 +2,7 @@ import models from '../sequelize/models';
 
 models.ArticleRatings.destroy({
   where: {},
-  truncate: false
+  truncate: true
 });
 models.Article.destroy({
   where: {},
@@ -27,4 +27,12 @@ models.ReportedArticles.destroy({
 models.User.destroy({
   where: {},
   truncate: false
+});
+models.Blacklist.destroy({
+  where: {},
+  truncate: true
+});
+models.Comment.destroy({
+  where: {},
+  truncate: true
 });

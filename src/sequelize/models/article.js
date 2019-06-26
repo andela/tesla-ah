@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
+      blocked: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
+      },
       tagList: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true

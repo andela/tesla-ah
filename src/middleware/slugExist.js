@@ -15,6 +15,7 @@ const slugExist = async (req, res, next) => {
       }
     });
   }
+  req.article = currentArticle;
   next();
 };
 
