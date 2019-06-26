@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       provider: DataTypes.STRING,
       socialId: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
-      isAdmin: DataTypes.BOOLEAN
+      roles: DataTypes.ARRAY(DataTypes.STRING),
     },
     {}
   );
