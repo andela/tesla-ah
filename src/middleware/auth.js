@@ -38,4 +38,49 @@ export default class Auth {
       return res.status(500).json({ error });
     }
   }
+
+  /**
+   * Check ownership
+   * @param {Object} req - Request
+   * @param {Object} res  - Response
+   * @param {Function} next -Next
+   * @returns {Object} The response object
+   */
+  static async checkOwnership(req, res, next) {
+    const { user, params } = req;
+    if ((user.id === parseInt(params.id, 10)) || (user.roles.includes('admin'))) {
+      return next();
+    }
+    return res.status(401).json({ message: 'You are not admin or owner of this profile' });
+  }
+
+  /**
+   * Check checkIsAdmin
+   * @param {Object} req - Request
+   * @param {Object} res  - Response
+   * @param {Function} next -Next
+   * @returns {Object} The response object
+   */
+  static async checkIsAdmin(req, res, next) {
+    const { user } = req;
+    if (user && user.roles.includes('admin')) {
+      return next();
+    }
+    return res.status(403).json({ message: 'You are not an admin!' });
+  }
+
+  /**
+   * Check checkIsModerator
+   * @param {Object} req - Request
+   * @param {Object} res  - Response
+   * @param {Function} next -Next
+   * @returns {Object} The response object
+   */
+  static async checkIsModerator(req, res, next) {
+    const { user } = req;
+    if (user && user.roles.includes('moderator' || 'admin')) {
+      return next();
+    }
+    return res.status(401).json({ message: 'You are not a moderator!' });
+  }
 }

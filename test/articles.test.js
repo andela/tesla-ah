@@ -168,7 +168,7 @@ describe('PUT and DELETE /api/articles/:slug', () => {
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.deep.equal(403);
-        expect(res.body.error).to.deep.equal('Sorry!, you are not the owner of this slug');
+        expect(res.body.message).to.deep.equal('Sorry!, You are not the owner of this article');
         done();
       });
   });

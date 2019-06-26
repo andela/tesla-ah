@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import { omit } from 'lodash';
 import TokenHelper from '../../helpers/Token.helper';
 import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
@@ -24,16 +25,7 @@ class AuthController {
    * @returns {Object} - Response object
    */
   static async register(req, res) {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      username,
-      dob,
-      bio,
-      gender
-    } = req.body;
+    let { body } = req;
 
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({
@@ -42,17 +34,12 @@ class AuthController {
       });
     }
 
+    body = await omit(body, ['roles']);
+
     const userObject = {
-      firstName,
-      lastName,
-      email,
-      password: HashHelper.hashPassword(password),
-      username,
-      dob,
-      bio,
-      gender,
-      verified: false,
-      isAdmin: false
+      ...body,
+      password: HashHelper.hashPassword(body.password),
+      verified: false
     };
 
     const newUser = await User.create(userObject);
