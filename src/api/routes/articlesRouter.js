@@ -31,7 +31,7 @@ const { bookmark } = bookmarkController;
 
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment,
-  likeComment, dislikeComment, countLikes, countDislikes
+  likeComment, dislikeComment, countLikes, countDislikes, commentHistory
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
@@ -78,5 +78,9 @@ articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
 articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
+// get comment edit history
+
+articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, commentHistory);
+
 
 export default articlesRouter;
