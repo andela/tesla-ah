@@ -3,7 +3,10 @@ import models from '../../sequelize/models';
 import readTime from '../../helpers/ReadTime.helper';
 
 const {
-  Article, User, LikeDislike,
+  Article,
+  User,
+  LikeDislike,
+  ReportedArticles
 } = models;
 
 /**
@@ -21,16 +24,36 @@ class articlesController {
 
     // @check if that user is verified
     const user = await User.findOne({ where: { id } });
-    if (user.dataValues.verified === false) return res.status(403).send({ error: 'Please Verify your account, first!' });
+    if (user.dataValues.verified === false) {
+      return res
+        .status(403)
+        .send({ error: 'Please Verify your account, first!' });
+    }
 
     const dataValues = await articles.createNewArticle(req);
     const {
-      slug, title, description, body, tagList, author, updatedAt, createdAt, readtime
+      slug,
+      title,
+      description,
+      body,
+      tagList,
+      author,
+      updatedAt,
+      createdAt,
+      readtime
     } = dataValues;
 
     const result = {
       // eslint-disable-next-line max-len
-      slug, title, description, body, tagList, updatedAt, createdAt, author, readtime
+      slug,
+      title,
+      description,
+      body,
+      tagList,
+      updatedAt,
+      createdAt,
+      author,
+      readtime
     };
     res.status(201).send({
       article: result
@@ -46,7 +69,12 @@ class articlesController {
     const { page, limit } = req.query;
     const pageNumber = parseInt(page, 10);
     const limitNumber = parseInt(limit, 10);
-    if (typeof pageNumber === 'number' && typeof limitNumber === 'number' && typeof page !== 'undefined' && typeof limit !== 'undefined') {
+    if (
+      typeof pageNumber === 'number'
+      && typeof limitNumber === 'number'
+      && typeof page !== 'undefined'
+      && typeof limit !== 'undefined'
+    ) {
       if (pageNumber <= 0 || limitNumber <= 0) {
         return res.status(400).json({
           error: 'Invalid request'
@@ -63,7 +91,7 @@ class articlesController {
     }
     const allArticle = await articles.getAllArticle();
 
-    if (!allArticle[0]) return res.status(404).send({ error: 'Whoops! No Articles found!' });
+    if (!allArticle[0]) { return res.status(404).send({ error: 'Whoops! No Articles found!' }); }
     res.status(200).send({
       articles: allArticle
     });
@@ -79,7 +107,7 @@ class articlesController {
 
     // @check if the article's slug exist
     const result = await Article.findOne({ where: { slug } });
-    if (result === null) return res.status(404).send({ error: 'This Slug Not found!' });
+    if (result === null) { return res.status(404).send({ error: 'This Slug Not found!' }); }
 
     const oneArticle = await articles.getOneSlug(slug);
     res.status(200).send({
@@ -158,6 +186,30 @@ class articlesController {
    * @param  {object} res
    * @return {object} returns a message with operation status
    */
+  static async reportArticle(req, res) {
+    const { username } = req.user;
+    const { comment } = req.body;
+    const { slug } = req.params;
+    ReportedArticles.create({
+      slug,
+      comment,
+      username,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+      .then((out) => {
+        res.status(201).send({
+          status: 201,
+          data: out,
+        });
+      });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
   static async likeArticle(req, res) {
     const { id: currentUser } = req.user;
     const { slug } = req.params;
@@ -167,7 +219,9 @@ class articlesController {
       const query = await Article.findAll({ where: { slug } });
 
       if (!query[0]) {
-        return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+        return res
+          .status(404)
+          .json({ message: `Article with slug: ${slug} not found` });
       }
 
       const { dataValues: foundArticle } = query[0];
@@ -190,13 +244,22 @@ class articlesController {
 
       // If the user has already liked send a response
       if (hasLiked[0]) {
-        return res.status(403).json({ message: `User ${currentUser} has already liked article: ${slug}` });
+        return res
+          .status(403)
+          .json({
+            message: `User ${currentUser} has already liked article: ${slug}`
+          });
       }
 
       // If user has disliked before, remove dislike, add like.
       if (hasDisliked[0]) {
-        await LikeDislike.update({ dislikes: 0, likes: 1 }, { where: { id: hasDisliked[0].id } });
-        return res.status(200).json({ message: `User ${currentUser} has liked article ${slug}` });
+        await LikeDislike.update(
+          { dislikes: 0, likes: 1 },
+          { where: { id: hasDisliked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({ message: `User ${currentUser} has liked article ${slug}` });
       }
 
       // the user hasn't liked or disliked before, create new like
@@ -204,10 +267,12 @@ class articlesController {
         userId: currentUser,
         articleId: foundArticle.id,
         dislikes: 0,
-        likes: 1,
+        likes: 1
       });
 
-      return res.status(200).json({ message: `User ${currentUser} has liked article ${slug}` });
+      return res
+        .status(200)
+        .json({ message: `User ${currentUser} has liked article ${slug}` });
     } catch (error) {
       return res.status(500).json({ error: `${error}` });
     }
@@ -227,7 +292,9 @@ class articlesController {
       const query = await Article.findAll({ where: { slug } });
 
       if (!query[0]) {
-        return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+        return res
+          .status(404)
+          .json({ message: `Article with slug: ${slug} not found` });
       }
 
       const { dataValues: foundArticle } = query[0];
@@ -250,13 +317,24 @@ class articlesController {
 
       // If the user has already disliked send a response
       if (hasDisliked[0]) {
-        return res.status(403).json({ message: `User ${currentUser} has already disliked article: ${slug}` });
+        return res
+          .status(403)
+          .json({
+            message: `User ${currentUser} has already disliked article: ${slug}`
+          });
       }
 
       // If user has liked before, remove like, add dislike.
       if (hasLiked[0]) {
-        await LikeDislike.update({ dislikes: 1, likes: 0 }, { where: { id: hasLiked[0].id } });
-        return res.status(200).json({ message: `User ${currentUser} has disliked article ${slug}` });
+        await LikeDislike.update(
+          { dislikes: 1, likes: 0 },
+          { where: { id: hasLiked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({
+            message: `User ${currentUser} has disliked article ${slug}`
+          });
       }
 
       // the user hasn't disliked before, create new dislike
@@ -264,10 +342,12 @@ class articlesController {
         userId: currentUser,
         articleId: foundArticle.id,
         dislikes: 1,
-        likes: 0,
+        likes: 0
       });
 
-      return res.status(200).json({ message: `User ${currentUser} has disliked article ${slug}` });
+      return res
+        .status(200)
+        .json({ message: `User ${currentUser} has disliked article ${slug}` });
     } catch (error) {
       return res.status(500).json({ error: `${error}` });
     }
@@ -285,20 +365,24 @@ class articlesController {
     const query = await Article.findAll({ where: { slug } });
 
     if (!query[0]) {
-      return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+      return res
+        .status(404)
+        .json({ message: `Article with slug: ${slug} not found` });
     }
 
     const { dataValues: foundArticle } = query[0];
 
     // Get likes
-    const likeCount = await LikeDislike.count({ where: { articleId: foundArticle.id, likes: 1 } });
+    const likeCount = await LikeDislike.count({
+      where: { articleId: foundArticle.id, likes: 1 }
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
         articleSlug: slug,
         numberOfLikes: likeCount
-      },
+      }
     });
   }
 
@@ -314,7 +398,9 @@ class articlesController {
     const query = await Article.findAll({ where: { slug } });
 
     if (!query[0]) {
-      return res.status(404).json({ message: `Article with slug: ${slug} not found` });
+      return res
+        .status(404)
+        .json({ message: `Article with slug: ${slug} not found` });
     }
 
     const { dataValues: foundArticle } = query[0];
@@ -323,8 +409,8 @@ class articlesController {
     const likeCount = await LikeDislike.count({
       where: {
         articleId: foundArticle.id,
-        dislikes: 1,
-      },
+        dislikes: 1
+      }
     });
 
     return res.status(200).json({
@@ -332,7 +418,7 @@ class articlesController {
       data: {
         articleSlug: slug,
         numberOfDislikes: likeCount
-      },
+      }
     });
   }
 }
