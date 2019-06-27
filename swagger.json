@@ -5,7 +5,7 @@
     "title": "Tesla-AH",
     "description": "Create a community of like minded authors to foster inspiration and innovation by leveraging the modern web."
   },
-  "host":"localhost:3000",
+  "host": "localhost:3000",
   "basePath": "/api",
   "tags": [
     {
@@ -18,22 +18,16 @@
     },
     {
       "name": "profile",
-      "description": " User profile "},
-      {
+      "description": " User profile "
+    },
+    {
       "name": "follow",
       "description": " User should be able to follow and unfollow each other."
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "definitions": {
     "user": {
       "type": "object",
@@ -98,12 +92,7 @@
       }
     },
     "article": {
-      "required": [
-        "title",
-        "description",
-        "body",
-        "tagList"
-      ],
+      "required": ["title", "description", "body", "tagList"],
       "properties": {
         "title": {
           "type": "string"
@@ -134,11 +123,11 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "ericrukundo005@gmail.com" 
+          "example": "ericrukundo005@gmail.com"
         },
         "password": {
           "type": "string",
-          "example": "eric@12345" 
+          "example": "eric@12345"
         }
       }
     },
@@ -155,9 +144,7 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "User is able to create an account",
         "parameters": [
           {
@@ -169,9 +156,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": " User Account created successfully",
@@ -184,9 +169,7 @@
     },
     "/api/user": {
       "put": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "User profile update",
         "parameters": [
           {
@@ -202,9 +185,7 @@
             "schema": "#/definitions/user"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "User profile sucessfully updated"
@@ -220,9 +201,7 @@
     },
     "/profiles/{username}": {
       "get": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "Get user profile",
         "parameters": [
           {
@@ -238,9 +217,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "User profile returned"
@@ -256,9 +233,7 @@
     },
     "/auth/signout": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
         "parameters": [
           {
@@ -268,9 +243,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "You are now signed Out!"
@@ -304,9 +277,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Article created successfully",
@@ -319,9 +290,7 @@
       "get": {
         "tags": ["article"],
         "description": "user should be able to view all articles",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Articles fetched successfully"
@@ -341,9 +310,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Single Article fetched successfully"
@@ -375,9 +342,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Article updated successfully",
@@ -404,9 +369,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
@@ -481,7 +444,7 @@
           {
             "name": "token",
             "in": "header",
-            "example":"This_is_andela_2433546h34",
+            "example": "This_is_andela_2433546h34",
             "description": "Authentication key",
             "required": true,
             "type": "string"
@@ -686,13 +649,9 @@
     },
     "/auth/reset": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "User is able to request password reset",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -751,13 +710,9 @@
     },
     "/auth/reset/:token": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "When user click on Reset Button on his/her email, Reset link will be generated.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "token",
@@ -810,13 +765,9 @@
     },
     "/auth/reset/:aprvToken": {
       "patch": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "User is able to apply password reset and change his or her password",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "aprvToken",
@@ -868,9 +819,7 @@
     },
     "/articles/{slug}/comments": {
       "post": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User is able to add a comment on an article",
         "parameters": [
           {
@@ -895,9 +844,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for contributing to this article",
@@ -908,9 +855,7 @@
         }
       },
       "get": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User is able to get an article with its comments",
         "parameters": [
           {
@@ -920,20 +865,15 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
-          "200": {
-          }
+          "200": {}
         }
       }
     },
     "/articles/{slug}/comments/{commentId}": {
       "post": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User is able to comment a comment",
         "parameters": [
           {
@@ -964,9 +904,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for contributing to this comment",
@@ -979,9 +917,7 @@
     },
     "/articles/comments/{commentId}": {
       "patch": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User is able to edit a comment",
         "parameters": [
           {
@@ -1006,9 +942,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Your comment has been edited",
@@ -1018,40 +952,34 @@
           }
         }
       },
-    "delete": {
-      "tags": [
-        "comment"
-      ],
-      "description": "User is able to delete a comment",
-      "parameters": [
-        {
-          "name": "token",
-          "in": "header",
-          "description": "Client authentication token",
-          "required": true
-        },
-        {
-          "name": "commentId",
-          "in": "path",
-          "description": "The comment Id",
-          "required": true
-        }
-      ],
-      "produces": [
-        "application/json"
-      ],
-      "responses": {
-        "200": {
-          "description": "Comment deleted!"
+      "delete": {
+        "tags": ["comment"],
+        "description": "User is able to delete a comment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Client authentication token",
+            "required": true
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "The comment Id",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Comment deleted!"
+          }
         }
       }
-    }
     },
     "/articles/comments/{commentId}/dislike": {
       "post": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User should be able to dislike a comment",
         "parameters": [
           {
@@ -1067,9 +995,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for disliking this comment"
@@ -1082,9 +1008,7 @@
     },
     "/articles/comments/{commentId}/like": {
       "post": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "User should be able to like a comment",
         "parameters": [
           {
@@ -1100,9 +1024,7 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for liking this comment"
@@ -1113,33 +1035,27 @@
         }
       }
     },
-  "/articles/comments/{commentId}/dislikes": {
-    "get": {
-      "tags": [
-        "comment"
-      ],
-      "description": "Authors Haven visitors and users should be able see all dislikes on a comment",
-      "parameters": [
-        {
-          "name": "commentId",
-          "in": "path",
-          "description": "Comment Id",
-          "required": true
+    "/articles/comments/{commentId}/dislikes": {
+      "get": {
+        "tags": ["comment"],
+        "description": "Authors Haven visitors and users should be able see all dislikes on a comment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Comment Id",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {}
         }
-      ],
-      "produces": [
-        "application/json"
-      ],
-      "responses": {
-        "200": {}
       }
-    }
-  },
+    },
     "/articles/comments/{commentId}/likes": {
       "get": {
-        "tags": [
-          "comment"
-        ],
+        "tags": ["comment"],
         "description": "Authors Haven visitors and users should be able see all likes on a comment",
         "parameters": [
           {
@@ -1149,27 +1065,18 @@
             "required": true
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
-          "200": {
-          }
+          "200": {}
         }
       }
     },
-    "/profiles":{
+    "/profiles": {
       "get": {
-        "tags": [
-          "Listing All Users Profiles"
-        ],
+        "tags": ["profile"],
         "description": "Any User will be able to view a list of User's Profiles",
-        "parameters": [
-          
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "parameters": [],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "the list of All User's profile has been successfully fetched"
@@ -1285,7 +1192,6 @@
         }
       }
     },
-    
     "/profiles/:username/following": {
       "get": {
         "tags": ["follow"],
@@ -1386,6 +1292,122 @@
                   "type": "object",
                   "example": {
                     "message": "you do not follow any person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/:slug/report": {
+      "post": {
+        "tags": ["article"],
+        "description": "User is able to report an article",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "2"
+                    },
+                    "slug": {
+                      "type": "string",
+                      "example": "73H7812"
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "some thing"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "ericprestein"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2019-06-24T12:05:20.116Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2019-06-24T12:05:20.116Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The comment is required and should have at least 3 letters!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The article does not exist!!!"
+                    }
                   }
                 }
               }

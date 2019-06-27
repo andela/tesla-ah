@@ -8,8 +8,11 @@ const slugExist = async (req, res, next) => {
     where: { slug }
   });
   if (!currentArticle) {
-    return res.status(404).json({
-      error: 'The article does not exist!!!'
+    return res.status(404).send({
+      status: 404,
+      error: {
+        message: 'The article does not exist!!!'
+      }
     });
   }
   next();
