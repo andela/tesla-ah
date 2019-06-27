@@ -444,7 +444,7 @@ describe('Block article', () => {
         .post(`/api/articles/${testArticle.slug}/block`)
         .set('token', UserToten)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(403);
           done();
         });
     });
