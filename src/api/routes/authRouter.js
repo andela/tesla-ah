@@ -6,7 +6,6 @@ import validateBody from '../../middleware/validateBody';
 import userValidation from '../../middleware/validUser';
 import validateGender from '../../middleware/validateGender';
 import Auth from '../../middleware/auth';
-import dropToken from '../../middleware/droppedToken';
 import socialLogin from '../controllers/socialLogin';
 import socialAccount from '../../middleware/socialAccountExists';
 import socialMiddleware from '../../middleware/socialTest';
@@ -26,8 +25,6 @@ const { usernameExists, emailExists } = userValidation;
 const { verifyToken } = Auth;
 
 const { google, twitter } = socialAccount;
-
-authRouter.get('/signout', verifyToken, dropToken, SignOut);
 
 // social login test routes
 
@@ -85,7 +82,7 @@ authRouter.get(
   socialLogin.twitterLogin
 );
 
-authRouter.get('/signout', verifyToken, dropToken, SignOut);
+authRouter.get('/signout', verifyToken, SignOut);
 authRouter.post('/login', validateBody('login'), login);
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.get('/verify', verifyAccount);

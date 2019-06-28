@@ -2,13 +2,14 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import { omit } from 'lodash';
-import TokenHelper from '../../helpers/Token.helper';
+import tokenHelper from '../../helpers/Token.helper';
 import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
 import templete from '../../helpers/emailTemplete';
 
 const { User, Blacklist } = db;
+const { generateToken, decodeToken } = tokenHelper;
 
 dotenv.config();
 
@@ -45,7 +46,10 @@ class AuthController {
     const newUser = await User.create(userObject);
 
     if (newUser) {
-      const token = await TokenHelper.generateToken(newUser.dataValues);
+      const token = await generateToken({
+        ...newUser.dataValues,
+        password: null,
+      });
       Mailhelper.sendMail({
         to: newUser.email,
         names: `${newUser.firstName} ${newUser.lastName}`,
@@ -72,7 +76,7 @@ class AuthController {
   static async verifyAccount(req, res) {
     const { token } = req.query;
     try {
-      const user = await TokenHelper.decodeToken(token);
+      const user = await decodeToken(token);
       await User.update(
         {
           verified: true
@@ -106,25 +110,19 @@ class AuthController {
       user: { id },
       token
     } = req;
+
+    const { exp } = await decodeToken(token);
+
     await Blacklist.create({
       userId: id,
-      token
+      token,
+      expiresAt: exp * 1000,
     });
+
     res.json({
       status: 200,
-      message: 'You are now signed Out!'
+      message: 'You are now signed out!'
     });
-  }
-
-  /**
-   * signup controller
-   * @param {Object} res  - Response
-   * @param {Function} next -Next
-   * @returns {Object} The response object
-   */
-  static async signup(res) {
-    // TODO: Implement functionality
-    return res.status(200).send({ status: 200 });
   }
 
   /**
@@ -151,7 +149,10 @@ class AuthController {
             }
           });
         } else {
-          TokenHelper.generateToken(users[0].dataValues).then((token) => {
+          generateToken({
+            ...users[0].dataValues,
+            password: null,
+          }).then((token) => {
             res.status(200).send({
               status: 200,
               data: {
