@@ -88,7 +88,7 @@ export default class Auth {
       status: 403,
       data: {
         message: 'You are not allowed to perform this operation',
-      }
+      },
     });
   }
 }
