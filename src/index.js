@@ -4,12 +4,14 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import session from 'express-session';
 import swaggerUi from 'swagger-ui-express';
+import cron from 'node-cron';
 import api from './api/routes/index';
 import globalMiddleware from './middleware/globalMiddleware';
 import './config/passportSetup';
 import db from './sequelize/models/index';
 import swaggerDoc from '../swagger.json';
 import './handlers/cloudinary';
+import purgeDeadTokens from './helpers/purgeDeadTokens';
 
 dotenv.config();
 
@@ -38,6 +40,9 @@ app.use((req, res) => {
 });
 
 sequelize.sync().then(() => {
+  cron.schedule('*/59 * * * *', () => {
+    purgeDeadTokens();
+  });
   app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`Database succesfully connected\nServer listening on port: ${port} in ${process.env.NODE_ENV} mode`);

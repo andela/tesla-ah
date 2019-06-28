@@ -20,7 +20,7 @@ class checkOwner {
     const result = await Article.findOne({ where: { slug } });
     if (result === null) return res.status(404).send({ error: 'Slug Not found!' });
 
-    if (roles.includes('moderator')) {
+    if (roles.includes('moderator' || 'admin')) {
       req.foundArticle = result.dataValues;
       return next();
     }

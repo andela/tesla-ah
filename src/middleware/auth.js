@@ -35,7 +35,10 @@ export default class Auth {
         return res.status(500).json({ error: `${error}` });
       }
     } catch (error) {
-      return res.status(500).json({ error });
+      if (error.name && error.name === 'TokenExpiredError') {
+        return res.status(401).json({ status: 401, message: error.message });
+      }
+      return res.status(500).json({ error: `${error}` });
     }
   }
 
@@ -51,7 +54,7 @@ export default class Auth {
     if ((user.id === parseInt(params.id, 10)) || (user.roles.includes('admin'))) {
       return next();
     }
-    return res.status(401).json({ message: 'You are not admin or owner of this profile' });
+    return res.status(403).json({ message: 'You are not allowed to perform this operation' });
   }
 
   /**
@@ -66,7 +69,7 @@ export default class Auth {
     if (user && user.roles.includes('admin')) {
       return next();
     }
-    return res.status(403).json({ message: 'You are not an admin!' });
+    return res.status(403).json({ message: 'You are not allowed to perform this operation' });
   }
 
   /**
@@ -78,9 +81,14 @@ export default class Auth {
    */
   static async checkIsModerator(req, res, next) {
     const { user } = req;
-    if (user && user.roles.includes('moderator' || 'admin')) {
+    if (user.roles.includes('moderator') || user.roles.includes('admin')) {
       return next();
     }
-    return res.status(401).json({ message: 'You are not a moderator!' });
+    return res.status(403).send({
+      status: 403,
+      data: {
+        message: 'You are not allowed to perform this operation',
+      }
+    });
   }
 }

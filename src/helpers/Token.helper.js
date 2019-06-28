@@ -6,7 +6,7 @@ dotenv.config();
 
 class Tokenizer {
   static async generateToken(payload) {
-    const token = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '2 days' });
+    const token = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '10h' });
 
     return token;
   }

@@ -139,6 +139,15 @@
           "example": "This is a comment"
         }
       }
+    },
+    "description": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "example": "This is the description or the reason why article is blocked."
+        }
+      }
     }
   },
   "paths": {
@@ -1416,6 +1425,227 @@
                     "messages": {
                       "type": "string",
                       "example": "The comment is required and should have at least 3 letters!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The article does not exist!!!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/:slug/block": {
+      "post": {
+        "tags": ["article"],
+        "description": "Super admin or moderator are able to block the article",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/description"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message":{
+                      "type": "object",
+                      "example": "Article blocked successfully"
+                    },
+                    "response": {
+                     "type": "object",
+                     "properties":{
+                      "id": {
+                        "type": "integer",
+                        "example": "2"
+                      },
+                      "reporterId": {
+                        "type": "integer",
+                        "example": 5
+                      },
+                      "articleId": {
+                        "type": "integer",
+                        "example": 3
+                      },
+                      "authorId": {
+                        "type": "integer",
+                        "example": 2
+                      },
+                      "moderatorId": {
+                        "type": "integer",
+                        "example": 6
+                      },
+                      "blockedDay": {
+                        "type": "string",
+                        "example": "Thursday"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2019-06-24T12:05:20.116Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2019-06-24T12:05:20.116Z"
+                      }
+                    }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Inputs",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The description is required and should have at least 3 letters!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The article does not exist!!!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/:slug/unblock": {
+      "post": {
+        "tags": ["article"],
+        "description": "Super admin or moderator are able to unblock the article",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Article unblocked successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unblock an article which is not blocked",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "string",
+                      "example": "The article you are trying to unblock is not blocked."
                     }
                   }
                 }
