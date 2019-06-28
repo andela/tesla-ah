@@ -54,15 +54,18 @@ class ArticlesHelper {
   }
 
   static async getAllArticle() {
-    const result = await Article.findAll({
-      include: [{
-        as: 'author',
-        model: User,
-        attributes: ['username', 'bio', 'image']
-      }],
-      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt'],
-      limit: 10
-    });
+    const result = await Article.findAll(
+      { where: { blocked: false } },
+      {
+        include: [{
+          as: 'author',
+          model: User,
+          attributes: ['username', 'bio', 'image']
+        }],
+        attributes: ['id', 'slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt'],
+        limit: 10
+      }
+    );
     return result;
   }
 

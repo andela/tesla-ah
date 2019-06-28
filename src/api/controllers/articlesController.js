@@ -6,8 +6,19 @@ const {
   Article,
   User,
   LikeDislike,
-  ReportedArticles
+  ReportedArticles,
+  BlockedArticles
 } = models;
+// eslint-disable-next-line no-array-constructor
+const days = new Array(
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+);
 
 /**
  * @Author - Audace Uhiriwe
@@ -91,7 +102,9 @@ class articlesController {
     }
     const allArticle = await articles.getAllArticle();
 
-    if (!allArticle[0]) { return res.status(404).send({ error: 'Whoops! No Articles found!' }); }
+    if (!allArticle[0]) {
+      return res.status(404).send({ error: 'Whoops! No Articles found!' });
+    }
     res.status(200).send({
       articles: allArticle
     });
@@ -107,7 +120,9 @@ class articlesController {
 
     // @check if the article's slug exist
     const result = await Article.findOne({ where: { slug } });
-    if (result === null) { return res.status(404).send({ error: 'This Slug Not found!' }); }
+    if (result === null) {
+      return res.status(404).send({ error: 'This Slug Not found!' });
+    }
 
     const oneArticle = await articles.getOneSlug(slug);
     res.status(200).send({
@@ -195,14 +210,13 @@ class articlesController {
       comment,
       username,
       createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-      .then((out) => {
-        res.status(201).send({
-          status: 201,
-          data: out,
-        });
+      updatedAt: new Date()
+    }).then((out) => {
+      res.status(201).send({
+        status: 201,
+        data: out
       });
+    });
   }
 
   /**
@@ -244,11 +258,9 @@ class articlesController {
 
       // If the user has already liked send a response
       if (hasLiked[0]) {
-        return res
-          .status(403)
-          .json({
-            message: `User ${currentUser} has already liked article: ${slug}`
-          });
+        return res.status(403).json({
+          message: `User ${currentUser} has already liked article: ${slug}`
+        });
       }
 
       // If user has disliked before, remove dislike, add like.
@@ -317,11 +329,9 @@ class articlesController {
 
       // If the user has already disliked send a response
       if (hasDisliked[0]) {
-        return res
-          .status(403)
-          .json({
-            message: `User ${currentUser} has already disliked article: ${slug}`
-          });
+        return res.status(403).json({
+          message: `User ${currentUser} has already disliked article: ${slug}`
+        });
       }
 
       // If user has liked before, remove like, add dislike.
@@ -330,11 +340,9 @@ class articlesController {
           { dislikes: 1, likes: 0 },
           { where: { id: hasLiked[0].id } }
         );
-        return res
-          .status(200)
-          .json({
-            message: `User ${currentUser} has disliked article ${slug}`
-          });
+        return res.status(200).json({
+          message: `User ${currentUser} has disliked article ${slug}`
+        });
       }
 
       // the user hasn't disliked before, create new dislike
@@ -419,6 +427,66 @@ class articlesController {
         articleSlug: slug,
         numberOfDislikes: likeCount
       }
+    });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
+  static async blockArticle(req, res) {
+    const { slug } = req.params;
+    const { user } = req;
+    const { description } = req.body;
+    const article = await Article.findOne({ where: { slug } });
+    const reporterUsername = await ReportedArticles.findOne({
+      where: { slug }
+    });
+    const username = !reporterUsername
+      ? null
+      : reporterUsername.dataValues.username;
+    const repoterId = username === null ? null : await User.findOne({ where: { username } });
+    const id = repoterId === null ? null : repoterId.dataValues.id;
+    const object = {
+      reporterId: id,
+      articleId: article.id,
+      authorId: article.authorId,
+      moderatorId: user.id,
+      blockedDay: days[new Date().getDay() - 1],
+      description
+    };
+    BlockedArticles.create(object).then(async (responce) => {
+      await Article.update(
+        { blocked: true },
+        { where: { id: responce.articleId } }
+      );
+      res.status(201).send({
+        status: 201,
+        data: {
+          message: 'Article blocked successfully',
+          responce
+        }
+      });
+    });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
+  static async unBlockArticle(req, res) {
+    const { slug } = req.params;
+    const { id } = await Article.findOne({ where: { slug } });
+    BlockedArticles.destroy({ where: { articleId: id } }).then(async () => {
+      await Article.update({ blocked: false }, { where: { slug } });
+      res.status(200).send({
+        status: 200,
+        data: {
+          message: 'Article unblocked successfully'
+        }
+      });
     });
   }
 }

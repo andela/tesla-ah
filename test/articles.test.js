@@ -276,7 +276,7 @@ describe('Like/Unlike Articles', () => {
       body: 'this is article is supposed to have two paragraph',
       description: 'the paragraph one has many character than before',
       tagList: ['reactjs', 'angularjs', 'expressjs'],
-      slug: 'lsug',
+      slug: 'lsug32344',
       authorId: testUser.dataValues.id,
       readtime: '1 min'
     };
@@ -380,3 +380,94 @@ describe('Like/Unlike Articles', () => {
   });
 });
 
+describe('Block article', () => {
+  let UserToten;
+  let AdminToken;
+  let testUser;
+  let testArticle;
+  before(async () => {
+    // create test user
+    testUser = await User.create({
+      firstName: 'Luffyiu',
+      lastName: 'Monkeyf',
+      username: 'thep_irate_king',
+      email: 'monkeyd@luffy.co',
+      password: 'qwerty123445',
+      confirmPassword: 'qwerty123445',
+    });
+    // create test article
+    testArticle = await Article.create({
+      title: 'this is article one',
+      body: 'this is article is supposed to have two paragraph',
+      description: 'the paragraph one has many character than before',
+      tagList: ['reactjs', 'angularjs', 'expressjs'],
+      slug: 'lsug38769',
+      authorId: testUser.dataValues.id,
+      readtime: '1 min'
+    });
+  });
+
+  describe('POST /api/arctile/:slug/block', () => {
+    it('Should return 200 when user logged in successful', (done) => {
+      chai
+        .request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'gprestein055@gmail.com',
+          password: 'Eric.00005'
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          UserToten = res.body.data.token;
+          done();
+        });
+    });
+    it('Should return 200 when admin logged in successful', (done) => {
+      chai
+        .request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'gprestein555@gmail.com',
+          password: 'Eric.00005'
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          AdminToken = res.body.data.token;
+          done();
+        });
+    });
+    it('User should not be able to block an article', (done) => {
+      chai
+        .request(app)
+        .post(`/api/articles/${testArticle.slug}/block`)
+        .set('token', UserToten)
+        .end((err, res) => {
+          res.should.have.status(401);
+          done();
+        });
+    });
+    it('Admin should be able to block an article', (done) => {
+      chai
+        .request(app)
+        .post(`/api/articles/${testArticle.slug}/block`)
+        .set('token', AdminToken)
+        .send({ description: 'some reasons' })
+        .end((err, res) => {
+          res.should.have.status(201);
+          done();
+        });
+    });
+    it('Admin should be able to unblock an article', (done) => {
+      chai
+        .request(app)
+        .post(`/api/articles/${testArticle.slug}/unblock`)
+        .set('token', AdminToken)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+});
