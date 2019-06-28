@@ -35,7 +35,7 @@ export default class ProfilesController {
   static async updateProfile(req, res) {
     let { body } = req;
     let uploadedImage;
-    const { user, file } = req;
+    const { user, file, params } = req;
 
     if (!user.roles.includes('admin')) {
       body = await omit(body, ['roles']);
@@ -53,7 +53,7 @@ export default class ProfilesController {
       if (!file && Object.keys(body) < 1) return res.status(400).send({ message: 'Nothing changed in your Profile' });
       const updatedUser = await User.update(
         updatedProfile,
-        { where: { id: user.id } },
+        { where: { id: params.id } },
       );
 
       if (!updatedUser[0]) {

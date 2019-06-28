@@ -40,6 +40,7 @@
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
     "passport-facebook": "^3.0.0",
@@ -77,8 +78,8 @@
   "repository": "https://github.com/andela/tesla-ah.git",
   "nyc": {
     "exclude": [
-      "build/src/config/passportSetup.js",
-      "build/sequelize/**/*.js"
+      "src/config/passportSetup.js",
+      "src/sequelize/**/*.js"
     ]
   }
 }

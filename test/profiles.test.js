@@ -182,7 +182,7 @@ describe('User Profiles', () => {
         .set('token', userToken2)
         .send(data)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(403);
           res.body.should.be.a('object');
           done();
         });
