@@ -86,6 +86,7 @@ class articlesController {
       && typeof page !== 'undefined'
       && typeof limit !== 'undefined'
     ) {
+    if (typeof pageNumber === 'number' && typeof limitNumber === 'number' && typeof page !== 'undefined' && typeof limit !== 'undefined') {
       if (pageNumber <= 0 || limitNumber <= 0) {
         return res.status(400).json({
           error: 'Invalid request'

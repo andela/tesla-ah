@@ -1,0 +1,70 @@
+main{
+  margin:auto 10%;
+  .hot__story{
+    position: relative;
+    width: 100%;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    border-radius: 15px;
+    margin-right:20px;
+    img{
+      position: relative;
+      width: 100%;
+      height: 250px;
+      margin-bottom: 8px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .with--icons a{
+      color:$grey;
+      @include easeOut(.5s);
+      &:hover{
+        color:$blue;
+      }
+    }
+  }
+}
+.main-section{
+  margin:auto 10%;
+}
+
+.single__story{
+  border-bottom: 1px solid $dark;
+  margin-left:10%;
+  margin-bottom: 10px;
+  img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+}
+
+.side-section{
+  border-left:1px solid $dark;
+  padding-left: 10px;
+}
+
+.box{
+  background: url(https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg?auto=format%2Ccompress&cs=tinysrgb&dpr=1&w=500) no-repeat center/cover;
+  position: relative;
+  width: 100%;
+  height: 200px;
+  //padding: 20px;
+  border-radius:5px;
+  &__overlay{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background:rgba($dark,.4);
+    z-index:1;
+  }
+  &__text{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    z-index:3;
+    h6{
+      margin-top:50%;
+    }
+  }
+}

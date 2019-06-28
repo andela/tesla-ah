@@ -1,0 +1,36 @@
+header{
+  // background:transparent;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background:rgba($dark,.5);
+    border-bottom: 1px solid $grey;
+    &.shrink{
+      background:$white;
+      @include easeOut(.5s);
+      .nav-shrink{
+        color:$dark;
+      }
+    }
+  nav{
+    
+    .navbar-collapse{
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav-link{
+      color:$white;
+      &.is-active{
+        color:$blue;
+      }
+    }
+    .navbar-toggler-icon{
+     i.fa{
+       font-size: 27px;
+       // font-weight: 100;
+     }
+    }
+  }
+}

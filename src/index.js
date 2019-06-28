@@ -20,6 +20,7 @@ const app = express();
 const { sequelize } = db;
 
 globalMiddleware(app);
+
 app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true
@@ -38,6 +39,7 @@ app.use((req, res) => {
     }
   });
 });
+
 
 sequelize.sync().then(() => {
   cron.schedule('*/59 * * * *', () => {

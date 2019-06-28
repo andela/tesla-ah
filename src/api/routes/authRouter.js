@@ -83,6 +83,8 @@ authRouter.get(
 );
 
 authRouter.get('/signout', verifyToken, SignOut);
+authRouter.get('/signout', verifyToken, dropToken, SignOut);
+authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.post('/login', validateBody('login'), login);
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.get('/verify', verifyAccount);

@@ -92,7 +92,12 @@
       }
     },
     "article": {
-      "required": ["title", "description", "body", "tagList"],
+      "required": [
+        "title",
+        "description",
+        "body",
+        "tagList"
+      ],
       "properties": {
         "title": {
           "type": "string"
@@ -153,7 +158,9 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to create an account",
         "parameters": [
           {
@@ -242,7 +249,9 @@
     },
     "/auth/signout": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
         "parameters": [
           {
@@ -252,7 +261,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "You are now signed Out!"
@@ -286,7 +297,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Article created successfully",
@@ -299,7 +312,9 @@
       "get": {
         "tags": ["article"],
         "description": "user should be able to view all articles",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Articles fetched successfully"
@@ -319,7 +334,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Single Article fetched successfully"
@@ -351,7 +368,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article updated successfully",
@@ -378,7 +397,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
@@ -658,9 +679,13 @@
     },
     "/auth/reset": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to request password reset",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -719,9 +744,13 @@
     },
     "/auth/reset/:token": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "When user click on Reset Button on his/her email, Reset link will be generated.",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -774,9 +803,13 @@
     },
     "/auth/reset/:aprvToken": {
       "patch": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to apply password reset and change his or her password",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "aprvToken",

@@ -5,8 +5,13 @@ import server from '../src/index';
 import db from '../src/sequelize/models';
 import tokenHelper from '../src/helpers/Token.helper';
 
+
 const { User } = db;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d0953737c7d85b9f4c388cc2b8edbd63ca901403
 const { expect } = chai;
 chai.use(chaiHttp);
 
