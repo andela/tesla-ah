@@ -7,6 +7,9 @@ import commentsController from '../controllers/comments';
 import comment from '../../middleware/validComment';
 import RatingController from '../controllers/ratingController';
 import slugExist from '../../middleware/slugExist';
+import isAlreadBlocked from '../../middleware/blockedarticleExist';
+import isNotBlocked from '../../middleware/articleNotBlocked';
+import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 
@@ -23,8 +26,10 @@ const {
   getLikes,
   getDislikes,
   reportArticle,
+  blockArticle,
+  unBlockArticle
 } = articlesController;
-const { verifyToken } = Auth;
+const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
 
@@ -41,7 +46,7 @@ articlesRouter
   .get('/', getAllArticle);
 
 articlesRouter
-  .get('/:slug', getOneArticle)
+  .get('/:slug', slugExist, isThisArticleBlocked, getOneArticle)
   .put('/:slug', verifyToken, check.articleOwner, validateBody('updateArticle'), updateArticle)
   .delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
 
@@ -83,4 +88,7 @@ articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), 
 articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, commentHistory);
 
 
+// block reported articles
+articlesRouter.post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle);
+articlesRouter.post('/:slug/unblock', verifyToken, checkIsModerator, slugExist, isNotBlocked, unBlockArticle);
 export default articlesRouter;

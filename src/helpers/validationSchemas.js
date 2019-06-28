@@ -111,6 +111,13 @@ export default {
       .min(3)
       .label('The comment is required and should have at least 3 letters!')
   }),
+  checkDescription: Joi.object().keys({
+    description: Joi.string()
+      .trim()
+      .required()
+      .min(3)
+      .label('Description is required and should have at least 3 letters!')
+  }),
   validateRating: Joi.object().keys({
     rating: Joi.number()
       .integer()
