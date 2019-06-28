@@ -1675,6 +1675,90 @@
           }
         }
       }
+    },
+    "/articles?author={author}": {
+      "get": {
+        "tags": ["Search for an article"],
+        "description": "AAny User will be able to view a list of all articles which matches with the provided parameter",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "Author's Username",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The List of All Articles related to the provided author's Username"
+          }
+        }
+      }
+    },
+    "/articles?tag={tag}": {
+      "get": {
+        "tags": ["Search for an article"],
+        "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "path",
+            "description": "article's tag",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The List of All Articles related to the provided tag"
+          }
+        }
+      }
+    },
+    "/articles?title={title}": {
+      "get": {
+        "tags": ["Search for an article"],
+        "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "description": "article's title",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The List of All Articles related to the provided title"
+          }
+        }
+      }
+    },
+    "/articles?keywords={keywords}": {
+      "get": {
+        "tags": ["Search for an article"],
+        "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
+        "parameters": [
+          {
+            "name": "keywords",
+            "in": "path",
+            "description": "article's title",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The List of All Articles related to the provided keywords"
+          }
+        }
+      }
     }
   }
 }

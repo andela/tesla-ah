@@ -3,6 +3,7 @@ import articlesController from '../controllers/articlesController';
 import Auth from '../../middleware/auth';
 import check from '../../middleware/checkOwner';
 import validateBody from '../../middleware/validateBody';
+import search from '../../middleware/search';
 import commentsController from '../controllers/comments';
 import comment from '../../middleware/validComment';
 import RatingController from '../controllers/ratingController';
@@ -12,7 +13,7 @@ import isNotBlocked from '../../middleware/articleNotBlocked';
 import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
-
+import paginate from '../../middleware/paginate';
 
 const articlesRouter = Router();
 const {
@@ -33,17 +34,17 @@ const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
 
-
+const { searchForArticle } = search;
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment,
-  likeComment, dislikeComment, countLikes, countDislikes, commentHistory
+  likeComment, dislikeComment, countLikes, countDislikes
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
 
 articlesRouter
   .post('/', verifyToken, validateBody('createArticle'), createArticle)
-  .get('/', getAllArticle);
+  .get('/', paginate, searchForArticle, getAllArticle);
 
 articlesRouter
   .get('/:slug', slugExist, isThisArticleBlocked, getOneArticle)
@@ -83,10 +84,6 @@ articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
 articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
-// get comment edit history
-
-articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, commentHistory);
-
 
 // block reported articles
 articlesRouter.post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle);
