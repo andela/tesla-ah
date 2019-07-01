@@ -1,6 +1,6 @@
 import sendEmail from './mailer/SendAnyEmail';
-import Template from './emailTempleteblock';
-import TemplateUnblock from './emailTempleteUnBlock';
+import Template from './emailTemplateBlock';
+import TemplateUnblock from './emailTemplateUnblock';
 
 /**
  * @author EmyRukundo

@@ -4,12 +4,13 @@ import { omit } from 'lodash';
 import tokenHelper from '../../helpers/Token.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
-import templete from '../../helpers/emailTemplete';
-import verifyTemplete from '../../helpers/emailverifiyTemplete';
-import sendEmail from '../../helpers/mailer/SendAnyEmail';
+import verifyTemplate from '../../helpers/emailVerifyTemplate';
+import template from '../../helpers/emailTemplate';
+import workers from '../../workers';
 
 const { generateToken, decodeToken } = tokenHelper;
 const { User, Blacklist, Opt } = db;
+const { queueEmailWorker } = workers;
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ class AuthController {
         ...newUser.dataValues,
         password: null,
       });
+
       await Opt.create({
         userId: newUser.id,
         type: 'email'
@@ -59,21 +61,18 @@ class AuthController {
         userId: newUser.id,
         type: 'inapp'
       });
-      const htmlToSend = verifyTemplete.sendVerification(`${newUser.firstName} ${newUser.lastName}`, newUser.email, token);
-      sendEmail({ email: newUser.email }, htmlToSend, 'Welcome to Authorshaven').then(() => {
-        res.status(201).send({
-          status: 201,
-          data: {
-            message: `Reset link sent to your email <${newUser.email}>`,
-            email: `${newUser.email}`,
-            token
-          }
-        });
-      });
-      res.status(201).json({
+
+      const htmlToSend = verifyTemplate.sendVerification(`${newUser.firstName} ${newUser.lastName}`, newUser.email, token);
+
+      queueEmailWorker({ email: newUser.email }, htmlToSend, 'Welcome to Authorshaven', null);
+
+      res.status(201).send({
         status: 201,
-        message: 'We have sent an email to you to verify your account',
-        token
+        data: {
+          message: 'You will reveive an account verification email shortly',
+          email: `${newUser.email}`,
+          token
+        },
       });
     }
   }
@@ -106,7 +105,7 @@ class AuthController {
     } catch (err) {
       res.status(400).json({
         status: 400,
-        error: 'Invalid Request'
+        error: `Invalid Request ${err}`
       });
     }
   }
@@ -199,15 +198,11 @@ class AuthController {
       }
     }).then(async (response) => {
       if (response[0]) {
-        const token = await jwt.sign(
-          {
-            userId: response[0].id,
-            userName: response[0].username,
-            userEmail: response[0].emial
-          },
-          process.env.SECRET_KEY,
-          { expiresIn: 60 * 10 }
-        );
+        const token = await generateToken({
+          userId: response[0].id,
+          userName: response[0].username,
+          userEmail: response[0].email
+        });
 
         const user = response[0];
         const { firstName, lastName, email } = user.dataValues;
@@ -215,27 +210,28 @@ class AuthController {
         const mail = {
           firstName, lastName, link, email
         };
-        const htmlToSend = templete.getPasswordResetTemplete(
+        const htmlToSend = template.getPasswordResetTemplete(
           mail.firstName,
           mail.lastName,
           mail.link
         );
-        sendEmail(mail, htmlToSend, 'Password Reset').then(() => {
-          res.status(201).send({
-            status: 201,
-            data: {
-              message: `Reset link sent to your email <${mail.email}>`,
-              email: `${mail.email}`,
-              token
-            }
-          });
-        });
-      } else {
-        res.status(404).send({
-          status: 404,
-          data: { message: 'User with that email in not exist' }
+
+        queueEmailWorker(mail, htmlToSend, 'Password Reset', null);
+
+        return res.status(201).send({
+          status: 201,
+          data: {
+            message: `A reset link will be sent to <${mail.email}> shortly.`,
+            email: `${mail.email}`,
+            token
+          }
         });
       }
+
+      return res.status(404).send({
+        status: 404,
+        data: { message: 'User with that email in not exist' }
+      });
     });
   }
 

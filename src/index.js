@@ -15,13 +15,14 @@ import './helpers/notifications/EventListener';
 
 
 import './handlers/cloudinary';
-import purgeDeadTokens from './helpers/purgeDeadTokens';
+import workers from './workers';
 
 dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app = express();
 const { sequelize } = db;
+const { purgeWorker, sendMailWorker } = workers;
 
 app.use(session({
   secret: process.env.SECRET,
@@ -45,11 +46,14 @@ app.use((req, res) => {
 
 sequelize.sync().then(() => {
   cron.schedule('*/59 * * * *', () => {
-    purgeDeadTokens();
+    purgeWorker();
+  });
+  cron.schedule('*/10 * * * *', () => {
+    sendMailWorker();
   });
   app.listen(port, () => {
     // eslint-disable-next-line no-console
-    console.log(`Database succesfully connected\nServer listening on port: ${port} in ${process.env.NODE_ENV} mode`);
+    console.log(`Database succesfully connected\nPID: ${process.pid} Server listening on port: ${port} in ${process.env.NODE_ENV} mode`);
   });
 });
 

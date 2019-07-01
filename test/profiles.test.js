@@ -208,7 +208,7 @@ describe('User Profiles', () => {
         .send()
         .end((err, res) => {
           expect(res.body).to.be.an('object');
-          expect(res.body.message).to.deep.equal('Nothing changed in your Profile');
+          expect(res.body.message).to.deep.equal('Cannot update empty object');
           expect(res.statusCode).to.deep.equal(400);
           done();
         });
