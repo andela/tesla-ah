@@ -378,6 +378,67 @@ describe('Like/Unlike Articles', () => {
         done();
       });
   });
+
+  // share article test
+  it('should share an article on twitter', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/share/twitter`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        res.should.have.status(200);
+        done();
+      });
+  });
+
+  it('should share an article on facebook', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/share/facebook`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        expect(res.status).to.be.equal(200);
+        done();
+      });
+  });
+
+  it('should share an article on linkedin', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/share/linkedin`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        expect(res.status).to.be.equal(200);
+        done();
+      });
+  });
+
+  it('should share an article on pinterest', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/share/linkedin`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        expect(res.status).to.be.equal(200);
+        done();
+      });
+  });
+
+  it('should share an article on email', (done) => {
+    chai
+      .request(app)
+      .get(`/api/articles/${testArticle.slug}/share/email`)
+      .set('token', userToken)
+      .send()
+      .end((err, res) => {
+        expect(res.status).to.be.equal(200);
+        done();
+      });
+  });
 });
 
 describe('Block article', () => {
