@@ -1,6 +1,10 @@
+/* eslint-disable import/no-cycle */
 import articles from '../../helpers/articlesHelper';
 import models from '../../sequelize/models';
 import readTime from '../../helpers/ReadTime.helper';
+import eventEmitter from '../../helpers/notifications/EventEmitter';
+import findUser from '../../helpers/FindUser';
+
 
 const {
   Article,
@@ -53,7 +57,8 @@ class articlesController {
       createdAt,
       readtime
     } = dataValues;
-
+    const userInfo = await findUser(author.username);
+    eventEmitter.emit('publishArticle', userInfo.id, slug);
     const result = {
       // eslint-disable-next-line max-len
       slug,

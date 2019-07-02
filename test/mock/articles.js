@@ -14,5 +14,12 @@ export default {
     description: 'this is the article one that has been created by uhiriwe audace',
     body: 'this s article is the one article i have ever seen amazing',
     tagList: 'angularjs, nodejs, mongodb'
+  },
+  toPublish: {
+    title: 'This is Andela',
+    slug: 'this-is-andela-jfsf',
+    description: 'Hello @people, This is Andela',
+    body: 'bk ksjkjfvvsohgsonhsfogkfghfgkfnokgfkhsgknfgkfsghfsigfgifgfkfgsfgfgkfgfgkfgukhfgkhgkg',
+    tagList: 'this,is,andela'
   }
 };
