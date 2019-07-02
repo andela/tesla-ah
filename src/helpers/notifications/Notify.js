@@ -28,7 +28,8 @@ const notify = async (data) => {
           userId: user.userId,
           resource,
           message: emailMessage,
-          type: subscription.type
+          type: subscription.type,
+          status: 'unread'
         });
         await sendMail(dataValues.email, 'notification', {
           message: emailMessage
@@ -39,7 +40,8 @@ const notify = async (data) => {
           userId: user.userId,
           resource,
           message: inAppMessage,
-          type: subscription.type
+          type: subscription.type,
+          status: 'unread'
         });
         eventEmitter.emit('new_inapp', inAppMessage, dataValues);
         break;

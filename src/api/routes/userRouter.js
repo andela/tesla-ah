@@ -8,7 +8,7 @@ import OptController from '../controllers/optController';
 const userRouter = Router();
 const { updateProfile, deleteProfile, getCurrentUser } = ProfilesController;
 const {
-  optOutEmail, optOutApp, OptInApp, OptInEmail
+  optOutEmail, optOutApp, OptInApp, OptInEmail, OptedInApp, OptedInEmail
 } = OptController;
 const { verifyToken, checkOwnership, checkIsAdmin } = Auth;
 
@@ -21,5 +21,8 @@ userRouter
   .route('/:id')
   .put(verifyToken, checkOwnership, upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'cover', maxCount: 1 }]), validateBody('updateUser'), updateProfile)
   .delete(verifyToken, checkIsAdmin, deleteProfile);
+
+userRouter.get('/optinapp', verifyToken, OptedInApp);
+userRouter.get('/optinemail', verifyToken, OptedInEmail);
 
 export default userRouter;

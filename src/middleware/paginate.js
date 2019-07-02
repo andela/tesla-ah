@@ -21,7 +21,8 @@ const paginate = async (req, res, next) => {
     const count = await Article.count({});
     const foundArticles = await Article.findAll({
       limit: limitNumber,
-      offset
+      offset,
+      order: [['updatedAt', 'ASC']]
     });
     return res.json({
       data: { foundArticles, count }

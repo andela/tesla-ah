@@ -23,7 +23,8 @@ const myArticlePagination = async (req, res, next) => {
     const foundArticles = await Article.findAll({
       where: { authorId: id },
       limit: limitNumber,
-      offset
+      offset,
+      order: [['updatedAt', 'ASC']]
     });
     return res.json({
       data: { foundArticles, count }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
-    "prebuild": "./node_modules/.bin/sequelize db:migrate && ./node_modules/.bin/sequelize db:seed:all",
+    "prebuild": "./node_modules/.bin/sequelize db:migrate",
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit --require @babel/register --require regenerator-runtime",

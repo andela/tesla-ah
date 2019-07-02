@@ -18,7 +18,8 @@ const {
   LikeDislike,
   ReportedArticles,
   BlockedArticles,
-  Share
+  Share,
+  ArticleRatings
 } = models;
 // eslint-disable-next-line no-array-constructor
 const days = new Array(
@@ -188,6 +189,8 @@ class articlesController {
       { where: { slug }, returning: true }
     );
 
+    // @Update the slug in the Rating Table
+    await ArticleRatings.update({ slug: newSlug }, { where: { slug } });
 
     // Uplooad article image
     if (req.files) {
