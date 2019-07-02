@@ -43,7 +43,8 @@ class AuthController {
     const userObject = {
       ...body,
       password: HashHelper.hashPassword(body.password),
-      verified: false
+      verified: false,
+      roles: ['user']
     };
 
     const newUser = await User.create(userObject);
@@ -208,7 +209,7 @@ class AuthController {
 
         const user = response[0];
         const { firstName, lastName, email } = user.dataValues;
-        const link = `${process.env.BASE_URL}/api/auth/reset/${token}`;
+        const link = `${token}`;
         const mail = {
           firstName, lastName, link, email
         };
@@ -232,7 +233,7 @@ class AuthController {
 
       return res.status(404).send({
         status: 404,
-        data: { message: 'User with that email in not exist' }
+        data: { message: 'User with that email does not exist!' }
       });
     });
   }
@@ -283,8 +284,8 @@ class AuthController {
    * @returns {Object} The response object
    */
   static async ApplyPasswordReset(req, res) {
-    const { aprvToken } = req.params;
-    const token = await jwt.verify(aprvToken, process.env.SECRET_KEY);
+    const { token } = req.query;
+    const tokenApp = await jwt.verify(token, process.env.SECRET_KEY);
     const password = HashHelper.hashPassword(req.body.newpassword);
     User.update(
       {
@@ -292,7 +293,7 @@ class AuthController {
       },
       {
         where: {
-          id: token.userId
+          id: tokenApp.userId
         }
       }
     )

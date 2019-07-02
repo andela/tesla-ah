@@ -96,10 +96,28 @@ class articlesController {
     const allArticle = await articles.getAllArticle();
 
     if (!allArticle[0]) {
-      return res.status(404).send({ error: 'Whoops! No Articles found!' });
+      return res.status(200).send({ message: 'Whoops! No Articles found!' });
     }
     res.status(200).send({
-      articles: allArticle
+      articles: allArticle,
+      TotalOfArticles: allArticle.length
+    });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns array of articles which owner by a certain author
+   */
+  static async getMyOwnArticles(req, res) {
+    const { id } = req.user;
+    const myOwnArticles = await Article.getMyOwnArticles(id);
+    if (!myOwnArticles[0]) {
+      return res.status(200).send({ message: 'Whoops! No Articles found!', articles: [] });
+    }
+    res.status(200).send({
+      articles: myOwnArticles,
+      TotalOfArticles: myOwnArticles.length
     });
   }
 

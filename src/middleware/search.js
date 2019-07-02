@@ -70,8 +70,9 @@ class search {
       });
 
       if (!response[0]) {
-        return res.status(404).send({
-          message: `Author : ${author} - doesn't have any article, so far!`
+        return res.status(200).send({
+          message: 'This author has no article yet!',
+          data: []
         });
       }
 
@@ -110,7 +111,7 @@ class search {
           {
             as: 'author',
             model: User,
-            attributes: ['username', 'bio', 'image']
+            attributes: ['username', 'bio', 'avatar']
           }
         ],
         attributes: [
@@ -127,7 +128,7 @@ class search {
         ]
       });
       if (!titleFound[0]) {
-        return res.status(200).send({
+        return res.status(404).send({
           error: 'No Articles with that title, so far!'
         });
       }
@@ -150,7 +151,7 @@ class search {
           {
             as: 'author',
             model: User,
-            attributes: ['username', 'bio', 'image']
+            attributes: ['username', 'bio', 'avatar']
           }
         ],
         attributes: [
@@ -166,7 +167,7 @@ class search {
         ]
       });
       if (!tagFound[0]) {
-        return res.status(200).send({
+        return res.status(404).send({
           error: 'No Articles with that tag, so far!'
         });
       }
@@ -205,7 +206,7 @@ class search {
         ]
       });
       if (!keywordFound[0]) {
-        return res.status(200).send({
+        return res.status(404).send({
           error: 'No Articles with that Keyword found, so far!'
         });
       }

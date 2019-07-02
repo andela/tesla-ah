@@ -9,18 +9,18 @@ module.exports = {
     },
     slug: {
       allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     },
     title: {
       allowNull: false,
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     },
     readtime: {
       allowNull: false,
       type: Sequelize.STRING
     },
     description: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false
     },
     body: {
