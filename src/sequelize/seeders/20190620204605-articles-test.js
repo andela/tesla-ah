@@ -4,7 +4,7 @@ module.exports = {
       slug: '73H7812',
       title: 'How to survive at Andela',
       description: 'YoYo',
-      authorId: 1,
+      authorId: 11,
       blocked: false,
       body:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',

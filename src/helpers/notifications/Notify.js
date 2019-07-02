@@ -1,5 +1,5 @@
 import db from '../../sequelize/models';
-import sendMail from '../mailer';
+import sendMail from '../mailer/SendAnyEmail';
 import eventEmitter from './EventEmitter';
 
 const { Notification, Opt, User } = db;

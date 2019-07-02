@@ -171,5 +171,22 @@ module.exports = {
     updatedAt: new Date(),
     roles: ['admin', 'moderator']
   },
+  {
+    firstName: 'SuperEmy',
+    lastName: 'SuperEmy',
+    username: 'EmyRukundo',
+    email: 'rukundoemma@gmail.com',
+    password: 'EmyRukundo00',
+    bio: '',
+    image: '',
+    dateOfBirth: '12/12/1900',
+    gender: '',
+    provider: '',
+    socialId: '',
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    roles: ['admin', 'moderator']
+  },
   ], {}),
 };

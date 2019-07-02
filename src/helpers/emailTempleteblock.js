@@ -5,12 +5,11 @@
 class Template {
 /**
   * Verify token middleware
-  * @param {String} firstname - Request
-  * @param {String} lastname  - Response
+  * @param {String} lastname - Request
   * @param {String} token -EmailTemplate
   * @returns {String} The response String
   */
-  static getPasswordResetTemplete(firstname, lastname, token) {
+  static articleBlockedTemplate(lastname) {
     return `
     <div style="background:#e5eeff;width:100%;padding:20px 0;">
     <div style="max-width:760px;margin:0 auto;background:#ffffff">
@@ -19,15 +18,10 @@ class Template {
     </div>
     <div style="padding:20px;text-align:left;">
     <p>
-    <h2>Hi ${firstname} ${lastname} </h2></br>
-    You Recently requested a password reset for your Authors Haven Account, Click the the Button below
-    to reset it.</br>
-    <form  action="${token}">
-      <button style="background:#303346;padding:10px; outline: none; border:0; border-radius:10px; margin:5px;color:#ffffff;text-align:center;font-size:13px">Reset your Password</button>
-    </form>
+    <h2>Dear ${lastname} </h2></br>
+    Your article is blocked on our site because it doesn't follow our terms and conditions </br>
     </br>
-    If you did not request a password reset please ignore this email or reply to let us know.
-    This link will be expired in next 10 minutes.
+    If you feel it's just a mistake, you can contact administrator 
     </p>
     <a href="https://andela.com">Visit Andela's website</a>
     </div>
