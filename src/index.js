@@ -10,6 +10,10 @@ import globalMiddleware from './middleware/globalMiddleware';
 import './config/passportSetup';
 import db from './sequelize/models/index';
 import swaggerDoc from '../swagger.json';
+import SocketIO from './helpers/SocketIO';
+import './helpers/notifications/EventListener';
+
+
 import './handlers/cloudinary';
 import purgeDeadTokens from './helpers/purgeDeadTokens';
 
@@ -19,11 +23,11 @@ const port = process.env.PORT || 3000;
 const app = express();
 const { sequelize } = db;
 
-globalMiddleware(app);
 app.use(session({
   secret: process.env.SECRET,
   saveUninitialized: true
 }));
+SocketIO(app);
 app.use(passport.initialize());
 app.use(passport.session());
 globalMiddleware(app);

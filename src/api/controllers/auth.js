@@ -8,8 +8,8 @@ import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
 import templete from '../../helpers/emailTemplete';
 
-const { User, Blacklist } = db;
 const { generateToken, decodeToken } = tokenHelper;
+const { User, Blacklist, Opt } = db;
 
 dotenv.config();
 
@@ -49,6 +49,15 @@ class AuthController {
       const token = await generateToken({
         ...newUser.dataValues,
         password: null,
+      });
+      await Opt.create({
+        userId: newUser.id,
+        type: 'email'
+      });
+
+      await Opt.create({
+        userId: newUser.id,
+        type: 'inapp'
       });
       Mailhelper.sendMail({
         to: newUser.email,

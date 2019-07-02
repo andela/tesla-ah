@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 import models from '../../sequelize/models';
+import eventEmitter from '../../helpers/notifications/EventEmitter';
 
 /**
  * @class
@@ -27,6 +28,7 @@ export default class comments {
       slug
     });
     const Id = commentAdded.dataValues.id;
+    eventEmitter.emit('commentArticle', commentAdded.dataValues);
     return res.status(201).json({
       message: `Dear ${firstName}, Thank you for contributing to this article`,
       data: {

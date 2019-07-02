@@ -1,3 +1,4 @@
+
 {
   "swagger": "2.0",
   "info": {
@@ -25,9 +26,16 @@
       "description": " User should be able to follow and unfollow each other."
     }
   ],
-  "schemes": ["http", "https"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "definitions": {
     "user": {
       "type": "object",
@@ -92,7 +100,12 @@
       }
     },
     "article": {
-      "required": ["title", "description", "body", "tagList"],
+      "required": [
+        "title",
+        "description",
+        "body",
+        "tagList"
+      ],
       "properties": {
         "title": {
           "type": "string"
@@ -153,7 +166,9 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to create an account",
         "parameters": [
           {
@@ -165,7 +180,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": " User Account created successfully",
@@ -178,7 +195,9 @@
     },
     "/api/user": {
       "put": {
-        "tags": ["profile"],
+        "tags": [
+          "profile"
+        ],
         "description": "User profile update",
         "parameters": [
           {
@@ -194,7 +213,9 @@
             "schema": "#/definitions/user"
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "User profile sucessfully updated"
@@ -210,7 +231,9 @@
     },
     "/profiles/{username}": {
       "get": {
-        "tags": ["profile"],
+        "tags": [
+          "profile"
+        ],
         "description": "Get user profile",
         "parameters": [
           {
@@ -226,7 +249,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "User profile returned"
@@ -242,7 +267,9 @@
     },
     "/auth/signout": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to signout from the system when she/he is logged in by blacklisting the Token ",
         "parameters": [
           {
@@ -252,7 +279,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "You are now signed Out!"
@@ -268,7 +297,9 @@
     },
     "/articles": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "user should be able to create an article",
         "parameters": [
           {
@@ -286,7 +317,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Article created successfully",
@@ -297,9 +330,13 @@
         }
       },
       "get": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "user should be able to view all articles",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Articles fetched successfully"
@@ -309,7 +346,9 @@
     },
     "/articles/{slug}": {
       "get": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "user should be able to view a specific slug",
         "parameters": [
           {
@@ -319,7 +358,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Single Article fetched successfully"
@@ -327,7 +368,9 @@
         }
       },
       "put": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "user should be able to update his/her own article - slug",
         "parameters": [
           {
@@ -351,7 +394,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article updated successfully",
@@ -362,7 +407,9 @@
         }
       },
       "delete": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "user should be able to delete a specific slug",
         "parameters": [
           {
@@ -378,7 +425,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article deleted successfully!"
@@ -388,7 +437,9 @@
     },
     "/articles/{slug}/like": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "User should be able to like an article",
         "parameters": [
           {
@@ -404,7 +455,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article liked successfully"
@@ -417,7 +470,9 @@
     },
     "/articles/{slug}/dislike": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "User should be able to dislike an article",
         "parameters": [
           {
@@ -433,7 +488,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Article disliked successfully"
@@ -446,9 +503,13 @@
     },
     "/ratings/articles/:slug": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "User is able to view ratings report on a specific article",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -572,9 +633,13 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to login",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -658,9 +723,13 @@
     },
     "/auth/reset": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to request password reset",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -719,9 +788,13 @@
     },
     "/auth/reset/:token": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "When user click on Reset Button on his/her email, Reset link will be generated.",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -774,9 +847,13 @@
     },
     "/auth/reset/:aprvToken": {
       "patch": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "description": "User is able to apply password reset and change his or her password",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "aprvToken",
@@ -828,7 +905,9 @@
     },
     "/articles/{slug}/comments": {
       "post": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User is able to add a comment on an article",
         "parameters": [
           {
@@ -853,7 +932,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for contributing to this article",
@@ -864,7 +945,9 @@
         }
       },
       "get": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User is able to get an article with its comments",
         "parameters": [
           {
@@ -874,7 +957,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {}
         }
@@ -882,7 +967,9 @@
     },
     "/articles/{slug}/comments/{commentId}": {
       "post": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User is able to comment a comment",
         "parameters": [
           {
@@ -913,7 +1000,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for contributing to this comment",
@@ -926,7 +1015,9 @@
     },
     "/articles/comments/{commentId}": {
       "patch": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User is able to edit a comment",
         "parameters": [
           {
@@ -951,7 +1042,9 @@
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Your comment has been edited",
@@ -962,7 +1055,9 @@
         }
       },
       "delete": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User is able to delete a comment",
         "parameters": [
           {
@@ -978,7 +1073,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "Comment deleted!"
@@ -988,7 +1085,9 @@
     },
     "/articles/comments/{commentId}/dislike": {
       "post": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User should be able to dislike a comment",
         "parameters": [
           {
@@ -1004,7 +1103,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for disliking this comment"
@@ -1017,7 +1118,9 @@
     },
     "/articles/comments/{commentId}/like": {
       "post": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "User should be able to like a comment",
         "parameters": [
           {
@@ -1033,7 +1136,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Dear ..., Thank you for liking this comment"
@@ -1046,7 +1151,9 @@
     },
     "/articles/comments/{commentId}/dislikes": {
       "get": {
-        "tags": ["comment"],
+        "tags": [
+          "comment"
+        ],
         "description": "Authors Haven visitors and users should be able see all dislikes on a comment",
         "parameters": [
           {
@@ -1056,7 +1163,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {}
         }
@@ -1082,7 +1191,9 @@
             "required": true
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {}
         }
@@ -1110,12 +1221,16 @@
         }
       }
     },
-    "/profiles":{
+    "/profiles": {
       "get": {
-        "tags": ["profile"],
+        "tags": [
+          "profile"
+        ],
         "description": "Any User will be able to view a list of User's Profiles",
         "parameters": [],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "the list of All User's profile has been successfully fetched"
@@ -1125,9 +1240,13 @@
     },
     "/profiles/:username/follow": {
       "patch": {
-        "tags": ["follow"],
+        "tags": [
+          "follow"
+        ],
         "description": "User should be able to follow other users",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "follow",
@@ -1179,9 +1298,13 @@
     },
     "/profiles/:username/unfollow": {
       "patch": {
-        "tags": ["follow"],
+        "tags": [
+          "follow"
+        ],
         "description": "User should be able to unfollow other users",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "unfollow",
@@ -1233,9 +1356,13 @@
     },
     "/profiles/:username/following": {
       "get": {
-        "tags": ["follow"],
+        "tags": [
+          "follow"
+        ],
         "description": "User should be able to fetch all users he or she follows",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "following",
@@ -1287,9 +1414,13 @@
     },
     "/profiles/:username/followers": {
       "get": {
-        "tags": ["follow"],
+        "tags": [
+          "follow"
+        ],
         "description": "User should be able to fetch all users who follow him or her",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "followers",
@@ -1341,9 +1472,13 @@
     },
     "/articles/:slug/report": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "User is able to report an article",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -1457,9 +1592,13 @@
     },
     "/articles/:slug/block": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "Super admin or moderator are able to block the article",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -1497,46 +1636,46 @@
                 "data": {
                   "type": "object",
                   "properties": {
-                    "message":{
+                    "message": {
                       "type": "object",
                       "example": "Article blocked successfully"
                     },
                     "response": {
-                     "type": "object",
-                     "properties":{
-                      "id": {
-                        "type": "integer",
-                        "example": "2"
-                      },
-                      "reporterId": {
-                        "type": "integer",
-                        "example": 5
-                      },
-                      "articleId": {
-                        "type": "integer",
-                        "example": 3
-                      },
-                      "authorId": {
-                        "type": "integer",
-                        "example": 2
-                      },
-                      "moderatorId": {
-                        "type": "integer",
-                        "example": 6
-                      },
-                      "blockedDay": {
-                        "type": "string",
-                        "example": "Thursday"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2019-06-24T12:05:20.116Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "example": "2019-06-24T12:05:20.116Z"
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": "2"
+                        },
+                        "reporterId": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "articleId": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "authorId": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "moderatorId": {
+                          "type": "integer",
+                          "example": 6
+                        },
+                        "blockedDay": {
+                          "type": "string",
+                          "example": "Thursday"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2019-06-24T12:05:20.116Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2019-06-24T12:05:20.116Z"
+                        }
                       }
-                    }
                     }
                   }
                 }
@@ -1590,9 +1729,13 @@
     },
     "/articles/:slug/unblock": {
       "post": {
-        "tags": ["article"],
+        "tags": [
+          "article"
+        ],
         "description": "Super admin or moderator are able to unblock the article",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "token",
@@ -1756,6 +1899,110 @@
         "responses": {
           "200": {
             "description": "The List of All Articles related to the provided keywords"
+          }
+        }
+      }
+    },
+    "/user/optinemail": {
+      "post": {
+        "tags": [
+          "Subscribe to Email Notifications"
+        ],
+        "description": "Enable user to subscribe email notification",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "You successfully subscribed to email notifications"
+          },
+          "400": {
+            "description": "You already subscribed to email notifications"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Unsubscribe to Email Notifications"
+        ],
+        "description": "Enable user to unsubscribe email notification",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "You successfully unsubscribed to email notifications"
+          },
+          "400": {
+            "description": "You are not opted-in"
+          }
+        }
+      }
+    },
+    "/user/optinapp": {
+      "post": {
+        "tags": [
+          "Subscribe to Inapp Notifications"
+        ],
+        "description": "Enable user to subscribe Inapp notification",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "You successfully subscribed to inapp notifications"
+          },
+          "400": {
+            "description": "You already subscribed to inapp notifications"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Unsubscribe to inapp Notifications"
+        ],
+        "description": "Enable user to unsubscribe inapp notification",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "You successfully unsubscribed to inapp notifications"
+          },
+          "400": {
+            "description": "You are not opted-in"
           }
         }
       }

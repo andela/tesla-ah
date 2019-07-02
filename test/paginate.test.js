@@ -9,7 +9,7 @@ describe('GET /api/articles/page=<pageNumber>&limit=<number of limit>', () => {
     chai
       .request(app)
       .get('/api/articles?page=0&limit=0')
-      .send((err, res) => {
+      .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.statusCode).to.deep.equal(400);
         expect(res.body.error).to.deep.equal('Invalid request');
@@ -20,9 +20,15 @@ describe('GET /api/articles/page=<pageNumber>&limit=<number of limit>', () => {
     chai
       .request(app)
       .get('/api/articles?page=1&limit=10')
-      .send((err, res) => {
+      .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.body.data).to.be.an('array');
       });
+  });
+  it('Should return an error message', () => {
+    chai.request(app).get('/api/articles?page=-1&limit=2').end((err, res) => {
+      expect(res.body).to.be.an('object');
+      expect(res.status).to.equal(400);
+    });
   });
 });
