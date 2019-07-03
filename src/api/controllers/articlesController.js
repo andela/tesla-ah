@@ -11,7 +11,8 @@ const {
   User,
   LikeDislike,
   ReportedArticles,
-  BlockedArticles
+  BlockedArticles,
+  Share
 } = models;
 // eslint-disable-next-line no-array-constructor
 const days = new Array(
@@ -55,7 +56,8 @@ class articlesController {
       author,
       updatedAt,
       createdAt,
-      readtime
+      readtime,
+      views
     } = dataValues;
     const userInfo = await findUser(author.username);
     eventEmitter.emit('publishArticle', userInfo.id, slug);
@@ -69,7 +71,8 @@ class articlesController {
       updatedAt,
       createdAt,
       author,
-      readtime
+      readtime,
+      views
     };
     res.status(201).send({
       article: result
@@ -102,11 +105,14 @@ class articlesController {
 
     // @check if the article's slug exist
     const result = await Article.findOne({ where: { slug } });
-    if (result === null) {
-      return res.status(404).send({ error: 'This Slug Not found!' });
-    }
-
+    if (result === null) { return res.status(404).send({ error: 'This Slug Not found!' }); }
     const oneArticle = await articles.getOneSlug(slug);
+    await Article.update(
+      {
+        views: oneArticle.dataValues.views += 1,
+      },
+      { where: { slug } }
+    );
     res.status(200).send({
       status: 200,
       article: oneArticle
@@ -480,6 +486,13 @@ class articlesController {
 
   // eslint-disable-next-line require-jsdoc
   static async share(req, res) {
+    const { slug, provider } = req.share;
+    const { id } = req.user;
+    await Share.create({
+      userId: id,
+      slug,
+      provider
+    });
     return res.status(200).json({
       message: 'Thanks for sharing!',
       article: req.article

@@ -39,7 +39,8 @@ class ArticlesHelper {
       body,
       tagList: tagList.split(','),
       authorId: parseInt(id, 10),
-      readtime
+      readtime,
+      views: 0,
     });
     const userInfo = await this.getUserInfo(id);
     const { username, bio, image } = userInfo;
@@ -77,7 +78,7 @@ class ArticlesHelper {
         model: User,
         attributes: ['username', 'bio', 'image']
       }],
-      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt']
+      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'views', 'updatedAt', 'createdAt']
     });
     return result;
   }
