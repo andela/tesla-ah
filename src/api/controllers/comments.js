@@ -176,7 +176,7 @@ export default class comments {
   static async getComment(req, res) {
     const { slug } = req.params;
     const findSlug = await models.Article.findAll({
-      attributes: ['id'],
+      attributes: ['id', 'views'],
       where: {
         slug
       }
@@ -186,6 +186,12 @@ export default class comments {
         message: 'Not found!'
       });
     }
+    await models.Article.update(
+      {
+        views: findSlug[0].dataValues.views += 1,
+      },
+      { where: { slug } }
+    );
     await models.Article.findAll({
       attributes: [
         'title',
@@ -200,7 +206,8 @@ export default class comments {
           model: models.Comment,
           attributes: ['comment'],
           where: {
-            articleId: findSlug[0].dataValues.id
+            articleId: findSlug[0].dataValues.id,
+            commentId: null
           },
           include: [
             {

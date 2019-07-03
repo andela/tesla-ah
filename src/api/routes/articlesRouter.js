@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import articlesController from '../controllers/Article';
+import articlesController from '../controllers/articlesController';
 import Auth from '../../middleware/auth';
 import check from '../../middleware/checkOwner';
 import validateBody from '../../middleware/validateBody';
@@ -14,9 +14,14 @@ import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
-import shareArticle from '../../helpers/shareArticle';
+import shareArticle from '../../middleware/shareArticle';
+import stats from '../controllers/stats';
+
 
 const articlesRouter = Router();
+const {
+  getViews, commentNumber, facebookShares, twitterShares, emailShares, shares
+} = stats;
 const {
   createArticle,
   getAllArticle,
@@ -39,7 +44,7 @@ const { bookmark } = bookmarkController;
 const { searchForArticle } = search;
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment,
-  likeComment, dislikeComment, countLikes, countDislikes
+  likeComment, dislikeComment, countLikes, countDislikes, commentHistory
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
@@ -91,6 +96,18 @@ articlesRouter.get('/:slug/share/email', verifyToken, slugExist, shareArticle, s
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
 articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
+// get comment edit history
+
+articlesRouter.get('/comments/:commentId/history', verifyToken, checkParameter, commentHistory);
+
+// articles reading stats
+
+articlesRouter.get('/:slug/comments/count', slugExist, commentNumber);
+articlesRouter.get('/:slug/views', slugExist, getViews);
+articlesRouter.get('/:slug/shares/facebook', slugExist, facebookShares);
+articlesRouter.get('/:slug/shares/twitter', slugExist, twitterShares);
+articlesRouter.get('/:slug/shares/email', slugExist, emailShares);
+articlesRouter.get('/:slug/shares', slugExist, shares);
 
 // block reported articles
 articlesRouter.post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle);

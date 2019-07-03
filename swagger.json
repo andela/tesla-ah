@@ -1882,6 +1882,29 @@
         }
       }
     },
+    "/articles/{slug}/views": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "description": "User is able to view a specific article reading stats",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+          }
+        }
+      }
+    },
     "/articles?keywords={keywords}": {
       "get": {
         "tags": ["Search for an article"],
@@ -2006,6 +2029,28 @@
           }
         }
       }
-    }
+    },
+      "/articles/{slug}/comments/count": {
+        "get": {
+          "tags": [
+            "stats"
+          ],
+          "description": "User is able to view a specific article reading stats",
+          "parameters": [
+            {
+              "name": "slug",
+              "in": "path",
+              "description": "Article slug",
+              "required": true
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {}
+          }
+        }
+      }
   }
 }
