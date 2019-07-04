@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
 import { omit } from 'lodash';
 import tokenHelper from '../../helpers/Token.helper';
-import Mailhelper from '../../helpers/SendMail.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
 import templete from '../../helpers/emailTemplete';
+import verifyTemplete from '../../helpers/emailverifiyTemplete';
+import sendEmail from '../../helpers/mailer/SendAnyEmail';
 
 const { generateToken, decodeToken } = tokenHelper;
 const { User, Blacklist, Opt } = db;
@@ -59,14 +59,17 @@ class AuthController {
         userId: newUser.id,
         type: 'inapp'
       });
-      Mailhelper.sendMail({
-        to: newUser.email,
-        names: `${newUser.firstName} ${newUser.lastName}`,
-        subject: 'Welcome to Authorshaven',
-        message: 'Thank you for choosing Authorshaven',
-        token
+      const htmlToSend = verifyTemplete.sendVerification(`${newUser.firstName} ${newUser.lastName}`, newUser.email, token);
+      sendEmail({ email: newUser.email }, htmlToSend, 'Welcome to Authorshaven').then(() => {
+        res.status(201).send({
+          status: 201,
+          data: {
+            message: `Reset link sent to your email <${newUser.email}>`,
+            email: `${newUser.email}`,
+            token
+          }
+        });
       });
-
       res.status(201).json({
         status: 201,
         message: 'We have sent an email to you to verify your account',
@@ -210,32 +213,14 @@ class AuthController {
         const { firstName, lastName, email } = user.dataValues;
         const link = `${process.env.BASE_URL}/api/auth/reset/${token}`;
         const mail = {
-          firstName,
-          lastName,
-          link,
-          email
+          firstName, lastName, link, email
         };
-
-        const transport = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: process.env.AUTHOSHAVEN_USER,
-            pass: process.env.AUTHOSHAVEN_PASS
-          }
-        });
         const htmlToSend = templete.getPasswordResetTemplete(
           mail.firstName,
           mail.lastName,
           mail.link
         );
-        const mailOptions = {
-          from: 'Authors Haven',
-          to: `${mail.email}`,
-          subject: ' Password Reset',
-          text: 'Hello there',
-          html: htmlToSend
-        };
-        transport.sendMail(mailOptions, async () => {
+        sendEmail(mail, htmlToSend, 'Password Reset').then(() => {
           res.status(201).send({
             status: 201,
             data: {
