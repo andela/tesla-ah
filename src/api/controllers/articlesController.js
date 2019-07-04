@@ -4,11 +4,15 @@ import models from '../../sequelize/models';
 import readTime from '../../helpers/ReadTime.helper';
 import eventEmitter from '../../helpers/notifications/EventEmitter';
 import findUser from '../../helpers/FindUser';
-
+import AuthorNotifier from '../../helpers/NotifyAuthorOnArticleBlock';
 
 const {
-  Article,
+  notifyAuthorblock, notifyAuthorUnblock
+} = AuthorNotifier;
+
+const {
   User,
+  Article,
   LikeDislike,
   ReportedArticles,
   BlockedArticles,
@@ -431,6 +435,9 @@ class articlesController {
     const reporterUsername = await ReportedArticles.findOne({
       where: { slug }
     });
+    const { dataValues: { email, lastName } } = await User.findOne({
+      where: { id: article.authorId }
+    });
     const username = !reporterUsername
       ? null
       : reporterUsername.dataValues.username;
@@ -449,6 +456,7 @@ class articlesController {
         { blocked: true },
         { where: { id: responce.articleId } }
       );
+      await notifyAuthorblock({ email, lastName });
       res.status(201).send({
         status: 201,
         data: {
@@ -466,9 +474,15 @@ class articlesController {
    */
   static async unBlockArticle(req, res) {
     const { slug } = req.params;
-    const { id } = await Article.findOne({ where: { slug } });
+    const { id, authorId } = await Article.findOne({ where: { slug } });
+
+    const { dataValues: { email, lastName } } = await User.findOne({
+      where: { id: authorId }
+    });
+
     BlockedArticles.destroy({ where: { articleId: id } }).then(async () => {
       await Article.update({ blocked: false }, { where: { slug } });
+      await notifyAuthorUnblock({ email, lastName, slug });
       res.status(200).send({
         status: 200,
         data: {
