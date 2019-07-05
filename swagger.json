@@ -2051,6 +2051,114 @@
             "200": {}
           }
         }
+      },
+      "/articles/{articleId}/highlights/{highlightId}/share/twitter": {
+        "get": {
+          "tags": [
+            "Share highlights"
+          ],
+          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "description": "The access token",
+              "required": true
+            },
+            {
+              "name": "articleId",
+              "in": "path",
+              "description": "article's slug",
+              "required": true
+            },
+            {
+              "name": "highlightId",
+              "in": "path",
+              "description": "Highlight Id",
+              "required": true
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Highlight shared!"
+            }
+          }
+        }
+      },
+      "/articles/{articleId}/highlights/{highlightId}/share/facebook": {
+        "get": {
+          "tags": [
+            "Share highlights"
+          ],
+          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "description": "The access token",
+              "required": true
+            },
+            {
+              "name": "articleId",
+              "in": "path",
+              "description": "article's slug",
+              "required": true
+            },
+            {
+              "name": "highlightId",
+              "in": "path",
+              "description": "Highlight Id",
+              "required": true
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Highlight shared!"
+            }
+          }
+        }
+      },
+      "/articles/{articleId}/highlights/{highlightId}/share/email": {
+        "get": {
+          "tags": [
+            "Share highlights"
+          ],
+          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "description": "The access token",
+              "required": true
+            },
+            {
+              "name": "articleId",
+              "in": "path",
+              "description": "article's slug",
+              "required": true
+            },
+            {
+              "name": "highlightId",
+              "in": "path",
+              "description": "Highlight Id",
+              "required": true
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Highlight shared!"
+            }
+          }
+        }
       }
   }
 }

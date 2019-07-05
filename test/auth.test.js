@@ -68,7 +68,7 @@ describe('User Registration', () => {
       .send({
         firstName: 'Emy',
         lastName: 'Rukundo',
-        username: 'mifeillee',
+        username: 'mfeillee',
         email: 'elie@gmail.com',
         password: 'Rukundo1!',
         confirmPassword: 'Rukundo1!'
