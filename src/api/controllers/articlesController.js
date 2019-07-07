@@ -448,7 +448,7 @@ class articlesController {
       articleId: article.id,
       authorId: article.authorId,
       moderatorId: user.id,
-      blockedDay: days[new Date().getDay() - 1],
+      blockedDay: days[new Date().getDay() - 1] || 'Sunday',
       description
     };
     BlockedArticles.create(object).then(async (responce) => {

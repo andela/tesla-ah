@@ -289,7 +289,7 @@ describe('User login', () => {
       .request(server)
       .post('/api/auth/login')
       .send({
-        email: 'rukundogmail.com',
+        email: 'ru',
         password: 'Rukundo1!'
       })
       .end((err, res) => {
