@@ -8,15 +8,15 @@
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --timeout 80000 --exit --require @babel/register --require regenerator-runtime",
-    "devtest": "NODE_ENV=test & yarn destroy & yarn run seed & yarn run test",
-    "test:reset": "npm run migrate:reset && nyc --reporter=html --reporter=text mocha ./test/*.js --timeout 80000 --exit --require @babel/register --require regenerator-runtime",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test:local": "yarn undo && yarn migrate && yarn seed && yarn test",
-    "migrate:reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
+    "migrate": "sequelize db:migrate",
     "undo": "sequelize db:migrate:undo",
-    "undo:all": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
-    "destroy": "babel-node src/helpers/destroyTables"
+    "destroy": "babel-node src/helpers/destroyUser",
+    "sass":"node-sass --include-path scss UI/scss/style.scss UI/css/style.css",
+    "watch-sass":"nodemon -e scss -x \"npm run sass\"",
+    "deploy":"gh-pages -d UI"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -24,7 +24,6 @@
     "@hapi/joi": "^15.0.3",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
-    "cloudinary": "^1.14.0",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
@@ -39,8 +38,6 @@
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
     "morgan": "^1.9.1",
-    "multer": "^1.4.1",
-    "node-cron": "^2.0.3",
     "node-sass": "^4.12.0",
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
@@ -50,8 +47,6 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "prettier": "^1.18.2",
-    "ratingpercentage": "^1.0.7",
     "regenerator-runtime": "^0.13.2",
     "request": "^2.88.0",
     "sequelize": "^5.8.7",
@@ -80,8 +75,8 @@
   "repository": "https://github.com/andela/tesla-ah.git",
   "nyc": {
     "exclude": [
-      "src/config/passportSetup.js",
-      "src/sequelize/**/*.js"
+      "build/src/config/passportSetup.js",
+      "build/sequelize/**/*.js"
     ]
   }
 }

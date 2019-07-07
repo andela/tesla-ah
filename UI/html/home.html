@@ -11,12 +11,12 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
   <title>Authors Haven</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
   <header class="nav-to-shrink">
     <nav class="navbar navbar-expand-lg container">
-      <img class="navbar-brand logo" src="./assets/image/logo_st.png">
+      <img class="navbar-brand logo" src="../assets/image/logo_st.png">
       <a class="navbar-brand blue" href="#">Authors Haven</a>
       <button class="navbar-toggler menu_button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,31 +27,22 @@
       
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto nav-left">
-          <li class="nav-item active">
-            <a class="nav-link is-active" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-shrink" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              Tags
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Technology</a>
-              <a class="dropdown-item" href="#">Sport</a>
-              <a class="dropdown-item" href="#">Design</a>
-              <a class="dropdown-item" href="#">Politics</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link nav-shrink" href="#">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link nav-shrink" href="#" tabindex="-1">Contacts</a>
+          <li class="nav-item nav-right">
+              <input class="search-field form-control" type="text" placeholder="Search" aria-label="Search">
           </li>
         </ul>
         <ul class="nav-right navbar-nav">
-          <li class="nav-item"><a href="" class="nav-link is-active">Login</a></li>
-          <li class="nav-item"><a href="" class="nav-link is-active">Sign Up</a></li>
+          <li id="nav-item noti_Container">
+              <div id="noti_Counter">5</div>
+              <i id="noti_Button" class="nav-link is-active nav-shrink far fa-bell"></i>    
+          </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <li id="nav-item noti_Container message">
+              <div id="noti_Counter">2</div>
+              <i id="noti_Button" class="nav-link is-active nav-shrink far fa-envelope"></i>    
+          </li>&nbsp;&nbsp;&nbsp;
+          <li id="nav-item noti_Container message">
+              <img class="menu-profile-image" src="../assets/image/beautiful-american-girls.jpg">    
+          </li>
         </ul>
       </div>
     </nav>
@@ -65,7 +56,7 @@
       </ol>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="./assets/image/e-commerce-back.jpg" class="d-block w-100" alt="...">
+          <img src="../assets/image/e-commerce-back.jpg" class="d-block w-100" alt="...">
           <div class="carousel__text">
             <h3>Welcome to Andela Kigali</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos recusandae nihil veritatis nisi! Provident magnam, corrupti laudantium aliquid blanditiis illum.</p>
@@ -73,7 +64,7 @@
           </div>
         </div>
         <div class="carousel-item">
-          <img src="./assets/image/e-commerce-back.jpg" class="d-block w-100" alt="...">
+          <img src="../assets/image/e-commerce-back.jpg" class="d-block w-100" alt="...">
           <div class="carousel__text">
             <h3>Welcome to Andela Kigali</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos recusandae nihil veritatis nisi! Provident magnam, corrupti laudantium aliquid blanditiis illum.</p>
@@ -91,15 +82,24 @@
       </div>
     </div>
   </section>
-  <section class="main-section">
+  <section class="home-main-section">
     <main class="row mt-5 mb-5">
-      <div class="col-sm-8 first_section">
-        <h5>Don't miss</h5>
+      <div class="col-sm-8 home_first_section">
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Technology</a>
+          <div class="dropdown-menu">
+            <li>
+                <i href="#" class="dropdown-item">Technology</i>
+                <i href="#" class="dropdown-item">Politics</i>
+            </li>
+              
+          </div>
+        </div>
         <div class="line line__sm"></div>
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-10">
-          <div class="card hot__story mb-5 mt-5 ">
+          <div class="card home_hot__story mb-5 mt-5 ">
             <img
               src="https://ktpress.rw/wp-content/uploads/2019/05/Andela-services-beneficiaries.jpg"
               class="card-img-top" alt="...">
@@ -144,160 +144,6 @@
               </div>
             </div>
           </div>
-          </div>
-          <div class="col-sm-1"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-10">
-            <div class="card hot__story mb-5 mt-5">
-              <img
-                src="https://s.abcnews.com/images/Technology/gty_google_io_ll_130514_wmain.jpg"
-                class="card-img-top" alt="...">
-              <div class="card-body">
-                <a href="#" class="link no__decoration">
-                  <h5 class="card-title">9 mental-health experts on the strategies they use to get over bad moods</h5>
-                </a>
-                <p class="card-text grey">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam delectus
-                  reprehenderit, blanditiis minima veniam officia repudiandae? Ut deleniti, blanditiis atque recusandae
-                  consequuntur ipsum dolores quisquam incidunt id consectetur non perferendis.
-                </p>
-                <p class="card-text">By Elie</p>
-                <div class="row">
-                  <div class="col-md-4">
-                    
-                    <div class="row">
-                      <span class="col-sm-8">June 19</span>
-                      <span class="col-sm-7">3 min read</span>
-                    </div>
-                  </div>
-                  <div class="col-md-4 offset-md-4 article-stat">
-                    <div class="row with--icons">
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-up"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-down"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="far fa-comment"></i>
-                          <label>20k</label>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-1"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-10">
-            <div class="card hot__story mb-5 mt-5">
-              <img
-                src="https://www.telegraph.co.uk/content/dam/news/2019/05/23/TELEMMGLPICT000198254207_trans_NvBQzQNjv4BqVnGZDHLVbaDWtLqzwQh5-ZeIJ9QffmP6QZKp3pZwEZs.jpeg?imwidth=450"
-                class="card-img-top" alt="...">
-              <div class="card-body">
-                <a href="#" class="link no__decoration">
-                  <h5 class="card-title">9 mental-health experts on the strategies they use to get over bad moods</h5>
-                </a>
-                <p class="card-text grey">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam delectus
-                  reprehenderit, blanditiis minima veniam officia repudiandae? Ut deleniti, blanditiis atque recusandae
-                  consequuntur ipsum dolores quisquam incidunt id consectetur non perferendis.
-                </p>
-                <p class="card-text">By Elie</p>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <span class="col-sm-8">June 19</span>
-                      <span class="col-sm-7">3 min read</span>
-                    </div>
-                  </div>
-                  <div class="col-md-4 offset-md-4 article-stat ">
-                    <div class="row with--icons">
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-up"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-down"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="far fa-comment"></i>
-                          <label>20k</label>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-1"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-10">
-            <div class="card hot__story mb-5 mt-5">
-              <img
-                src="http://images.jagran.com/robot_bb_201605013.jpg"
-                class="card-img-top" alt="...">
-              <div class="card-body">
-                <a href="#" class="link no__decoration">
-                  <h5 class="card-title">9 mental-health experts on the strategies they use to get over bad moods</h5>
-                </a>
-                <p class="card-text grey">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam delectus
-                  reprehenderit, blanditiis minima veniam officia repudiandae? Ut deleniti, blanditiis atque recusandae
-                  consequuntur ipsum dolores quisquam incidunt id consectetur non perferendis.
-                </p>
-                <p class="card-text">By Elie</p>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="row">
-                      <span class="col-sm-8">June 19</span>
-                      <span class="col-sm-7">3 min read</span>
-                    </div>
-                  </div>
-                  <div class="col-md-4 offset-md-4 article-stat">
-                    <div class="row with--icons">
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-up"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="fa fa-thumbs-down"></i>
-                          <label>20k</label>
-                        </a> 
-                      </div>
-                      <div class="col-sm-4">
-                        <a href="#">
-                          <i class="far fa-comment"></i>
-                          <label>20k</label>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="col-sm-1"></div>
         </div>
@@ -450,6 +296,25 @@
       <h6 class="white text-center">Copyright &copy; 2019 Team Tesla</h6>
     </div>
   </footer>
+  <svg version="1.1" style="display: none;">
+      <defs>
+        <g id="notification">
+            <g>
+                <g>
+                  <path d="M467.812,431.851l-36.629-61.056c-16.917-28.181-25.856-60.459-25.856-93.312V224c0-67.52-45.056-124.629-106.667-143.04
+                    V42.667C298.66,19.136,279.524,0,255.993,0s-42.667,19.136-42.667,42.667V80.96C151.716,99.371,106.66,156.48,106.66,224v53.483
+                    c0,32.853-8.939,65.109-25.835,93.291l-36.629,61.056c-1.984,3.307-2.027,7.403-0.128,10.752c1.899,3.349,5.419,5.419,9.259,5.419
+                    H458.66c3.84,0,7.381-2.069,9.28-5.397C469.839,439.275,469.775,435.136,467.812,431.851z"/>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path d="M188.815,469.333C200.847,494.464,226.319,512,255.993,512s55.147-17.536,67.179-42.667H188.815z"/>
+                </g>
+              </g>
+        </g>
+      </defs>
+    </svg>
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -457,5 +322,6 @@
   integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
   integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="./js/main.js"></script>
+  <script src="../js/main.js"></script>
+
 </html>

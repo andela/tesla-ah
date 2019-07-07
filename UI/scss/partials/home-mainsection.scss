@@ -1,19 +1,17 @@
 main{
   margin:auto 0%;
   transform:translate3d(0,-20px,0);
-  .hot__story{
+  border: 1px solid black;
+  .home_hot__story{
     position: relative;
     width: 100%;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    border-radius: 2.3vh;
+    border: 1px solid black;
     
     img{
       position: relative;
       width: 100%;
       height: 27vh;
       margin-bottom: 8px;
-      border-top-left-radius: 2.3vh;
-      border-top-right-radius: 2.3vh;
     }
     .with--icons a{
       color:$grey;
@@ -24,8 +22,9 @@ main{
     }
   }
 }
-.main-section{
+.home-main-section{
   margin:auto 11.5%;
+  border: 1px solid black;
 }
 
 .single__story{

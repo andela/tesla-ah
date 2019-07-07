@@ -6,16 +6,27 @@ header{
   left: 0;
   z-index: 100;
   background:rgba($dark,.5);
-    border-bottom: 1px solid $grey;
+   
     &.shrink{
       background:$white;
+      -webkit-box-shadow:0px 0px 8px $blue;
+      -moz-box-shadow:0px 0px 8px $blue;
       @include easeOut(.5s);
       .nav-shrink{
         color:$dark;
       }
+      #noti_Button {
+        color: $dark;
+      }
+      .menu-profile-image{
+        border: 2px solid $dark;
+      }
     }
   nav{
-    
+    .logo{
+      width: 5vh;
+      height: 6vh;
+    }
     .navbar-collapse{
       display: flex;
       justify-content: space-between;
@@ -32,5 +43,56 @@ header{
        // font-weight: 100;
      }
     }
+    .menu_button{
+      color: white;
+    }
+    .menuIcons{
+      color: white;
+      font-size: 2.3vh;
+    }
+    #noti_Container {
+      position:relative;
+      
   }
+  #noti_Button {
+      cursor:pointer;
+      font-size: 20px;
+      color: white;
+  }
+  #noti_Counter {
+      width:20px;
+      height: 20px; 
+      border-radius: 50%;
+      display:block;
+      position:absolute;
+      background:$blue;
+      color:#FFF;
+      font-size:12px;
+      font-weight:normal;
+      padding:1px 3px;
+      margin:-6px 0 0 17px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+  } 
+  .menu-profile-image{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    margin-left: 10px;
+  }
+  .search-field{
+    background:rgba($white,.0);
+    border-radius: 30px;
+    border: 1px solid $blue;
+  }
+  }
+}
+.shrink-menu-button{
+  color:black;
 }
