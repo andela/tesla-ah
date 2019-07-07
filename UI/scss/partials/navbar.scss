@@ -6,16 +6,17 @@ header{
   left: 0;
   z-index: 100;
   background:rgba($dark,.5);
-    border-bottom: 1px solid $grey;
+   
     &.shrink{
       background:$white;
+      -webkit-box-shadow:0px 0px 8px $blue;
+      -moz-box-shadow:0px 0px 8px $blue;
       @include easeOut(.5s);
       .nav-shrink{
         color:$dark;
       }
     }
   nav{
-    
     .navbar-collapse{
       display: flex;
       justify-content: space-between;

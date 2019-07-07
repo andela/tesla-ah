@@ -1,18 +1,18 @@
 main{
-  margin:auto 10%;
+  margin:auto 0%;
+  transform:translate3d(0,-20px,0);
   .hot__story{
     position: relative;
     width: 100%;
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    border-radius: 15px;
-    margin-right:20px;
+    border-radius: 2.3vh;
     img{
       position: relative;
       width: 100%;
-      height: 250px;
+      height: 27vh;
       margin-bottom: 8px;
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
+      border-top-left-radius: 2.3vh;
+      border-top-right-radius: 2.3vh;
     }
     .with--icons a{
       color:$grey;
@@ -24,23 +24,27 @@ main{
   }
 }
 .main-section{
-  margin:auto 10%;
+  margin:auto 11.5%;
 }
 
 .single__story{
-  border-bottom: 1px solid $dark;
-  margin-left:10%;
-  margin-bottom: 10px;
+  border-bottom: 1px solid rgb(216, 216, 216);
+  margin-left:2vh;
+  padding-bottom: 2vh;
+  margin-bottom: 1vh;
   img{
-    width: 80px;
-    height: 80px;
+    width: 6vh;
+    height: 6vh;
     border-radius: 50%;
+  }
+  p{
+    font-size: 1.5vh;
   }
 }
 
 .side-section{
-  border-left:1px solid $dark;
-  padding-left: 10px;
+  border-left:1px solid rgb(226, 226, 226);
+  padding-left: 2.1vh;
 }
 
 .box{
@@ -66,5 +70,10 @@ main{
     h6{
       margin-top:50%;
     }
+  }
+}
+.article-stat{
+  & label{
+    font-size: 12px;
   }
 }
