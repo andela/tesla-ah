@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'regenerator-runtime';
 import { forEach } from 'lodash';
 import models from '../sequelize/models';
 import sendMail from '../helpers/mailer/SendAnyEmail';

@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'regenerator-runtime';
 import Sequelize from 'sequelize';
 import db from '../sequelize/models';
 

@@ -48,7 +48,7 @@ sequelize.sync().then(() => {
   cron.schedule('*/59 * * * *', () => {
     purgeWorker();
   });
-  cron.schedule('*/10 * * * *', () => {
+  cron.schedule('*/5 * * * *', () => {
     sendMailWorker();
   });
   app.listen(port, () => {
