@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'regenerator-runtime';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import models from '../sequelize/models';
