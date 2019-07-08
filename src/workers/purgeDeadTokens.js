@@ -5,8 +5,8 @@ import db from '../sequelize/models';
 const { Blacklist } = db;
 const { Op } = Sequelize;
 
-export default async () => {
-  console.log('=== STARTING EXPIRED TOKEN PURGE ===');
+module.exports = async () => {
+  console.log(`PID: ${process.pid} === STARTING EXPIRED TOKEN PURGE ===`);
   await Blacklist.destroy({
     where: {
       expiresAt: {

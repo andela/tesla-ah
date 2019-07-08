@@ -1,8 +1,10 @@
 import { omit } from 'lodash';
 import models from '../../sequelize/models';
-import uploadHelper from '../../helpers/uploadHelper';
+import workers from '../../workers';
 
 const { User, follows } = models;
+const { uploadImageWorker } = workers;
+
 
 /**
  * This class contains user controllers
@@ -34,8 +36,14 @@ export default class ProfilesController {
    */
   static async updateProfile(req, res) {
     let { body } = req;
-    let uploadedImage;
     const { user, file, params } = req;
+
+    if (!file && Object.keys(body) < 1) return res.status(400).send({ message: 'Cannot update empty object' });
+
+    if (file && Object.keys(body) < 1) {
+      uploadImageWorker(file, params.id, null);
+      return res.status(200).json({ status: 200, message: 'Your image will be updated shortly' });
+    }
 
     if (!user.roles.includes('admin')) {
       body = await omit(body, ['roles']);
@@ -43,14 +51,7 @@ export default class ProfilesController {
 
     const updatedProfile = { ...body };
 
-    // Upload image to cloudinary if available
-    if (file) {
-      uploadedImage = await uploadHelper(file);
-      Object.assign(updatedProfile, { image: uploadedImage.secure_url });
-    }
-
     try {
-      if (!file && Object.keys(body) < 1) return res.status(400).send({ message: 'Nothing changed in your Profile' });
       const updatedUser = await User.update(
         updatedProfile,
         { where: { id: params.id } },
@@ -61,6 +62,8 @@ export default class ProfilesController {
           .status(404)
           .json({ message: `Could not find user with id: ${user.id}` });
       }
+
+      uploadImageWorker(file, params.id, null);
 
       return res.status(200).json({ user: { updatedUser } });
     } catch (error) {

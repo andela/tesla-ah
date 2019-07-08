@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 
 dotenv.config();
+
 const sendEmail = async (mail, htmlToSend, subject) => {
   const transport = nodemailer.createTransport({
     service: 'gmail',
@@ -17,6 +18,8 @@ const sendEmail = async (mail, htmlToSend, subject) => {
     text: '',
     html: htmlToSend
   };
+
   transport.sendMail(mailOptions, async () => true);
 };
+
 export default sendEmail;

@@ -16,10 +16,10 @@ const transporter = mailer.createTransport({
  */
 class MailHelper {
   /**
-     * Send mail
-     * @param {Object} param0 - Object which contains email information
-     * @returns {Object} Results after sending mail
-     */
+   * Send mail
+   * @param {Object} param0 - Object which contains email information
+   * @returns {Object} Results after sending mail
+   */
   static async sendMail({
     to, names, subject, message, token
   }) {
