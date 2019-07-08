@@ -55,8 +55,8 @@ describe('User Registration', () => {
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.equal(201);
-        expect(res.body.token).to.be.a('string');
-        userToken = res.body.token;
+        expect(res.body.data.token).to.be.a('string');
+        userToken = res.body.data.token;
         done();
       });
   });
