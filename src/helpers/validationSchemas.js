@@ -126,5 +126,19 @@ export default {
       .max(5)
       .required()
       .label('Rating must be from 1 to 5 ')
+  }),
+  validateHighlight: Joi.object().keys({
+    highlightText: Joi.string()
+      .trim()
+      .required()
+      .label('The highlightText is required and should be a string'),
+    comment: Joi.string()
+      .trim()
+      .min(3)
+      .label('The comment should have at least 3 letters!'),
+    occurencyNumber: Joi.number()
+      .label('Occurrency should be a number')
+
+
   })
 };

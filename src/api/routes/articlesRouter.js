@@ -16,6 +16,9 @@ import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
 import shareArticle from '../../middleware/shareArticle';
 import stats from '../controllers/stats';
+import highlight from '../controllers/highlightController';
+import highlightExist from '../../middleware/highlightExist';
+import textExist from '../../middleware/textExist';
 
 
 const articlesRouter = Router();
@@ -40,6 +43,8 @@ const {
 const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
+const { createHighlights } = highlight;
+
 
 const { searchForArticle } = search;
 const {
@@ -112,4 +117,8 @@ articlesRouter.get('/:slug/shares', slugExist, shares);
 // block reported articles
 articlesRouter.post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle);
 articlesRouter.post('/:slug/unblock', verifyToken, checkIsModerator, slugExist, isNotBlocked, unBlockArticle);
+// highlight the text in the article
+
+articlesRouter.post('/:slug/highlight', verifyToken, validateBody('validateHighlight'), slugExist, highlightExist, textExist, createHighlights);
+
 export default articlesRouter;
