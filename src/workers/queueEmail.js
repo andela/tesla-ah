@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import 'regenerator-runtime';
 import models from '../sequelize/models';
 
 const { Emails } = models;
