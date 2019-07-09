@@ -144,44 +144,41 @@ class AuthController {
   * @returns {Object} The response object
   */
   static async login(req, res) {
-    User.findAll({
-      where: {
-        email: req.body.email
-      }
-    }).then((users) => {
-      if (users[0]) {
-        if (
-          !HashHelper.comparePassword(req.body.password, users[0].dataValues.password)
-        ) {
-          res.status(400).send({
-            status: 400,
-            error: {
-              message: 'Incorrect password'
-            }
-          });
-        } else {
-          generateToken({
-            ...users[0].dataValues,
-            password: null,
-          }).then((token) => {
-            res.status(200).send({
-              status: 200,
-              data: {
-                message: 'User logged in successful',
-                token
-              }
-            });
-          });
-        }
-      } else {
-        res.status(404).send({
-          status: 404,
+    const { email } = req.body;
+    const users = await User.findOne({ where: { email } })
+    || await User.findOne({ where: { username: email } });
+    if (users) {
+      if (
+        !HashHelper.comparePassword(req.body.password, users.dataValues.password)
+      ) {
+        res.status(400).send({
+          status: 400,
           error: {
-            message: 'User with that email does not exist.'
+            message: 'Incorrect password'
           }
         });
+      } else {
+        generateToken({
+          ...users.dataValues,
+          password: null,
+        }).then((token) => {
+          res.status(200).send({
+            status: 200,
+            data: {
+              message: 'User logged in successful',
+              token
+            }
+          });
+        });
       }
-    });
+    } else {
+      res.status(404).send({
+        status: 404,
+        error: {
+          message: 'User with that email does not exist.'
+        }
+      });
+    }
   }
 
   /**
