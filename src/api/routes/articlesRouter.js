@@ -20,7 +20,6 @@ import highlight from '../controllers/highlightController';
 import highlightExist from '../../middleware/highlightExist';
 import textExist from '../../middleware/textExist';
 
-
 const articlesRouter = Router();
 const {
   getViews, commentNumber, facebookShares, twitterShares, emailShares, shares
@@ -38,14 +37,14 @@ const {
   reportArticle,
   blockArticle,
   unBlockArticle,
-  share
+  share,
+  getBlockedArticles,
+  getReportedArticles
 } = articlesController;
 const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
 const { bookmark } = bookmarkController;
 const { createHighlights } = highlight;
-
-
 const { searchForArticle } = search;
 const {
   createComment, editComment, deleteComment, getComment, commentAcomment,
@@ -115,8 +114,11 @@ articlesRouter.get('/:slug/shares/email', slugExist, emailShares);
 articlesRouter.get('/:slug/shares', slugExist, shares);
 
 // block reported articles
-articlesRouter.post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle);
-articlesRouter.post('/:slug/unblock', verifyToken, checkIsModerator, slugExist, isNotBlocked, unBlockArticle);
+articlesRouter
+  .post('/:slug/block', verifyToken, checkIsModerator, validateBody('checkDescription'), slugExist, isAlreadBlocked, blockArticle)
+  .post('/:slug/unblock', verifyToken, checkIsModerator, slugExist, isNotBlocked, unBlockArticle)
+  .get('/blocked/all', verifyToken, checkIsModerator, getBlockedArticles)
+  .get('/reported/all', verifyToken, checkIsModerator, getReportedArticles);
 // highlight the text in the article
 
 articlesRouter.post('/:slug/highlight', verifyToken, validateBody('validateHighlight'), slugExist, highlightExist, textExist, createHighlights);

@@ -427,6 +427,26 @@ class articlesController {
    * @param  {object} res
    * @return {object} returns a message with operation status
    */
+  static async getBlockedArticles(req, res) {
+    const blockedArticles = await BlockedArticles.findAll({});
+    return res.status(200).json({ status: 200, data: blockedArticles });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
+  static async getReportedArticles(req, res) {
+    const reportedArticles = await ReportedArticles.findAll({});
+    return res.status(200).json({ status: 200, data: reportedArticles });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns a message with operation status
+   */
   static async blockArticle(req, res) {
     const { slug } = req.params;
     const { user } = req;
@@ -451,12 +471,15 @@ class articlesController {
       blockedDay: days[new Date().getDay() - 1] || 'Sunday',
       description
     };
+
     BlockedArticles.create(object).then(async (responce) => {
       await Article.update(
         { blocked: true },
         { where: { id: responce.articleId } }
       );
+
       await notifyAuthorblock({ email, lastName });
+
       res.status(201).send({
         status: 201,
         data: {
