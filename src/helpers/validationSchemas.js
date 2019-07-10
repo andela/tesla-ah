@@ -4,8 +4,7 @@ const password = Joi.string()
   .trim()
   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/)
   .required()
-  .label('Password is required and must be at least 8 letters containing'
-  + ' at least a number a Lowercase letter and an Uppercase letter');
+  .label('Password is required and must be at least 8 letters containing at least a number a Lowercase letter and an Uppercase letter');
 const email = Joi.string()
   .trim()
   .lowercase()
@@ -143,8 +142,6 @@ export default {
       .label('The comment should have at least 3 letters!'),
     occurencyNumber: Joi.number()
       .label('Occurrency should be a number')
-
-
   }),
   validateTerms: Joi.object().keys({
     termsAndConditions: Joi.string()
@@ -152,5 +149,12 @@ export default {
       .min(10)
       .required()
       .label('Terms and Conditions are required are required and should at least have 10 letters')
+  }),
+  category: Joi.object().keys({
+    categoryName: Joi.string()
+      .trim()
+      .min(3)
+      .required()
+      .label('The category Name should be a string which has at least 3 characters and is required!')
   })
 };

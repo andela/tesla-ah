@@ -29,7 +29,7 @@ class ArticlesHelper {
    */
   static async createNewArticle(req) {
     const {
-      title, body, description, tagList
+      title, body, description, tagList, categoryName
     } = req.body;
     const { id } = req.user;
     const newSlug = this.createSlug(title);
@@ -43,6 +43,7 @@ class ArticlesHelper {
       authorId: id,
       readtime,
       views: 0,
+      categoryName: categoryName || 'other'
     });
 
     // Uplooad article image

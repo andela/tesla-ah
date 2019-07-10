@@ -278,7 +278,8 @@ describe('Like/Unlike Articles', () => {
       tagList: ['reactjs', 'angularjs', 'expressjs'],
       slug: 'lsug32344',
       authorId: testUser.dataValues.id,
-      readtime: '1 min'
+      readtime: '1 min',
+      categoryName: 'other'
     };
 
     // create test article
@@ -464,7 +465,8 @@ describe('Block article', () => {
       tagList: ['reactjs', 'angularjs', 'expressjs'],
       slug: 'lsug38769',
       authorId: testUser.dataValues.id,
-      readtime: '1 min'
+      readtime: '1 min',
+      categoryName: 'other'
     });
   });
 

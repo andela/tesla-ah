@@ -52,7 +52,11 @@ module.exports = {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE
-    }
+    },
+    categoryName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
   }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Articles')
 };

@@ -11,7 +11,8 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       readtime: '2 min',
-      views: 0
+      views: 0,
+      categoryName: 'other'
     },
     {
       slug: '73H99992',
@@ -24,7 +25,8 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       readtime: '1min',
-      views: 0
+      views: 0,
+      categoryName: 'other'
     },
     {
       slug: 'This_is_andela_2433546h34',
@@ -36,7 +38,8 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       authorId: 4,
-      views: 0
+      views: 0,
+      categoryName: 'other'
     }
   ]),
 
