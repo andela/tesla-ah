@@ -18,9 +18,7 @@ userRouter.delete('/optinemail', verifyToken, optOutEmail);
 userRouter.delete('/optinapp', verifyToken, optOutApp);
 userRouter
   .route('/:id')
-  .put(verifyToken, checkOwnership, validateBody('updateUser'), upload.single('image'), updateProfile)
+  .put(verifyToken, checkOwnership, upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'cover', maxCount: 1 }]), validateBody('updateUser'), updateProfile)
   .delete(verifyToken, checkIsAdmin, deleteProfile);
-
-userRouter.put('/', verifyToken, validateBody('updateUser'), upload.single('image'), updateProfile);
 
 export default userRouter;
