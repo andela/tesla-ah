@@ -19,6 +19,7 @@ import stats from '../controllers/stats';
 import highlight from '../controllers/highlightController';
 import highlightExist from '../../middleware/highlightExist';
 import textExist from '../../middleware/textExist';
+import upload from '../../handlers/multer';
 
 const articlesRouter = Router();
 const {
@@ -54,12 +55,12 @@ const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
 
 articlesRouter
-  .post('/', verifyToken, validateBody('createArticle'), createArticle)
+  .post('/', verifyToken, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
   .get('/', paginate, searchForArticle, getAllArticle);
 
 articlesRouter
   .get('/:slug', slugExist, isThisArticleBlocked, getOneArticle)
-  .put('/:slug', verifyToken, check.articleOwner, validateBody('updateArticle'), updateArticle)
+  .put('/:slug', verifyToken, check.articleOwner, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('updateArticle'), updateArticle)
   .delete('/:slug', verifyToken, check.articleOwner, deleteArticle);
 
 articlesRouter

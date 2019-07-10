@@ -36,12 +36,12 @@ export default class ProfilesController {
    */
   static async updateProfile(req, res) {
     let { body } = req;
-    const { user, file, params } = req;
+    const { user, files, params } = req;
 
-    if (!file && Object.keys(body) < 1) return res.status(400).send({ message: 'Cannot update empty object' });
+    if (!files && Object.keys(body) < 1) return res.status(400).send({ message: 'Cannot update empty object' });
 
-    if (file && Object.keys(body) < 1) {
-      uploadImageWorker(file, params.id, null);
+    if (files && Object.keys(body) < 1) {
+      uploadImageWorker(files, params.id, 'user', null);
       return res.status(200).json({ status: 200, message: 'Your image will be updated shortly' });
     }
 
@@ -63,7 +63,7 @@ export default class ProfilesController {
           .json({ message: `Could not find user with id: ${user.id}` });
       }
 
-      uploadImageWorker(file, params.id, null);
+      uploadImageWorker(files, params.id, 'user', null);
 
       return res.status(200).json({ user: { updatedUser } });
     } catch (error) {

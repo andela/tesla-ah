@@ -5,10 +5,12 @@ import readTime from '../../helpers/ReadTime.helper';
 import eventEmitter from '../../helpers/notifications/EventEmitter';
 import findUser from '../../helpers/FindUser';
 import AuthorNotifier from '../../helpers/NotifyAuthorOnArticleBlock';
+import workers from '../../workers';
 
 const {
   notifyAuthorblock, notifyAuthorUnblock
 } = AuthorNotifier;
+const { uploadImageWorker } = workers;
 
 const {
   User,
@@ -51,6 +53,7 @@ class articlesController {
     }
 
     const dataValues = await articles.createNewArticle(req);
+
     const {
       slug,
       title,
@@ -78,6 +81,7 @@ class articlesController {
       readtime,
       views
     };
+
     res.status(201).send({
       article: result
     });
@@ -154,7 +158,7 @@ class articlesController {
     const newReadTime = readTime(updateSlug.body);
 
     // @Updating the article's data in Database
-    await Article.update(
+    const updatedArticle = await Article.update(
       {
         slug: newSlug,
         title: updateSlug.title,
@@ -163,8 +167,14 @@ class articlesController {
         tagList: updateSlug.tagList,
         readtime: newReadTime
       },
-      { where: { slug } }
+      { where: { slug }, returning: true }
     );
+
+
+    // Uplooad article image
+    if (req.files) {
+      uploadImageWorker(req.files, updatedArticle[1][0].dataValues.id, 'article', null);
+    }
 
     // @returning the response
     res.status(200).send({
