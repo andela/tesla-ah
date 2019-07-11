@@ -530,5 +530,27 @@ describe('Block article', () => {
           done();
         });
     });
+
+    it('it should let admin or moderator get blocked articles', (done) => {
+      chai
+        .request(app)
+        .get('/api/articles/blocked/all')
+        .set('token', AdminToken)
+        .end((err, res) => {
+          res.body.should.have.status(200);
+          done();
+        });
+    });
+
+    it('it should let admin or moderator get reported articles', (done) => {
+      chai
+        .request(app)
+        .get('/api/articles/reported/all')
+        .set('token', AdminToken)
+        .end((err, res) => {
+          res.body.should.have.status(200);
+          done();
+        });
+    });
   });
 });
