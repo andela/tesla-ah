@@ -23,6 +23,20 @@ const SocketIO = (app) => {
       });
     });
   });
+
+  io.of('/chats').on('connection', (socket) => {
+    //socket.userName = 'Eric';
+   // console.log(socket);
+    // Handle chat event
+    socket.on('chat', (data) => {
+      // console.log(data);
+      io.of('/chats').emit('chat', data);
+    });
+    // Handle typing event
+    socket.on('typing', (data) => {
+      socket.broadcast.emit('typing', data);
+    });
+  });
   return io;
 };
 

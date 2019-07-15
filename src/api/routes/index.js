@@ -5,6 +5,7 @@ import profilesRouter from './profilesRouter';
 import articlesRouter from './articlesRouter';
 import ratingsRouter from './ratingsRouter';
 import bookmarkRouter from './bookmark';
+import chatRouter from './chatRouter';
 
 const api = express();
 
@@ -15,6 +16,6 @@ api.use('/profiles', profilesRouter);
 api.use('/articles', articlesRouter);
 api.use('/ratings', ratingsRouter);
 api.use('/bookmarks', bookmarkRouter);
-
+api.use('/chat', chatRouter);
 
 export default api;
