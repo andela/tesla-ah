@@ -145,5 +145,12 @@ export default {
       .label('Occurrency should be a number')
 
 
+  }),
+  validateTerms: Joi.object().keys({
+    termsAndConditions: Joi.string()
+      .trim()
+      .min(10)
+      .required()
+      .label('Terms and Conditions are required are required and should at least have 10 letters')
   })
 };

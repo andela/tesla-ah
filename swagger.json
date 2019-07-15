@@ -1,4 +1,3 @@
-
 {
   "swagger": "2.0",
   "info": {
@@ -1821,7 +1820,9 @@
     },
     "/articles?author={author}": {
       "get": {
-        "tags": ["Search for an article"],
+        "tags": [
+          "Search for an article"
+        ],
         "description": "AAny User will be able to view a list of all articles which matches with the provided parameter",
         "parameters": [
           {
@@ -1832,7 +1833,9 @@
             "type": "string"
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "The List of All Articles related to the provided author's Username"
@@ -1842,7 +1845,9 @@
     },
     "/articles?tag={tag}": {
       "get": {
-        "tags": ["Search for an article"],
+        "tags": [
+          "Search for an article"
+        ],
         "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
         "parameters": [
           {
@@ -1853,7 +1858,9 @@
             "type": "string"
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "The List of All Articles related to the provided tag"
@@ -1863,7 +1870,9 @@
     },
     "/articles?title={title}": {
       "get": {
-        "tags": ["Search for an article"],
+        "tags": [
+          "Search for an article"
+        ],
         "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
         "parameters": [
           {
@@ -1874,7 +1883,9 @@
             "type": "string"
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "The List of All Articles related to the provided title"
@@ -1900,14 +1911,15 @@
           "application/json"
         ],
         "responses": {
-          "200": {
-          }
+          "200": {}
         }
       }
     },
     "/articles?keywords={keywords}": {
       "get": {
-        "tags": ["Search for an article"],
+        "tags": [
+          "Search for an article"
+        ],
         "description": "Any User will be able to view a list of all articles which matches with the provided parameter",
         "parameters": [
           {
@@ -1918,7 +1930,9 @@
             "type": "string"
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "The List of All Articles related to the provided keywords"
@@ -2030,135 +2044,191 @@
         }
       }
     },
-      "/articles/{slug}/comments/count": {
-        "get": {
-          "tags": [
-            "stats"
-          ],
-          "description": "User is able to view a specific article reading stats",
-          "parameters": [
-            {
-              "name": "slug",
-              "in": "path",
-              "description": "Article slug",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {}
+    "/articles/{slug}/comments/count": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "description": "User is able to view a specific article reading stats",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Article slug",
+            "required": true
           }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {}
         }
-      },
-      "/articles/{articleId}/highlights/{highlightId}/share/twitter": {
-        "get": {
-          "tags": [
-            "Share highlights"
-          ],
-          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "The access token",
-              "required": true
-            },
-            {
-              "name": "articleId",
-              "in": "path",
-              "description": "article's slug",
-              "required": true
-            },
-            {
-              "name": "highlightId",
-              "in": "path",
-              "description": "Highlight Id",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "Highlight shared!"
-            }
+      }
+    },
+    "/articles/{articleId}/highlights/{highlightId}/share/twitter": {
+      "get": {
+        "tags": [
+          "Share highlights"
+        ],
+        "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          },
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "article's slug",
+            "required": true
+          },
+          {
+            "name": "highlightId",
+            "in": "path",
+            "description": "Highlight Id",
+            "required": true
           }
-        }
-      },
-      "/articles/{articleId}/highlights/{highlightId}/share/facebook": {
-        "get": {
-          "tags": [
-            "Share highlights"
-          ],
-          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "The access token",
-              "required": true
-            },
-            {
-              "name": "articleId",
-              "in": "path",
-              "description": "article's slug",
-              "required": true
-            },
-            {
-              "name": "highlightId",
-              "in": "path",
-              "description": "Highlight Id",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "Highlight shared!"
-            }
-          }
-        }
-      },
-      "/articles/{articleId}/highlights/{highlightId}/share/email": {
-        "get": {
-          "tags": [
-            "Share highlights"
-          ],
-          "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
-          "parameters": [
-            {
-              "name": "token",
-              "in": "header",
-              "description": "The access token",
-              "required": true
-            },
-            {
-              "name": "articleId",
-              "in": "path",
-              "description": "article's slug",
-              "required": true
-            },
-            {
-              "name": "highlightId",
-              "in": "path",
-              "description": "Highlight Id",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "Highlight shared!"
-            }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Highlight shared!"
           }
         }
       }
+    },
+    "/articles/{articleId}/highlights/{highlightId}/share/facebook": {
+      "get": {
+        "tags": [
+          "Share highlights"
+        ],
+        "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          },
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "article's slug",
+            "required": true
+          },
+          {
+            "name": "highlightId",
+            "in": "path",
+            "description": "Highlight Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Highlight shared!"
+          }
+        }
+      }
+    },
+    "/articles/{articleId}/highlights/{highlightId}/share/email": {
+      "get": {
+        "tags": [
+          "Share highlights"
+        ],
+        "description": "Authors Haven users are able to share highlights across several platforms like twitter, facebook and email",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          },
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "article's slug",
+            "required": true
+          },
+          {
+            "name": "highlightId",
+            "in": "path",
+            "description": "Highlight Id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Highlight shared!"
+          }
+        }
+      }
+    },
+    "/auth/termsandconditions/{termsId}": {
+      "get": {
+        "tags": [
+          "Terms and Conditions"
+        ],
+        "description": "User is able to see terms and conditions while signing up",
+        "parameters": [
+          {
+            "name": "termsId",
+            "in": "path",
+            "description": "Terms and Conditions id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {}
+        }
+      },
+      "patch": {
+        "tags": [
+          "Terms and Conditions"
+        ],
+        "description": "Admin should be able to update terms and conditions",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The access token",
+            "required": true
+          },
+          {
+            "name": "termsId",
+            "in": "path",
+            "description": "Terms and Conditions id",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "termsAndConditions",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/terms"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    }
   }
 }

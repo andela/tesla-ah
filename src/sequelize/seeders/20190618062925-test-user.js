@@ -199,5 +199,22 @@ module.exports = {
     updatedAt: new Date(),
     roles: ['admin', 'moderator']
   },
+  {
+    firstName: 'SuperAdmin',
+    lastName: 'SuperAdmin',
+    username: 'superAdmin',
+    email: 'superadmin@gmail.com',
+    password: superUserPsw,
+    bio: '',
+    avatar: '',
+    dateOfBirth: '12/12/2000',
+    gender: '',
+    provider: '',
+    socialId: '',
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    roles: ['admin']
+  },
   ], {}),
 };

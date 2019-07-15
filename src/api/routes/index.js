@@ -5,6 +5,7 @@ import profilesRouter from './profilesRouter';
 import articlesRouter from './articlesRouter';
 import ratingsRouter from './ratingsRouter';
 import bookmarkRouter from './bookmark';
+import termsAndConditionsRouter from './termsConditionsRouter';
 
 const api = express();
 
@@ -15,6 +16,7 @@ api.use('/profiles', profilesRouter);
 api.use('/articles', articlesRouter);
 api.use('/ratings', ratingsRouter);
 api.use('/bookmarks', bookmarkRouter);
+api.use('/termsandconditions', termsAndConditionsRouter);
 
 
 export default api;

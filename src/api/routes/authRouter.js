@@ -9,6 +9,7 @@ import Auth from '../../middleware/auth';
 import socialLogin from '../controllers/socialLogin';
 import socialAccount from '../../middleware/socialAccountExists';
 import socialMiddleware from '../../middleware/socialTest';
+import termsAndConditions from '../controllers/termsAndConditions';
 
 const authRouter = Router();
 
@@ -25,6 +26,11 @@ const { usernameExists, emailExists } = userValidation;
 const { verifyToken } = Auth;
 
 const { google, twitter } = socialAccount;
+const { getTermsAndConditions } = termsAndConditions;
+
+// terms and conditions
+
+authRouter.get('/termsandconditions/:id', getTermsAndConditions);
 
 // social login test routes
 
