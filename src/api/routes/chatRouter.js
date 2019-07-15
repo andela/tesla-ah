@@ -7,7 +7,7 @@ const { verifyToken } = auth;
 const chatRouter = Router();
 
 chatRouter.get('/users', verifyToken, getUsers);
-chatRouter.get('/chats/:username', verifyToken, getMessages);
+chatRouter.get('/:username', verifyToken, getMessages);
 chatRouter.post('/messages/:username', verifyToken, sendMessage);
 
 export default chatRouter;

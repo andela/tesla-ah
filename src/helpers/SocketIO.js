@@ -24,13 +24,40 @@ const SocketIO = (app) => {
     });
   });
 
-  io.of('/chats').on('connection', (socket) => {
-    // socket.userName = 'Eric';
-    // console.log(socket);
-    // Handle chat event
-    socket.on('chat', (data) => {
-      // console.log(data);
-      io.of('/chats').emit('chat', data);
+  const chats = io.of('/chats');
+  const users = {};
+  chats.on('connection', (socket) => {
+    socket.on('new_user', ({ username, userToChat }) => {
+      socket.username = username;
+      if (userToChat in users) {
+        // eslint-disable-next-line no-console
+        console.log('Online');
+      } else {
+        socket.userToChat = userToChat;
+        users[socket.userToChat] = socket;
+      }
+    });
+    socket.on('chat', ({ sender, receiver, message }) => {
+      // console.log(`Sender:${users[sender]}`);
+      // console.log(`Receiver:${users[receiver]}`);
+      if (receiver in users) {
+        chats.emit('chat', { sender, message, receiver });
+        // users[receiver].emit('chat', {
+        //   sender,
+        //   receiver,
+        //   message
+        // });
+      }
+      // socket.to(users[receiver].id).emit('chat', {
+      //   sender,
+      //   receiver,
+      //   message
+      // });
+      // console.log('Socket ID', socket.id);
+      // chats.to(socket.id).emit('chat', {
+      //   sender,
+      //   message
+      // });
     });
     // Handle typing event
     socket.on('typing', (data) => {
