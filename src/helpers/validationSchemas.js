@@ -97,7 +97,7 @@ export default {
       .label('title is required and should be a string'),
     body: Joi.string()
       .required()
-      .label('body is required and shoud be a string'),
+      .label('body is required and should be a string'),
     description: Joi.string()
       .required()
       .label('description is required and should be a string'),

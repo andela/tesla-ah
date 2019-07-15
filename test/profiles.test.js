@@ -187,12 +187,12 @@ describe('User Profiles', () => {
           done();
         });
     });
-    it('it should update user profile with an image', (done) => {
+    it('it should update user profile with images', (done) => {
       chai
         .request(app)
         .put(`/api/user/${testUser.id}`)
         .set('token', userToken)
-        .attach('image', fs.readFileSync(`${__dirname}/mock/sample.png`), 'sample.png')
+        .attach('avatar', fs.readFileSync(`${__dirname}/mock/sample.png`), 'sample.png')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');

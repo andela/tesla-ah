@@ -4,8 +4,10 @@ import slug from 'slug';
 import uniqid from 'uniqid';
 import models from '../sequelize/models';
 import readTime from './ReadTime.helper';
+import workers from '../workers';
 
 const { Article, User } = models;
+const { uploadImageWorker } = workers;
 
 /**
  * @description Helpers for articles
@@ -38,10 +40,16 @@ class ArticlesHelper {
       description,
       body,
       tagList: tagList.split(','),
-      authorId: parseInt(id, 10),
+      authorId: id,
       readtime,
       views: 0,
     });
+
+    // Uplooad article image
+    if (req.files) {
+      uploadImageWorker(req.files, dataValues.id, 'article', null);
+    }
+
     const userInfo = await this.getUserInfo(id);
     const { username, bio, image } = userInfo;
     const author = { username, bio, image };
@@ -61,7 +69,7 @@ class ArticlesHelper {
         include: [{
           as: 'author',
           model: User,
-          attributes: ['username', 'bio', 'image']
+          attributes: ['username', 'bio', 'avatar']
         }],
         attributes: ['id', 'slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt'],
         limit: 10
@@ -76,7 +84,7 @@ class ArticlesHelper {
       include: [{
         as: 'author',
         model: User,
-        attributes: ['username', 'bio', 'image']
+        attributes: ['username', 'bio', 'avatar']
       }],
       attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'views', 'updatedAt', 'createdAt']
     });
