@@ -25,8 +25,8 @@ const SocketIO = (app) => {
   });
 
   io.of('/chats').on('connection', (socket) => {
-    //socket.userName = 'Eric';
-   // console.log(socket);
+    // socket.userName = 'Eric';
+    // console.log(socket);
     // Handle chat event
     socket.on('chat', (data) => {
       // console.log(data);
