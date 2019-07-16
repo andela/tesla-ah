@@ -14,6 +14,7 @@ header{
       @include easeOut(.5s);
       .nav-shrink{
         color:$dark;
+        font-family:Mako;
       }
     }
   nav{
@@ -27,11 +28,27 @@ header{
         color:$blue;
       }
     }
+    .navbar-brand {
+      color: $white;
+      width: 20%;
+    }
     .navbar-toggler-icon{
      i.fa{
        font-size: 27px;
+       color: $white;
        // font-weight: 100;
      }
     }
+  }
+}
+
+@media(min-width:768px){
+  .navbar-collapse{
+    display: flex;
+    margin-left: 160px;
+    justify-content: space-between;
+  }
+  .nav-link{
+    margin-right: 40px;  
   }
 }

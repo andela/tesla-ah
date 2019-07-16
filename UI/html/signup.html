@@ -28,7 +28,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto nav-left">
           <li class="nav-item active">
-            <a class="nav-link is-active" href="../index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link is-active" href="../index.html">Home </a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle nav-shrink" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -50,7 +50,7 @@
           </li>
         </ul>
         <ul class="nav-right navbar-nav">
-          <li class="nav-item"><a href="signup.html" class="nav-link is-active">SignUp</a></li>
+          <li class="nav-item"><a href="login.html" class="nav-link is-active">Login</a></li>
         </ul>
       </div>
     </nav>
@@ -58,21 +58,30 @@
   <section class="main-section">
     <main class="row mt-5 mb-5">
         <div class= "row">
-            <div class="col-md-8" id="col-login">
-                <h4>Sign to Authors Haven</h4><br><br>
-                <a class="button button--social-login button--facebook" href="#"><i class="icon fa fa-facebook"></i>Facebook</a>
-                <a class="button button--social-login button--twitter" href="#"><i class="icon fa fa-twitter"></i>Twitter</a>
-                <a class="button button--social-login button--googleplus" href="#"><i class="icon fa fa-google-plus"></i>Google +</a>                <form>
+            <div class="col-md-6">
+                <h4>Join Authors Haven</h4><br><br>
+                
+                <form>
                   <div class="field">
-                    <input type = "text" placeholder="Email or username"><br><br>
-                    <input type = "password" placeholder="Password"><br><br>
-                    <input type="submit" value= "Login">
+                    <input type = "email" placeholder="Email"><br><br>
+                    <input type = "text" id="username" placeholder="Username"><br><br>
+                    <input type = "password" placeholder="Password">
+                    <input type = "password" placeholder="Confirm"><br><br>
+                    <label>Date of birth</label><br>
+                    <input type = "date" placeholder="Date of Birth"><br><br>
+                    <input type="radio" name="gender" value="male"> <span>Male</span>
+                    <input type="radio" name="gender" id="female" value="female"> <span>Female</span><br><br>
+                    <textarea rows="4" cols="50" placeholder="Bio"></textarea><br><br>
+                    <input type="submit" value= "Register"> 
                   </div>
                     
                 </form>
                       
             </div>
-            
+            <div class="col-md-6" id="image">
+              <img src="../assets/image/people-smiling.jpg" >
+          
+            </div>
         </div>
     </main>
       

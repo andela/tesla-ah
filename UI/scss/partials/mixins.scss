@@ -1,8 +1,8 @@
 @mixin easeOut($s){
-  transition:$s ease-out;
+  transition: $s ease-out;
 }
 @mixin ease($s){
-  transition:$s ease;
+  transition: $s ease;
 }
 @mixin easeIn($s){
   transition: $s ease;

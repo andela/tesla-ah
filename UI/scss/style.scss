@@ -1,18 +1,21 @@
 
-@import './partials/variables.scss';
-@import './partials/mixins.scss';
-@import './partials/navbar.scss';
-@import './partials/slider.scss';
-@import './partials/mainsection.scss';
-@import './partials/utils.scss';
-@import './partials//footer.scss';
-@import './partials/animations.scss';
-@import './partials/login.scss';
+@import './partials/variables';
+@import './partials/mixins';
+@import './partials/navbar';
+@import './partials/slider';
+@import './partials/mainsection';
+@import './partials/utils';
+@import './partials//footer';
+@import './partials/animations';
+@import './partials/form';
+@import './partials/social';
+@import './partials/login';
+
 body{
-  font-family: 'Lato',sans-serif;
+  font-family: $font-family,sans-serif;
 }
 .line{
-  background:$blue;
+  background: $blue;
   width: 120px;
   height: 3px;
   display: inline-block;
