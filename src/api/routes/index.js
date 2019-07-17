@@ -16,6 +16,6 @@ api.use('/profiles', profilesRouter);
 api.use('/articles', articlesRouter);
 api.use('/ratings', ratingsRouter);
 api.use('/bookmarks', bookmarkRouter);
-api.use('/chat', chatRouter);
+api.use('/chats', chatRouter);
 
 export default api;

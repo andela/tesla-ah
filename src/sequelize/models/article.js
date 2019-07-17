@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true
       },
-      image: {
-        type: DataTypes.TEXT,
+      gallery: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: true
       },
       authorId: {

@@ -8,7 +8,6 @@ module.exports = {
       blocked: false,
       body:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      image: '',
       createdAt: new Date(),
       updatedAt: new Date(),
       readtime: '2 min',
@@ -22,7 +21,6 @@ module.exports = {
       blocked: false,
       body:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      image: '',
       createdAt: new Date(),
       updatedAt: new Date(),
       readtime: '1min',
@@ -35,7 +33,6 @@ module.exports = {
       readtime: '2 min',
       body:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      image: '',
       createdAt: new Date(),
       updatedAt: new Date(),
       authorId: 4,
