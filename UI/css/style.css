@@ -102,9 +102,18 @@ main {
       font-weight: 500;
       text-shadow: 0px 4px 4px rgba(0, 174, 255, 0.25);
       letter-spacing: 0.02em; }
+    main .row .col-md-6 h5 {
+      color: #000000;
+      margin-top: 3%;
+      font-weight: 450;
+      letter-spacing: 0.02em; }
     main .row #image {
       margin-top: 200px; }
       main .row #image img {
+        width: 400px; }
+    main .row #passwordImage {
+      margin-top: 4%; }
+      main .row #passwordImage img {
         width: 400px; }
     main .row #col-login {
       width: 100%;
@@ -158,17 +167,29 @@ main {
   main .row #image {
     margin-top: 300px; }
     main .row #image img {
-      width: 230px; } }
+      width: 230px; }
+  main .row #passwordImage {
+    display: none; } }
 
 @media (max-width: 480px) {
-  #image {
+  #image, #passwordImage {
     display: none; }
   .col-md-6 h4 {
     color: #45536f;
     font-weight: 500;
     text-align: center;
     text-shadow: 0px 4px 4px rgba(0, 174, 255, 0.25);
+    letter-spacing: 0.02em; }
+  .col-md-6 h5 {
+    color: #000000;
+    margin-top: 3%;
+    font-weight: 450;
+    text-align: center;
     letter-spacing: 0.02em; } }
+
+@media (max-width: 1024px) {
+  main .row #passwordImage img {
+    width: 250px; } }
 
 @media (width: 1024px) {
   main .row #image img {
@@ -197,7 +218,8 @@ main {
 footer {
   background: #303346;
   color: #ffffff;
-  padding: 15px; }
+  padding: 15px;
+  margin-top: 10%; }
   footer .social-links {
     margin-right: 20%;
     display: flex;
@@ -249,6 +271,11 @@ form {
       margin-left: 30px; }
     form .field input[type=radio] span {
       color: rgba(0, 0, 0, 0.22); }
+    form .field input[type=checkbox] span {
+      width: 30px;
+      height: 30px; }
+    form .field input[type=checkbox] {
+      position: relative; }
     form .field input[type=submit] {
       background-color: #45536f;
       height: 50px;
@@ -286,6 +313,16 @@ form {
 
 #col-login input[type=text], #col-login input[type=password], #col-login input[type=submit] {
   width: 86%;
+  height: 40px; }
+
+#col-resetPassword input[type=text], #col-resetPassword input[type=password], #col-resetPassword input[type=submit] {
+  width: 86%;
+  margin-bottom: 5%;
+  height: 40px; }
+
+#col-resetPasswordForm input[type=text], #col-resetPasswordForm input[type=password], #col-resetPasswordForm input[type=submit] {
+  width: 86%;
+  margin-bottom: 5%;
   height: 40px; }
 
 @media (max-width: 768px) {

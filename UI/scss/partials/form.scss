@@ -37,6 +37,14 @@ form{
             color:$grey;
 
         }
+        input[type=checkbox] span {
+            width: 30px;
+            height: 30px;
+            }
+        input[type=checkbox]{
+            position: relative;
+
+        }
         input[type=submit]{
             background-color: $title_color;
             height: 50px;
@@ -51,8 +59,6 @@ form{
         input[type=text].title-input{
             font-size: 27px;
         }
-
-        
 
         select{
             width: 100%;
@@ -87,12 +93,23 @@ form{
 #col-login{
     input[type=text], input[type=password], input[type=submit]{
         width:86%;
-        height: 40px;
-       
-        
-        
+        height: 40px;   
+    }
+}
+#col-resetPassword{
+    input[type=text], input[type=password], input[type=submit]{
+        width:86%;
+        margin-bottom: 5%;
+        height: 40px;   
     }
 } 
+#col-resetPasswordForm{
+    input[type=text], input[type=password], input[type=submit]{
+        width:86%;
+        margin-bottom: 5%;
+        height: 40px;   
+    }
+}  
 
 
 @media(max-width:768px){
