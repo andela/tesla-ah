@@ -28,7 +28,7 @@ const invalidHighlight = {
 };
 
 describe('Highlight the Article', () => {
-  let token;
+  let token, highlightId;
   before(async () => {
     const user = {
       firstName: 'Emy',
@@ -61,6 +61,7 @@ describe('Highlight the Article', () => {
       .end((err, res) => {
         res.should.have.status(201);
         expect(res.body.Message).to.be.a('string');
+        highlightId = res.body.data.id;
         done();
       });
   });
@@ -92,6 +93,50 @@ describe('Highlight the Article', () => {
       .set('token', ' ')
       .end((err, res) => {
         res.should.have.status(401);
+        done();
+      });
+  });
+  it('should be able to share hightlights', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/${newArticle.dataValues.slug}/highlights/${highlightId}/share/twitter`)
+      .set('token', token)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should be able to share hightlights', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/${newArticle.slug}/highlights/${highlightId}/share/facebook`)
+      .set('token', token)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should be able to share hightlights', (done) => {
+    chai
+      .request(server)
+      .get(`/api/articles/${newArticle.dataValues.slug}/highlights/${highlightId}/share/email`)
+      .set('token', token)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should check if the highlight belongs to the article', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/73H7812/highlights/1/share/email')
+      .set('token', token)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.be.an('object');
         done();
       });
   });

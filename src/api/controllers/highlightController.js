@@ -26,7 +26,8 @@ class Highlight {
       occurencyNumber,
     });
     return res.status(201).json({
-      Message: `Thank you for highlighting this text ${newHighlight.highlightText}`
+      Message: `Thank you for highlighting this text ${newHighlight.highlightText}`,
+      data: newHighlight
     });
   }
 }

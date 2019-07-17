@@ -20,11 +20,15 @@ import highlight from '../controllers/highlightController';
 import highlightExist from '../../middleware/highlightExist';
 import textExist from '../../middleware/textExist';
 import upload from '../../handlers/multer';
+import shareHighlight from '../../middleware/shareHighlights';
+import shareHighlightController from '../controllers/shareHighlights';
+import checkHighlight from '../../middleware/checkHighlight';
 
 const articlesRouter = Router();
 const {
   getViews, commentNumber, facebookShares, twitterShares, emailShares, shares
 } = stats;
+const { shareHighlights } = shareHighlightController;
 const {
   createArticle,
   getAllArticle,
@@ -53,6 +57,7 @@ const {
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
 const { liked, disliked } = checkLikesandDislikes;
+const { highlights } = checkHighlight;
 
 articlesRouter
   .post('/', verifyToken, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
@@ -98,6 +103,11 @@ articlesRouter.get('/:slug/share/linkedin', verifyToken, slugExist, shareArticle
 articlesRouter.get('/:slug/share/pinterest', verifyToken, slugExist, shareArticle, share);
 articlesRouter.get('/:slug/share/email', verifyToken, slugExist, shareArticle, share);
 
+// sharing highlights
+
+articlesRouter.get('/:slug/highlights/:highlightId/share/twitter', verifyToken, slugExist, highlights, shareHighlight, shareHighlights);
+articlesRouter.get('/:slug/highlights/:highlightId/share/facebook', verifyToken, slugExist, highlights, shareHighlight, shareHighlights);
+articlesRouter.get('/:slug/highlights/:highlightId/share/email', verifyToken, slugExist, highlights, shareHighlight, shareHighlights);
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 
 articlesRouter.post('/:slug/report', verifyToken, validateBody('checkComment'), slugExist, reportArticle);
