@@ -1,0 +1,22 @@
+.grey{
+  color: $grey;
+}
+.dark{
+  color: $dark;
+}
+.white{
+  color: $white;
+}
+.blue{
+  color: $blue;
+}
+.link{
+  color: #000;
+  @include easeOut(.5s);
+  &:hover{
+    color: $blue;
+  }
+  &.no__decoration{
+    text-decoration: none;
+  }
+}

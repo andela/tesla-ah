@@ -6,16 +6,18 @@ header{
   left: 0;
   z-index: 100;
   background:rgba($dark,.5);
-    border-bottom: 1px solid $grey;
+   
     &.shrink{
       background:$white;
+      -webkit-box-shadow:0px 0px 8px $blue;
+      -moz-box-shadow:0px 0px 8px $blue;
       @include easeOut(.5s);
       .nav-shrink{
         color:$dark;
+        font-family:Mako;
       }
     }
   nav{
-    
     .navbar-collapse{
       display: flex;
       justify-content: space-between;
@@ -26,11 +28,27 @@ header{
         color:$blue;
       }
     }
+    .navbar-brand {
+      color: $white;
+      width: 20%;
+    }
     .navbar-toggler-icon{
      i.fa{
        font-size: 27px;
+       color: $white;
        // font-weight: 100;
      }
     }
+  }
+}
+
+@media(min-width:768px){
+  .navbar-collapse{
+    display: flex;
+    margin-left: 160px;
+    justify-content: space-between;
+  }
+  .nav-link{
+    margin-right: 40px;  
   }
 }

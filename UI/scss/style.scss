@@ -1,0 +1,26 @@
+
+@import './partials/variables';
+@import './partials/mixins';
+@import './partials/navbar';
+@import './partials/slider';
+@import './partials/mainsection';
+@import './partials/utils';
+@import './partials//footer';
+@import './partials/animations';
+@import './partials/form';
+@import './partials/social';
+@import './partials/login';
+
+body{
+  font-family: $font-family,sans-serif;
+}
+.line{
+  background: $blue;
+  width: 120px;
+  height: 3px;
+  display: inline-block;
+  &.line__sm{
+    width: 50px;
+    animation: load 1s ease-in-out;
+  }
+}
