@@ -98,12 +98,6 @@ export default class ProfilesController {
     return res.status(200).send({
       profiles: fetchedProfile
     });
-    /**
-   * Apply follow a user controller
-   * @param {Object} req - Request
-   * @param {Object} res  - Response
-   * @returns {Object} The response object
-   */
   }
 
   /**
@@ -167,7 +161,7 @@ export default class ProfilesController {
       })
       : res
         .status(400)
-        .json({ errors: `you do not follow ${username}` });
+        .json({ error: `you do not follow ${username}` });
   }
 
   /**
@@ -192,7 +186,7 @@ export default class ProfilesController {
       })
       .then((data) => {
         if (!data[0]) {
-          return res.status(200).json({ error: 'you do not have any followers currently' });
+          return res.status(200).json({ message: 'you do not have any followers currently', data });
         }
         return res.status(200).json({ followers: data });
       });
@@ -218,7 +212,7 @@ export default class ProfilesController {
       })
       .then((data) => {
         if (!data[0]) {
-          return res.status(200).json({ error: 'you do not following anyone currently' });
+          return res.status(200).json({ message: 'you do not following anyone currently', data });
         }
         return res.status(200).json({ following: data });
       });

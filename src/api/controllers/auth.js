@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { omit } from 'lodash';
+import sequelize from 'sequelize';
 import tokenHelper from '../../helpers/Token.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
@@ -11,6 +12,7 @@ import workers from '../../workers';
 const { generateToken, decodeToken } = tokenHelper;
 const { User, Blacklist, Opt } = db;
 const { queueEmailWorker } = workers;
+const { Op } = sequelize;
 
 dotenv.config();
 
@@ -145,8 +147,11 @@ class AuthController {
   */
   static async login(req, res) {
     const { email } = req.body;
-    const users = await User.findOne({ where: { email } })
-    || await User.findOne({ where: { username: email } });
+    const users = await User.findOne({
+      where: {
+        [Op.or]: [{ email }, { username: email }]
+      }
+    });
     if (users) {
       if (
         !HashHelper.comparePassword(req.body.password, users.dataValues.password)
