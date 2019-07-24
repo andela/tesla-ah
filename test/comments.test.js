@@ -77,7 +77,8 @@ describe('Comments', () => {
       image: '',
       authorId: userOneId,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      categoryName: 'other'
     };
     await models.Article.create(articleOne);
 
@@ -91,7 +92,8 @@ describe('Comments', () => {
       image: '',
       authorId: userOneId,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      categoryName: 'other'
     };
     await models.Article.create(articleTwo);
   });

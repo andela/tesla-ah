@@ -59,7 +59,7 @@ module.exports = {
     lastName: 'Audace',
     username: 'Audace',
     email: 'u.audace@gmail.com',
-    password: 'Uhiriwe1!',
+    password: '$2b$08$GCULzAkfmfB/fGyZrnfMSeFG.KdYasuBa2r7z1n.CUFy.KrdnOUdi',
     bio: '',
     avatar: '',
     cover: '',
@@ -71,6 +71,23 @@ module.exports = {
     createdAt: new Date(),
     updatedAt: new Date(),
     roles: ['user']
+  },
+  {
+    firstName: 'Uhiriwe1',
+    lastName: 'Audace1',
+    username: 'Audace1',
+    email: 'u1.audace@gmail.com',
+    password: '$2b$08$/.eqmrkBU5fqgXJon0f33O.q.D7khNyqX8/oIFXy5Jxy/Pjtc4euW',
+    bio: '',
+    avatar: '',
+    dateOfBirth: '12/12/1999',
+    gender: '',
+    provider: '',
+    socialId: '',
+    verified: 'true',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    roles: ['admin']
   },
   {
     firstName: 'Eric',

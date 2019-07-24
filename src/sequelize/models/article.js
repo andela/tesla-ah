@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
       views: {
         type: DataTypes.INTEGER
       },
+      categoryName: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
     },
     {}
   );

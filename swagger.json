@@ -2229,6 +2229,136 @@
           "200": {}
         }
       }
+    },
+    "/category": {
+      "post": {
+        "tags": [
+          "category"
+        ],
+        "description": "Admin will be able to create the article's category",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The Admin token",
+            "required": true
+          },
+          {
+            "name": "Category",
+            "in": "body",
+            "description": "Admin will be able to create the article's category on author's haven",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "category created successfully",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["category"],
+        "description": "The logged in user or not will be able to view all categories",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Here's all categories, so far!"
+          }
+        }
+      }
+    },
+    "/category/{id}": {
+      "put": {
+        "tags": ["category"],
+        "description": "Admin should be able to update his/her a specific category",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The admin token",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The category id",
+            "required": true
+          },
+          {
+            "name": "Category",
+            "in": "body",
+            "description": "update the category of articles on author's haven",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Category has been successfully updated! ",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "category"
+        ],
+        "description": "admin should be able to delete a specific category",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The admin token",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The category id",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Category has been successfully deleted!"
+          }
+        }
+      }
+    },
+    "/category/{categoryName}/articles":{
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "description": "The logged in user or not will be able to view all articles related to a specific category",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Here's all articles related to that category, so far!"
+          }
+        }
+      }
     }
   }
 }

@@ -41,7 +41,8 @@ describe('Rating Article', () => {
       tagList: ['Tech', 'Kigali'],
       authorId: newUser.id,
       slug: 'slyg',
-      readtime: '1 min'
+      readtime: '1 min',
+      categoryName: 'other'
     };
     newArticle = await Article.create(article);
   });
