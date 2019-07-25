@@ -1,5 +1,6 @@
 import models from '../../sequelize/models';
 import tokenGeneration from '../../helpers/Token.helper';
+import loginResponse from '../../helpers/auth/socialLoginResponse';
 
 const userInfo = {
   async googleLogin(req, res) {
@@ -14,18 +15,8 @@ const userInfo = {
       socialId: req.user.id,
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, firstName, lastName, email, provider
-        }
-      } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(200).json({
-        message: `Welcome to Authors Haven ${displayName} `,
-        data: {
-          token, id, firstName, lastName, email, provider
-        },
-      });
+      loginResponse(res, newUser, displayName, token);
     }
   },
   async facebookLogin(req, res) {
@@ -41,18 +32,8 @@ const userInfo = {
       socialId: req.user.id,
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, firstName, lastName, email, provider
-        }
-      } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(200).json({
-        message: `Welcome to Authors Haven ${displayName} `,
-        data: {
-          token, id, firstName, lastName, email, provider
-        },
-      });
+      loginResponse(res, newUser, displayName, token);
     }
   },
   async twitterLogin(req, res) {
@@ -70,18 +51,8 @@ const userInfo = {
       socialId: req.user.id,
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, firstName, lastName, email, provider
-        }
-      } = newUser;
       const token = await tokenGeneration.generateToken(newUser.dataValues);
-      return res.status(200).json({
-        message: `Welcome to Authors Haven ${displayName} `,
-        data: {
-          token, id, firstName, lastName, email, provider
-        },
-      });
+      loginResponse(res, newUser, displayName, token);
     }
   },
 };

@@ -106,7 +106,7 @@ describe('Comments', () => {
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body).to.be.an('object');
-        commentId = res.body.data.Id;
+        commentId = res.body.data.id;
         done();
       });
   });
@@ -121,7 +121,7 @@ describe('Comments', () => {
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body).to.be.an('object');
-        commentTwoId = res.body.data.Id;
+        commentTwoId = res.body.data.id;
         done();
       });
   });
@@ -225,7 +225,7 @@ describe('Comments', () => {
       .post(`/api/articles/comments/${commentId}/dislike`)
       .set('token', userOneToken)
       .end((err, res) => {
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(200);
         expect(res.body).to.be.an('object');
         done();
       });

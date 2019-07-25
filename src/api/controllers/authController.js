@@ -1,18 +1,17 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { omit } from 'lodash';
-import sequelize from 'sequelize';
 import tokenHelper from '../../helpers/Token.helper';
 import HashHelper from '../../helpers/hashHelper';
 import db from '../../sequelize/models/index';
 import verifyTemplate from '../../helpers/emailVerifyTemplate';
 import template from '../../helpers/emailTemplate';
 import workers from '../../workers';
+import optIn from '../../helpers/subscriptions/OptIn';
 
 const { generateToken, decodeToken } = tokenHelper;
-const { User, Blacklist, Opt } = db;
+const { User, Blacklist } = db;
 const { queueEmailWorker } = workers;
-const { Op } = sequelize;
 
 dotenv.config();
 
@@ -30,14 +29,12 @@ class AuthController {
    */
   static async register(req, res) {
     let { body } = req;
-
-    if (Object.keys(req.body).length === 0) {
+    if (!Object.keys(req.body).length) {
       return res.status(400).json({
         status: 400,
         error: 'No data sent'
       });
     }
-
     body = await omit(body, ['roles']);
 
     const userObject = {
@@ -54,15 +51,8 @@ class AuthController {
         password: null,
       });
 
-      await Opt.create({
-        userId: newUser.id,
-        type: 'email'
-      });
-
-      await Opt.create({
-        userId: newUser.id,
-        type: 'inapp'
-      });
+      await optIn({ userId: newUser.id, type: 'email' });
+      await optIn({ userId: newUser.id, type: 'inapp' });
 
       const htmlToSend = verifyTemplate.sendVerification(`${newUser.firstName} ${newUser.lastName}`, newUser.email, token);
 
@@ -74,7 +64,7 @@ class AuthController {
           message: 'You will reveive an account verification email shortly',
           email: `${newUser.email}`,
           token
-        },
+        }
       });
     }
   }
@@ -146,42 +136,28 @@ class AuthController {
   * @returns {Object} The response object
   */
   static async login(req, res) {
-    const { email } = req.body;
-    const users = await User.findOne({
-      where: {
-        [Op.or]: [{ email }, { username: email }]
-      }
-    });
-    if (users) {
-      if (
-        !HashHelper.comparePassword(req.body.password, users.dataValues.password)
-      ) {
-        res.status(400).send({
-          status: 400,
-          error: {
-            message: 'Incorrect password'
+    const { users } = req;
+    if (
+      !HashHelper.comparePassword(req.body.password, users.dataValues.password)
+    ) {
+      res.status(400).send({
+        status: 400,
+        error: {
+          message: 'Incorrect password'
+        }
+      });
+    } else {
+      generateToken({
+        ...users.dataValues,
+        password: null,
+      }).then((token) => {
+        res.status(200).send({
+          status: 200,
+          data: {
+            message: 'User logged in successful',
+            token
           }
         });
-      } else {
-        generateToken({
-          ...users.dataValues,
-          password: null,
-        }).then((token) => {
-          res.status(200).send({
-            status: 200,
-            data: {
-              message: 'User logged in successful',
-              token
-            }
-          });
-        });
-      }
-    } else {
-      res.status(404).send({
-        status: 404,
-        error: {
-          message: 'User with that email does not exist.'
-        }
       });
     }
   }

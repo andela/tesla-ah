@@ -36,6 +36,7 @@ const validComment = {
         message: 'That comment does not exist!'
       });
     }
+    req.comment = findComment[0].dataValues;
     next();
   },
   async articleExists(req, res, next) {

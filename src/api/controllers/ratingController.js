@@ -117,20 +117,20 @@ class Ratings {
                 data: {
                   report: {
                     '1st': Number(report.oneStars),
-                    '2st': Number(report.twoStars),
-                    '3st': Number(report.threeStars),
-                    '4st': Number(report.fourStars),
-                    '5st': Number(report.fiveStars),
+                    '2nd': Number(report.twoStars),
+                    '3rd': Number(report.threeStars),
+                    '4th': Number(report.fourStars),
+                    '5th': Number(report.fiveStars),
                     'Number of User ': Number(report.totalCounts),
                     'Total Ratings': Number(report.totalRatings),
                     Average: Number(report.average)
                   },
                   percentage: {
                     '1st': `${percentage.oneStars} %`,
-                    '2st': `${percentage.twoStars} %`,
-                    '3st': `${percentage.threeStars} %`,
-                    '4st': `${percentage.fourStars} %`,
-                    '5st': `${percentage.fiveStars} %`
+                    '2nd': `${percentage.twoStars} %`,
+                    '3rd': `${percentage.threeStars} %`,
+                    '4th': `${percentage.fourStars} %`,
+                    '5th': `${percentage.fiveStars} %`
                   }
                 }
               });

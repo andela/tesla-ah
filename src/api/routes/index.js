@@ -4,9 +4,9 @@ import userRouter from './userRouter';
 import profilesRouter from './profilesRouter';
 import articlesRouter from './articlesRouter';
 import ratingsRouter from './ratingsRouter';
-import bookmarkRouter from './bookmark';
 import termsAndConditionsRouter from './termsConditionsRouter';
 import chatRouter from './chatRouter';
+import bookmarkRouter from './bookmarkRouter';
 
 const api = express();
 

@@ -1,4 +1,6 @@
-import models from '../sequelize/models';
+
+import hasLiked from '../helpers/comment/hasLiked';
+import hasDisliked from '../helpers/comment/hasDisliked';
 
 /**
  * @class checkLikesDislikes
@@ -15,20 +17,10 @@ export default class checkLikesDislikes {
   static async liked(req, res, next) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
-    const hasLiked = await models.LikeDislike.findAll({
-      where: {
-        commentId,
-        userId: id,
-        likes: 1
-      }
-    });
-    // If the user has already liked that comment
-    if (hasLiked[0]) {
-      return res.status(400).json({
-        message: `Dear ${firstName}, You have already liked this comment!`
-      });
-    }
-    next();
+    const isLiked = await hasLiked(id, commentId);
+    return isLiked ? res.status(400).json({
+      message: `Dear ${firstName}, you have already liked this comment!`
+    }) : next();
   }
 
   /**
@@ -41,17 +33,10 @@ export default class checkLikesDislikes {
   static async disliked(req, res, next) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
-    const hasDisliked = await models.LikeDislike.findAll({
-      where: {
-        commentId,
-        userId: id,
-        dislikes: 1
-      }
-    });
-    // If the user has already disliked that comment
-    if (hasDisliked[0]) {
+    const isDisliked = await hasDisliked(id, commentId);
+    if (isDisliked) {
       return res.status(400).json({
-        message: `Dear ${firstName}, You have already disliked this comment!`
+        message: `Dear ${firstName}, you have already disliked this comment!`
       });
     }
     next();

@@ -20,6 +20,8 @@ export default {
     slug: 'this-is-andela-jfsf',
     description: 'Hello @people, This is Andela',
     body: 'bk ksjkjfvvsohgsonhsfogkfghfgkfnokgfkhsgknfgkfsghfsigfgifgfkfgsfgfgkfgfgkfgukhfgkhgkg',
-    tagList: 'this,is,andela'
+    tagList: 'this,is,andela',
+    readtime: 'Less than a minute',
+    authorId: 1
   }
 };
