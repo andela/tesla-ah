@@ -1,4 +1,5 @@
 import { omit } from 'lodash';
+import { forEach } from 'async';
 import models from '../../sequelize/models';
 import workers from '../../workers';
 
@@ -110,7 +111,7 @@ export default class ProfilesController {
     const { username } = req.params;
     const registeredUser = await User.findOne({ where: { username } });
     if (registeredUser.id === req.user.id) {
-      return res.status(400).json({ errors: 'You can not following yourself ' });
+      return res.status(400).json({ errors: 'Sorry but you cannot follow yourself ' });
     }
 
     follows
@@ -118,7 +119,6 @@ export default class ProfilesController {
         userId: registeredUser.id,
         followerId: req.user.id
       })
-      // eslint-disable-next-line no-unused-vars
       .then(response => res.status(200).json({
         response,
         message: `Congratulation, now you follow ${registeredUser.username} `
@@ -127,7 +127,7 @@ export default class ProfilesController {
         ? res.status(400).send({
           error: ` ${username} is already your follower `
         })
-        : res.status(500).json({ error: 'something went wrong' })));
+        : res.status(500).json({ error: `${error}` })));
   }
 
   /**
@@ -157,7 +157,7 @@ export default class ProfilesController {
 
     return unfollowedUser
       ? res.status(200).json({
-        message: `you unfollowed ${username}`
+        message: `you unfollowed ${username}`,
       })
       : res
         .status(400)
@@ -171,11 +171,15 @@ export default class ProfilesController {
    * @returns {Object} followers
    */
   static async followers(req, res) {
-    // eslint-disable-next-line no-unused-vars
-    // const f = await follows.findAll();
+    // find user
+    const { username } = req.params;
+    const user = await User.findAll({ where: { username } });
+
+    if (!user[0]) return res.status(400).json({ message: `User ${username} does not exits` });
+
     follows
       .findAll({
-        where: { userId: req.user.id },
+        where: { userId: user[0].id },
         include: [
           {
             model: User,
@@ -186,9 +190,29 @@ export default class ProfilesController {
       })
       .then((data) => {
         if (!data[0]) {
-          return res.status(200).json({ message: 'you do not have any followers currently', data });
+          return res.status(200).json({ message: 'you do not have any followers currently', followers: data });
         }
-        return res.status(200).json({ followers: data });
+        // Add a property to say if this user is already followed back
+        forEach(data, (follower, callback) => {
+          follower.dataValues.isFollowedback = false;
+          follows
+            .findAll({
+              where: { userId: follower.followerId, followerId: user[0].id },
+              include: [
+                {
+                  model: User,
+                  as: 'followedUser',
+                  attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'avatar', 'bio']
+                }
+              ]
+            })
+            .then((checkData) => {
+              if (checkData[0]) {
+                follower.dataValues.isFollowedback = true;
+              }
+              callback();
+            });
+        }, () => res.status(200).json({ followers: data }));
       });
   }
 
@@ -199,9 +223,15 @@ export default class ProfilesController {
    * @returns {Object} followers
    */
   static async following(req, res) {
+    // find user
+    const { username } = req.params;
+    const user = await User.findAll({ where: { username } });
+
+    if (!user[0]) return res.status(400).json({ message: `User ${username} does not exits` });
+
     follows
       .findAll({
-        where: { followerId: req.user.id },
+        where: { followerId: user[0].id },
         include: [
           {
             model: User,
@@ -212,7 +242,7 @@ export default class ProfilesController {
       })
       .then((data) => {
         if (!data[0]) {
-          return res.status(200).json({ message: 'you do not following anyone currently', data });
+          return res.status(200).json({ message: 'you do not following anyone currently', following: data });
         }
         return res.status(200).json({ following: data });
       });
