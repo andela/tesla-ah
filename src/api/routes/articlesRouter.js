@@ -100,11 +100,11 @@ articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter,
 articlesRouter.get('/comments/:commentId/dislikes', checkParameter, countDislikes);
 articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
 // sharing articles
-articlesRouter.get('/:slug/share/twitter', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/facebook', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/linkedin', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/pinterest', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/email', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/:provider', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/facebook', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/linkedin', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/pinterest', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/email', slugExist, shareArticle, share);
 
 // sharing highlights
 

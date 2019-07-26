@@ -555,9 +555,7 @@ class articlesController {
   // eslint-disable-next-line require-jsdoc
   static async share(req, res) {
     const { slug, provider } = req.share;
-    const { id } = req.user;
     await Share.create({
-      userId: id,
       slug,
       provider
     });
