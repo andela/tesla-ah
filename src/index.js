@@ -45,7 +45,7 @@ app.use((req, res) => {
 });
 
 sequelize.sync().then(() => {
-  cron.schedule('*/59 * * * *', () => {
+  cron.schedule('*/1 * * * *', () => {
     purgeWorker();
   });
   cron.schedule('*/5 * * * *', () => {

@@ -7,7 +7,7 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
-    "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit --require @babel/register --require regenerator-runtime",
+    "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit --no-timeout --require @babel/register --require regenerator-runtime",
     "devtest": "NODE_ENV=test & yarn destroy & yarn run seed & yarn run test",
     "test:reset": "npm run migrate:reset && nyc --reporter=html --reporter=text mocha ./test/*.js --timeout 80000 --exit --require @babel/register --require regenerator-runtime",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^15.0.3",
-    "async": "^2.6.3",
+    "async": "^3.1.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",

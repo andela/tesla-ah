@@ -54,7 +54,7 @@ export default class ProfilesController {
     try {
       const updatedUser = await User.update(
         updatedProfile,
-        { where: { id: params.id } },
+        { where: { id: params.id }, returning: true },
       );
 
       if (!updatedUser[0]) {
@@ -65,7 +65,7 @@ export default class ProfilesController {
 
       uploadImageWorker(files, params.id, 'user', null);
 
-      return res.status(200).json({ user: { updatedUser } });
+      return res.status(200).json({ user: updatedUser[1][0] });
     } catch (error) {
       return res.status(500).json({ error: `${error}` });
     }
@@ -93,7 +93,7 @@ export default class ProfilesController {
    * @return {object} returns an object containing the user's profiles
    */
   static async getAllProfile(req, res) {
-    const fetchedProfile = await User.findAll({ attributes: ['username', 'firstName', 'lastName', 'bio', 'image'] });
+    const fetchedProfile = await User.findAll({ attributes: ['username', 'firstName', 'lastName', 'bio', 'avatar', 'cover'] });
     if (!fetchedProfile[0]) return res.status(200).send({ message: 'No Users Profiles found!', data: fetchedProfile });
     return res.status(200).send({
       profiles: fetchedProfile
@@ -172,7 +172,7 @@ export default class ProfilesController {
    */
   static async followers(req, res) {
     // eslint-disable-next-line no-unused-vars
-    const f = await follows.findAll();
+    // const f = await follows.findAll();
     follows
       .findAll({
         where: { userId: req.user.id },
@@ -180,7 +180,7 @@ export default class ProfilesController {
           {
             model: User,
             as: 'follower',
-            attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+            attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'avatar', 'bio']
           }
         ]
       })
@@ -206,7 +206,7 @@ export default class ProfilesController {
           {
             model: User,
             as: 'followedUser',
-            attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+            attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'avatar', 'bio']
           }
         ]
       })
@@ -216,5 +216,14 @@ export default class ProfilesController {
         }
         return res.status(200).json({ following: data });
       });
+  }
+
+  /**
+   * @param {Object} req - Request
+   * @param {Object} res  - Response
+   * @returns {Object} user
+   */
+  static async getCurrentUser(req, res) {
+    return res.status(200).json({ user: req.user });
   }
 }

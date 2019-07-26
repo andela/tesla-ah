@@ -6,12 +6,13 @@ import upload from '../../handlers/multer';
 import OptController from '../controllers/optController';
 
 const userRouter = Router();
-const { updateProfile, deleteProfile } = ProfilesController;
+const { updateProfile, deleteProfile, getCurrentUser } = ProfilesController;
 const {
   optOutEmail, optOutApp, OptInApp, OptInEmail
 } = OptController;
 const { verifyToken, checkOwnership, checkIsAdmin } = Auth;
 
+userRouter.get('/', verifyToken, getCurrentUser);
 userRouter.post('/optinemail', verifyToken, OptInEmail);
 userRouter.post('/optinapp', verifyToken, OptInApp);
 userRouter.delete('/optinemail', verifyToken, optOutEmail);
