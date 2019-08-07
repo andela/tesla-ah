@@ -9,6 +9,13 @@ export default (app) => {
     .use(bodyParser.urlencoded({ extended: true }))
     // Allow cross origin requests
     .use(cors());
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, token');
+    res.header('Access-Control-Allow-Credentials', true);
+    return next();
+  });
   if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('dev'));
   }

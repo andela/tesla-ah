@@ -24,7 +24,7 @@ class Template {
       Well ${names}, congratulations for choosing AuthorsHaven.
       To verify that ${to} is your email, could you please click this link below to verify your AuthorsHaven's account?
       <br/>
-      <a href="${process.env.BASE_URL}/api/auth/verify/?token=${token}">Click here to verify your account</a>
+      <a href="${process.env.APP_URL_FRONTEND}/verify/${token}">Click here to verify your account</a>
       <br/>
       Here there is the link below where you can visit Andela and get more information about what's Andela
 
