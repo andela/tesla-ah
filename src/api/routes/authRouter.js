@@ -89,7 +89,7 @@ authRouter.get(
 );
 
 authRouter.get('/signout', verifyToken, SignOut);
-authRouter.post('/login', validateBody('login'), login);
+authRouter.post('/login', login);
 authRouter.post('/signup', validateBody('signup'), validateGender, usernameExists, emailExists, register);
 authRouter.get('/verify', verifyAccount);
 authRouter.post('/reset', validateBody('passwordReset'), RequestPasswordReset);
