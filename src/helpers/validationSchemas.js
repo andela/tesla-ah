@@ -104,7 +104,7 @@ export default {
     comment: Joi.string()
       .trim()
       .required()
-      .min(3)
+      .min(1)
       .label('The comment is required and should have at least 3 letters!')
   }),
   checkDescription: Joi.object().keys({
@@ -130,7 +130,7 @@ export default {
       .label('The highlightText is required and should be a string'),
     comment: Joi.string()
       .trim()
-      .min(3)
+      .min(1)
       .label('The comment should have at least 3 letters!'),
     occurencyNumber: Joi.number()
       .label('Occurrency should be a number')

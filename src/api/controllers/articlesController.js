@@ -250,19 +250,15 @@ class articlesController {
   static async likeArticle(req, res) {
     const { id: currentUser } = req.user;
     const { slug } = req.params;
-
     try {
       // Find the article
       const query = await Article.findAll({ where: { slug } });
-
       if (!query[0]) {
         return res
           .status(404)
           .json({ message: `Article with slug: ${slug} not found` });
       }
-
       const { dataValues: foundArticle } = query[0];
-
       // Check the current user has not liked or disliked this article before
       const hasLiked = await LikeDislike.findAll({
         where: {
@@ -278,14 +274,16 @@ class articlesController {
           dislikes: 1
         }
       });
-
       // If the user has already liked send a response
       if (hasLiked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already liked article: ${slug}`
-        });
+        await LikeDislike.update(
+          { dislikes: 0, likes: 0 },
+          { where: { id: hasLiked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({ message: 'Your like has been removed!' });
       }
-
       // If user has disliked before, remove dislike, add like.
       if (hasDisliked[0]) {
         await LikeDislike.update(
@@ -296,7 +294,6 @@ class articlesController {
           .status(200)
           .json({ message: `User ${currentUser} has liked article ${slug}` });
       }
-
       // the user hasn't liked or disliked before, create new like
       await LikeDislike.create({
         userId: currentUser,
@@ -304,7 +301,6 @@ class articlesController {
         dislikes: 0,
         likes: 1
       });
-
       return res
         .status(200)
         .json({ message: `User ${currentUser} has liked article ${slug}` });
@@ -321,19 +317,15 @@ class articlesController {
   static async dislikeArticle(req, res) {
     const { id: currentUser } = req.user;
     const { slug } = req.params;
-
     try {
       // Find the article
       const query = await Article.findAll({ where: { slug } });
-
       if (!query[0]) {
         return res
           .status(404)
           .json({ message: `Article with slug: ${slug} not found` });
       }
-
       const { dataValues: foundArticle } = query[0];
-
       // Check the current user has not liked or disliked this article before
       const hasLiked = await LikeDislike.findAll({
         where: {
@@ -349,14 +341,16 @@ class articlesController {
           dislikes: 1
         }
       });
-
       // If the user has already disliked send a response
       if (hasDisliked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already disliked article: ${slug}`
-        });
+        await LikeDislike.update(
+          { dislikes: 0, likes: 0 },
+          { where: { id: hasDisliked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({ message: 'Your dislike has been removed!' });
       }
-
       // If user has liked before, remove like, add dislike.
       if (hasLiked[0]) {
         await LikeDislike.update(
@@ -367,7 +361,6 @@ class articlesController {
           message: `User ${currentUser} has disliked article ${slug}`
         });
       }
-
       // the user hasn't disliked before, create new dislike
       await LikeDislike.create({
         userId: currentUser,
@@ -375,7 +368,6 @@ class articlesController {
         dislikes: 1,
         likes: 0
       });
-
       return res
         .status(200)
         .json({ message: `User ${currentUser} has disliked article ${slug}` });
@@ -383,6 +375,7 @@ class articlesController {
       return res.status(500).json({ error: `${error}` });
     }
   }
+
 
   /**
    * @param  {object} req

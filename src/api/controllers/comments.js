@@ -237,11 +237,11 @@ export default class comments {
   }
 
   /**
-   * @description - Users should be able to like a comment
-   * @param {Object} req - Request Object
-   * @param {Object} res  - Response Object
-   * @returns {Object} - Response object
-   */
+ * @description - Users should be able to like a comment
+ * @param {Object} req - Request Object
+ * @param {Object} res  - Response Object
+ * @returns {Object} - Response object
+ */
   static async likeComment(req, res) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
@@ -252,6 +252,22 @@ export default class comments {
         dislikes: 1
       }
     });
+    const hasLiked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+        userId: id,
+        likes: 1
+      }
+    });
+    if (hasLiked[0]) {
+      await models.LikeDislike.update(
+        { dislikes: 0, likes: 0 },
+        { where: { id: hasLiked[0].id } }
+      );
+      return res.status(200).json({
+        message: 'Your like has been removed!'
+      });
+    }
     if (hasDisliked[0]) {
       await models.LikeDislike.update(
         { dislikes: 0, likes: 1 },
@@ -267,25 +283,17 @@ export default class comments {
       dislikes: 0,
       likes: 1
     });
-
-    const Liked = await models.LikeDislike.findAll({
-      where: {
-        commentId,
-      }
-    });
-
     return res.status(201).json({
-      Liked,
       message: `Dear ${firstName}, Thank you for liking this comment!`
     });
   }
 
   /**
-   * @description - Users should be able to dislike a comment
-   * @param {Object} req - Request Object
-   * @param {Object} res  - Response Object
-   * @returns {Object} - Response object
-   */
+* @description - Users should be able to dislike a comment
+* @param {Object} req - Request Object
+* @param {Object} res  - Response Object
+* @returns {Object} - Response object
+*/
   static async dislikeComment(req, res) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
@@ -296,6 +304,22 @@ export default class comments {
         likes: 1
       }
     });
+    const hasDisliked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+        userId: id,
+        dislikes: 1
+      }
+    });
+    if (hasDisliked[0]) {
+      await models.LikeDislike.update(
+        { dislikes: 0, likes: 0 },
+        { where: { id: hasDisliked[0].id } }
+      );
+      return res.status(200).json({
+        message: 'Your dislike has been removed!'
+      });
+    }
     if (hasLiked[0]) {
       await models.LikeDislike.update(
         { dislikes: 1, likes: 0 },
@@ -311,15 +335,7 @@ export default class comments {
       dislikes: 1,
       likes: 0
     });
-
-    const Liked = await models.LikeDislike.findAll({
-      where: {
-        commentId,
-      }
-    });
-
     return res.status(201).json({
-      Liked,
       message: `Dear ${firstName}, Thank you for disliking this comment!`
     });
   }

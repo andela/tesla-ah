@@ -17,8 +17,10 @@ class notificationsController {
     const unreadNotifications = await Notification.findAll({
       where: {
         userId: id,
-        status: 'unread'
-      }
+        status: 'unread',
+        type: 'inapp',
+      },
+      order: [['createdAt', 'DESC']]
     });
     // const { message } = unreadNotifications;
     return res.status(200).json({

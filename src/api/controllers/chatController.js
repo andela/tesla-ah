@@ -27,12 +27,12 @@ class chatController {
           {
             model: User,
             as: 'follower',
-            attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+            attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'avatar']
           },
           {
             model: User,
             as: 'followedUser',
-            attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+            attributes: ['id', 'firstName', 'lastName', 'email', 'username', 'avatar']
           }
         ]
       })

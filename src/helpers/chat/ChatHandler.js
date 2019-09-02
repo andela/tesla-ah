@@ -1,5 +1,6 @@
 import TokenIndustry from '../Token.helper';
 import chathelper from './saveChats';
+import eventEmitter from '../notifications/EventEmitter';
 
 const { getUnreadMessageCount, updateReadMessages, saveMessage } = chathelper;
 export default (app, io) => {
@@ -8,6 +9,12 @@ export default (app, io) => {
     next();
   });
   io.on('connection', (socket) => {
+    eventEmitter.on('new_inapp', (message, user) => {
+      socket.emit('new_message', {
+        message,
+        user
+      });
+    });
     socket.emit('welcome', 'Welcome to AH');
     socket.on('new_user', async (token) => {
       try {

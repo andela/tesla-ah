@@ -3,6 +3,7 @@ import notify from './Notify';
 import db from '../../sequelize/models';
 
 const { User, follows } = db;
+
 dotenv.config();
 
 export default async (authorId, slug) => {
@@ -26,7 +27,7 @@ export default async (authorId, slug) => {
       });
       const inAppMessage = `${author.dataValues.firstName} ${author.dataValues.lastName} published a new article.`;
       const emailMessage = `${author.dataValues.firstName} ${author.dataValues.lastName} published a new article.
-        <a href="${url}"></a> `;
+        <a href="${process.env.FRONTEND_URL}${url}">Click here to read the article!</a> `;
       const data = {
         resource: 'articles',
         action: 'publish',

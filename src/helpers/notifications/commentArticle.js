@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
 import db from '../../sequelize/models';
 import favouritedBy from '../Favourites';
 import notify from './NotifyForBookmarks';
 
+dotenv.config();
 const { User, Bookmarks } = db;
 
 const commentArticle = async (comment) => {
@@ -19,21 +21,20 @@ const commentArticle = async (comment) => {
     if (favourites) {
       favourites.map(async (fav) => {
         const user = await favouritedBy(fav.userId);
-        const inAppMessage = `Dear ${user.firstName} ${user.lastName}, ${author.dataValues.lastName} commented on the article you bookmarked!
+        const inAppMessage = `${author.dataValues.lastName} commented on the article you bookmarked!
       `;
-        const emailMessage = `
-      Hello ${user.firstName}, ${author.lastName} commented on the article you bookmarked! <br>
+        const emailMessage = `Hello ${user.firstName}, ${author.lastName} commented on the article you bookmarked! <br>
       Please click below to read the comment: <br><br><br>
-      <a href='${process.env.BASE_URL}/api/articles/${comment.slug}/comments'>View all comments</a>
+      <a href='${process.env.FRONTEND_URL}/articles/${comment.slug}/comments'>View all comments</a>
       <br>
       `;
-
         const data = {
           resource: 'articles',
           action: 'comment',
           user,
           inAppMessage,
-          emailMessage
+          emailMessage,
+          comment
         };
         const res = await notify(data);
         return res;

@@ -12,7 +12,7 @@ import isAlreadBlocked from '../../middleware/blockedarticleExist';
 import isNotBlocked from '../../middleware/articleNotBlocked';
 import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
-import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
+// import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
 import myArticlePaginate from '../../middleware/myArticlePaginate';
 import shareArticle from '../../middleware/shareArticle';
@@ -58,7 +58,6 @@ const {
   likeComment, dislikeComment, countLikes, countDislikes, commentHistory
 } = commentsController;
 const { checkComment, checkParameter, articleExists } = comment;
-const { liked, disliked } = checkLikesandDislikes;
 const { highlights } = checkHighlight;
 
 articlesRouter
@@ -92,8 +91,8 @@ articlesRouter.put('/:slug/rating', verifyToken, validateBody('validateRating'),
 
 articlesRouter.post('/:slug/bookmark', verifyToken, slugExist, bookmark);
 // like and dislike comments
-articlesRouter.post('/comments/:commentId/like', verifyToken, checkParameter, liked, likeComment);
-articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter, disliked, dislikeComment);
+articlesRouter.post('/comments/:commentId/like', verifyToken, checkParameter, likeComment);
+articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter, dislikeComment);
 
 // get likes and dislikes of comments
 
