@@ -26,6 +26,6 @@ describe('Read time tests', () => {
 
   it('should get a less than a minute read time', () => {
     const body = 'This is an amazing project we are working on, Authors Haven';
-    expect(readTime(body)).to.equal('Less than a minute');
+    expect(readTime(body)).to.equal('Less than 1min');
   });
 });

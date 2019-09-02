@@ -407,12 +407,15 @@ class articlesController {
     const likeCount = await LikeDislike.count({
       where: { articleId: foundArticle.id, likes: 1 }
     });
-
+    const likedUser = await LikeDislike.findAll({
+      where: { articleId: foundArticle.id }
+    });
     return res.status(200).json({
       status: 200,
       data: {
         articleSlug: slug,
-        numberOfLikes: likeCount
+        numberOfLikes: likeCount,
+        likedUser,
       }
     });
   }
@@ -443,12 +446,16 @@ class articlesController {
         dislikes: 1
       }
     });
+    const dislikedUser = await LikeDislike.findAll({
+      where: { articleId: foundArticle.id }
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
         articleSlug: slug,
-        numberOfDislikes: likeCount
+        numberOfDislikes: likeCount,
+        dislikedUser,
       }
     });
   }

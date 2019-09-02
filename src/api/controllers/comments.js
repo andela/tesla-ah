@@ -268,7 +268,14 @@ export default class comments {
       likes: 1
     });
 
+    const Liked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+      }
+    });
+
     return res.status(201).json({
+      Liked,
       message: `Dear ${firstName}, Thank you for liking this comment!`
     });
   }
@@ -305,7 +312,14 @@ export default class comments {
       likes: 0
     });
 
+    const Liked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+      }
+    });
+
     return res.status(201).json({
+      Liked,
       message: `Dear ${firstName}, Thank you for disliking this comment!`
     });
   }
@@ -318,7 +332,6 @@ export default class comments {
    */
   static async countLikes(req, res) {
     const { commentId } = req.params;
-
     // Get comment likes
     const likeCount = await models.LikeDislike.count({
       where: {
@@ -326,11 +339,17 @@ export default class comments {
         likes: 1
       }
     });
+    const Liked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+      }
+    });
     return res.status(200).json({
       status: 200,
       data: {
+        Liked,
         commentId,
-        likes: likeCount
+        likes: likeCount,
       }
     });
   }
@@ -343,7 +362,6 @@ export default class comments {
    */
   static async countDislikes(req, res) {
     const { commentId } = req.params;
-
     // Get comment dislikes
     const dislikeCount = await models.LikeDislike.count({
       where: {
@@ -351,10 +369,16 @@ export default class comments {
         dislikes: 1
       }
     });
+    const Liked = await models.LikeDislike.findAll({
+      where: {
+        commentId,
+      }
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
+        Liked,
         commentId,
         dislikes: dislikeCount
       }

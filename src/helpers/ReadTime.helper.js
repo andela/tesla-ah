@@ -2,7 +2,7 @@ const converter = (seconds) => {
   if (seconds > 60) {
     return `${Math.ceil(seconds / 60)} min`;
   }
-  return 'Less than a minute';
+  return 'Less than 1min';
 };
 const readTime = (body) => {
   const numWords = w => w.split(' ').length;
