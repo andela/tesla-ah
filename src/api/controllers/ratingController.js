@@ -129,11 +129,11 @@ class Ratings {
                     Average: Number(report.average)
                   },
                   percentage: {
-                    OneStar: `${percentage.oneStars} %`,
-                    TwoStar: `${percentage.twoStars} %`,
-                    ThreeStar: `${percentage.threeStars} %`,
-                    FourStar: `${percentage.fourStars} %`,
-                    FiveStar: `${percentage.fiveStars} %`
+                    OneStar: `${Math.ceil(percentage.oneStars)} %`,
+                    TwoStar: `${Math.ceil(percentage.twoStars)} %`,
+                    ThreeStar: `${Math.ceil(percentage.threeStars)} %`,
+                    FourStar: `${Math.ceil(percentage.fourStars)} %`,
+                    FiveStar: `${Math.ceil(percentage.fiveStars)} %`
                   }
                 }
               });
