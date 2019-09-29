@@ -18,7 +18,8 @@ const {
   LikeDislike,
   ReportedArticles,
   BlockedArticles,
-  Share
+  Share,
+  ArticleRatings
 } = models;
 // eslint-disable-next-line no-array-constructor
 const days = new Array(
@@ -96,10 +97,28 @@ class articlesController {
     const allArticle = await articles.getAllArticle();
 
     if (!allArticle[0]) {
-      return res.status(404).send({ error: 'Whoops! No Articles found!' });
+      return res.status(200).send({ message: 'Whoops! No Articles found!' });
     }
     res.status(200).send({
-      articles: allArticle
+      articles: allArticle,
+      TotalOfArticles: allArticle.length
+    });
+  }
+
+  /**
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} returns array of articles which owner by a certain author
+   */
+  static async getMyOwnArticles(req, res) {
+    const { id } = req.user;
+    const myOwnArticles = await Article.getMyOwnArticles(id);
+    if (!myOwnArticles[0]) {
+      return res.status(200).send({ message: 'Whoops! No Articles found!', articles: [] });
+    }
+    res.status(200).send({
+      articles: myOwnArticles,
+      TotalOfArticles: myOwnArticles.length
     });
   }
 
@@ -170,6 +189,8 @@ class articlesController {
       { where: { slug }, returning: true }
     );
 
+    // @Update the slug in the Rating Table
+    await ArticleRatings.update({ slug: newSlug }, { where: { slug } });
 
     // Uplooad article image
     if (req.files) {
@@ -229,19 +250,15 @@ class articlesController {
   static async likeArticle(req, res) {
     const { id: currentUser } = req.user;
     const { slug } = req.params;
-
     try {
       // Find the article
       const query = await Article.findAll({ where: { slug } });
-
       if (!query[0]) {
         return res
           .status(404)
           .json({ message: `Article with slug: ${slug} not found` });
       }
-
       const { dataValues: foundArticle } = query[0];
-
       // Check the current user has not liked or disliked this article before
       const hasLiked = await LikeDislike.findAll({
         where: {
@@ -257,14 +274,16 @@ class articlesController {
           dislikes: 1
         }
       });
-
       // If the user has already liked send a response
       if (hasLiked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already liked article: ${slug}`
-        });
+        await LikeDislike.update(
+          { dislikes: 0, likes: 0 },
+          { where: { id: hasLiked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({ message: 'Your like has been removed!' });
       }
-
       // If user has disliked before, remove dislike, add like.
       if (hasDisliked[0]) {
         await LikeDislike.update(
@@ -275,7 +294,6 @@ class articlesController {
           .status(200)
           .json({ message: `User ${currentUser} has liked article ${slug}` });
       }
-
       // the user hasn't liked or disliked before, create new like
       await LikeDislike.create({
         userId: currentUser,
@@ -283,7 +301,6 @@ class articlesController {
         dislikes: 0,
         likes: 1
       });
-
       return res
         .status(200)
         .json({ message: `User ${currentUser} has liked article ${slug}` });
@@ -300,19 +317,15 @@ class articlesController {
   static async dislikeArticle(req, res) {
     const { id: currentUser } = req.user;
     const { slug } = req.params;
-
     try {
       // Find the article
       const query = await Article.findAll({ where: { slug } });
-
       if (!query[0]) {
         return res
           .status(404)
           .json({ message: `Article with slug: ${slug} not found` });
       }
-
       const { dataValues: foundArticle } = query[0];
-
       // Check the current user has not liked or disliked this article before
       const hasLiked = await LikeDislike.findAll({
         where: {
@@ -328,14 +341,16 @@ class articlesController {
           dislikes: 1
         }
       });
-
       // If the user has already disliked send a response
       if (hasDisliked[0]) {
-        return res.status(403).json({
-          message: `User ${currentUser} has already disliked article: ${slug}`
-        });
+        await LikeDislike.update(
+          { dislikes: 0, likes: 0 },
+          { where: { id: hasDisliked[0].id } }
+        );
+        return res
+          .status(200)
+          .json({ message: 'Your dislike has been removed!' });
       }
-
       // If user has liked before, remove like, add dislike.
       if (hasLiked[0]) {
         await LikeDislike.update(
@@ -346,7 +361,6 @@ class articlesController {
           message: `User ${currentUser} has disliked article ${slug}`
         });
       }
-
       // the user hasn't disliked before, create new dislike
       await LikeDislike.create({
         userId: currentUser,
@@ -354,7 +368,6 @@ class articlesController {
         dislikes: 1,
         likes: 0
       });
-
       return res
         .status(200)
         .json({ message: `User ${currentUser} has disliked article ${slug}` });
@@ -362,6 +375,7 @@ class articlesController {
       return res.status(500).json({ error: `${error}` });
     }
   }
+
 
   /**
    * @param  {object} req
@@ -386,12 +400,15 @@ class articlesController {
     const likeCount = await LikeDislike.count({
       where: { articleId: foundArticle.id, likes: 1 }
     });
-
+    const likedUser = await LikeDislike.findAll({
+      where: { articleId: foundArticle.id }
+    });
     return res.status(200).json({
       status: 200,
       data: {
         articleSlug: slug,
-        numberOfLikes: likeCount
+        numberOfLikes: likeCount,
+        likedUser,
       }
     });
   }
@@ -422,12 +439,16 @@ class articlesController {
         dislikes: 1
       }
     });
+    const dislikedUser = await LikeDislike.findAll({
+      where: { articleId: foundArticle.id }
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
         articleSlug: slug,
-        numberOfDislikes: likeCount
+        numberOfDislikes: likeCount,
+        dislikedUser,
       }
     });
   }
@@ -534,9 +555,7 @@ class articlesController {
   // eslint-disable-next-line require-jsdoc
   static async share(req, res) {
     const { slug, provider } = req.share;
-    const { id } = req.user;
     await Share.create({
-      userId: id,
       slug,
       provider
     });

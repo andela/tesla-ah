@@ -10,5 +10,14 @@ export default (sequelize, DataTypes) => {
     },
     {}
   );
+
+  LikeDislike.associate = (models) => {
+    LikeDislike.belongsTo(models.Article, {
+      foreignKey: 'articleId',
+      targetKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+  };
   return LikeDislike;
 };

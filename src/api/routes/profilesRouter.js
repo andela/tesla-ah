@@ -3,6 +3,7 @@ import { Router } from 'express';
 import ProfilesController from '../controllers/profiles';
 import Auth from '../../middleware/auth';
 import validUser from '../../middleware/validUser';
+import notificationsController from '../controllers/notificationsController';
 
 const { verifyToken } = Auth;
 const { userNameExist } = validUser;
@@ -15,13 +16,13 @@ const {
   following,
   getAllProfile
 } = ProfilesController;
+const {
+  getUnreadNotifications, getUnreadNotificationsCount,
+  readNotification
+} = notificationsController;
 
-profilesRouter.get(
-  '/following',
-  verifyToken,
-  following
-);
-profilesRouter.get('/followers', verifyToken, followers);
+profilesRouter.get('/:username/following', following);
+profilesRouter.get('/:username/followers', followers);
 
 profilesRouter.get('/', getAllProfile);
 profilesRouter.get('/:username', getProfile);
@@ -32,5 +33,8 @@ profilesRouter.patch(
   userNameExist,
   unfollow
 );
+profilesRouter.get('/:username/notifications', verifyToken, getUnreadNotifications);
+profilesRouter.get('/:username/notifications/count', verifyToken, getUnreadNotificationsCount);
+profilesRouter.get('/:username/notifications/:id', verifyToken, readNotification);
 
 export default profilesRouter;

@@ -20,15 +20,6 @@ export default {
   applyPassword: Joi.object().keys({
     newpassword: password
   }),
-  login: Joi.object().keys({
-    email: Joi.string()
-      .trim()
-      .lowercase()
-      .required()
-      .min(3)
-      .label('Username or email are required, they must have at least 3 letters'),
-    password
-  }),
   signup: Joi.object().keys({
     firstName: Joi.string()
       .trim()
@@ -113,7 +104,7 @@ export default {
     comment: Joi.string()
       .trim()
       .required()
-      .min(3)
+      .min(1)
       .label('The comment is required and should have at least 3 letters!')
   }),
   checkDescription: Joi.object().keys({
@@ -139,7 +130,7 @@ export default {
       .label('The highlightText is required and should be a string'),
     comment: Joi.string()
       .trim()
-      .min(3)
+      .min(1)
       .label('The comment should have at least 3 letters!'),
     occurencyNumber: Joi.number()
       .label('Occurrency should be a number')

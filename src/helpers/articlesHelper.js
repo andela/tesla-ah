@@ -39,10 +39,11 @@ class ArticlesHelper {
       title,
       description,
       body,
-      tagList: tagList.split(','),
+      tagList: tagList.toLowerCase().split(','),
       authorId: id,
       readtime,
       views: 0,
+      blocked: false,
     });
 
     // Uplooad article image

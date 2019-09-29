@@ -2,7 +2,7 @@ import sequelize from 'sequelize';
 import calcRatings from 'ratingpercentage';
 import db from '../../sequelize/models/index';
 
-const { ArticleRatings } = db;
+const { ArticleRatings, Article } = db;
 
 /**
  * @author Eric Rukundo
@@ -27,6 +27,8 @@ class Ratings {
       userId: id,
       rating: parseInt(rating, 10)
     };
+    const isOwner = await Article.findOne({ where: { slug, authorId: id } });
+    if (isOwner !== null) return res.status(403).send({ status: 403, error: 'You are not allowed to rate your own article' });
     const response = await ArticleRatings.findAll({
       where: {
         slug,
@@ -39,13 +41,14 @@ class Ratings {
         userId: data.userId,
         ratings: data.rating
       });
-      res.status(201).json({
+      return res.status(201).send({
         data: NewRating,
         message: 'created'
       });
     }
-    return res.status(403).json({
-      Error: 'You are not allowed to rate this article more than once, but you can update your ratings.'
+    return res.status(400).send({
+      status: 400,
+      error: 'You are not allowed to rate this article more than once, but you can update your ratings.'
     });
   }
 
@@ -76,7 +79,7 @@ class Ratings {
         { where: { slug, userId: id }, logging: false }
       );
 
-      res.status(200).json({
+      res.status(200).send({
         NewRate: data.rating,
         message: 'updated',
       });
@@ -116,21 +119,21 @@ class Ratings {
                 status: 200,
                 data: {
                   report: {
-                    '1st': Number(report.oneStars),
-                    '2st': Number(report.twoStars),
-                    '3st': Number(report.threeStars),
-                    '4st': Number(report.fourStars),
-                    '5st': Number(report.fiveStars),
-                    'Number of User ': Number(report.totalCounts),
-                    'Total Ratings': Number(report.totalRatings),
+                    OneStar: Number(report.oneStars),
+                    TwoStar: Number(report.twoStars),
+                    ThreeStar: Number(report.threeStars),
+                    FourStar: Number(report.fourStars),
+                    FiveStar: Number(report.fiveStars),
+                    NumberOfUser: Number(report.totalCounts),
+                    TotalRatings: Number(report.totalRatings),
                     Average: Number(report.average)
                   },
                   percentage: {
-                    '1st': `${percentage.oneStars} %`,
-                    '2st': `${percentage.twoStars} %`,
-                    '3st': `${percentage.threeStars} %`,
-                    '4st': `${percentage.fourStars} %`,
-                    '5st': `${percentage.fiveStars} %`
+                    OneStar: `${Math.ceil(percentage.oneStars)} %`,
+                    TwoStar: `${Math.ceil(percentage.twoStars)} %`,
+                    ThreeStar: `${Math.ceil(percentage.threeStars)} %`,
+                    FourStar: `${Math.ceil(percentage.fourStars)} %`,
+                    FiveStar: `${Math.ceil(percentage.fiveStars)} %`
                   }
                 }
               });

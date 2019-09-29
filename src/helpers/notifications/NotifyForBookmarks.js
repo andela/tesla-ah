@@ -9,7 +9,7 @@ const notify = async (data) => {
   let emailNotification = {};
 
   const {
-    resource, user, inAppMessage, emailMessage
+    resource, user, inAppMessage, emailMessage, comment
   } = data;
   const optedin = await Opt.findAll({
     where: {
@@ -22,16 +22,18 @@ const notify = async (data) => {
         id: user.id
       }
     });
+    const url = `/articles/${comment.slug}`;
+    const { email } = dataValues;
     switch (subscription.type) {
       case 'email':
-        await sendMail(dataValues.email, 'notification', {
-          message: emailMessage
-        });
+        await sendMail({ email }, emailMessage, 'notification');
         emailNotification = await Notification.create({
           userId: user.id,
           resource,
           message: emailMessage,
-          type: subscription.type
+          type: subscription.type,
+          status: 'unread',
+          url
         });
         break;
       case 'inapp':
@@ -39,7 +41,9 @@ const notify = async (data) => {
           userId: user.id,
           resource,
           message: inAppMessage,
-          type: subscription.type
+          type: subscription.type,
+          status: 'unread',
+          url
         });
         eventEmitter.emit('new_inapp', inAppMessage, dataValues);
         break;

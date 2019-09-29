@@ -39,7 +39,7 @@ describe('User should bookmark article', () => {
       tagList: ['Tech', 'Kigali'],
       authorId: newUser.id,
       slug: 'slug',
-      readtime: 'Less than a minute'
+      readtime: 'Less than 1min'
     };
     newArticle = await Article.create(article);
   });

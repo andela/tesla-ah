@@ -4,19 +4,19 @@ module.exports = (sequelize, DataTypes) => {
     'Article',
     {
       slug: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       readtime: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       body: {
@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+  Article.getMyOwnArticles = authorId => Article.findAll({ where: { authorId } });
   Article.associate = function (models) {
     // associations can be defined here
     Article.belongsTo(models.User, {
@@ -55,6 +56,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
     Article.hasMany(models.Comment, {
+      foreignKey: 'articleId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    Article.hasMany(models.LikeDislike, {
+      as: 'metrics',
       foreignKey: 'articleId',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'

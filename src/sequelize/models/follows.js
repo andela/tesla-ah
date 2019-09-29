@@ -7,20 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
-        references: {
-          model: 'Users',
-          key: 'id'
-        },
-        followerId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          primaryKey: true,
-          references: {
-            model: 'Users',
-            key: 'id'
-          }
-        }
+      },
+      followerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       }
     },
     {}
@@ -29,11 +19,17 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     follows.belongsTo(models.User, {
       foreignKey: 'userId',
-      as: 'followedUser'
+      targetedKey: 'id',
+      as: 'followedUser',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     follows.belongsTo(models.User, {
       foreignKey: 'followerId',
-      as: 'follower'
+      as: 'follower',
+      targetedKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
   };
   return follows;

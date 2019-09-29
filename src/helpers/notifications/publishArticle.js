@@ -3,6 +3,7 @@ import notify from './Notify';
 import db from '../../sequelize/models';
 
 const { User, follows } = db;
+
 dotenv.config();
 
 export default async (authorId, slug) => {
@@ -12,22 +13,21 @@ export default async (authorId, slug) => {
         id: authorId
       }
     });
-    const url = `${process.env.BASE_URL}/api/articles/${slug}`;
+    const url = `/articles/${slug}`;
     const followers = await follows.findAll({
       where: {
         userId: authorId
       }
     });
     followers.map(async (follower) => {
-      const user = await User.findOne({
+      await User.findOne({
         where: {
           id: follower.dataValues.followerId
         }
       });
-      const inAppMessage = `Hello ${user.dataValues.firstName}, ${author.dataValues.firstName} ${author.dataValues.lastName} published a new article`;
-      const emailMessage = `Hello ${user.dataValues.firstName}, ${author.dataValues.firstName} ${author.dataValues.lastName} published a new article<br>
-        <br>
-        <a href='${url}'>Read an article</a> `;
+      const inAppMessage = `${author.dataValues.firstName} ${author.dataValues.lastName} published a new article.`;
+      const emailMessage = `${author.dataValues.firstName} ${author.dataValues.lastName} published a new article.
+        <a href="${process.env.FRONTEND_URL}${url}">Click here to read the article!</a> `;
       const data = {
         resource: 'articles',
         action: 'publish',
