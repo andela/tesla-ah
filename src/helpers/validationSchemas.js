@@ -20,15 +20,6 @@ export default {
   applyPassword: Joi.object().keys({
     newpassword: password
   }),
-  login: Joi.object().keys({
-    email: Joi.string()
-      .trim()
-      .lowercase()
-      .required()
-      .min(3)
-      .label('Username or email are required, they must have at least 3 letters'),
-    password
-  }),
   signup: Joi.object().keys({
     firstName: Joi.string()
       .trim()

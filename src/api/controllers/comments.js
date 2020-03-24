@@ -7,11 +7,11 @@ import eventEmitter from '../../helpers/notifications/EventEmitter';
  */
 export default class comments {
   /**
-  * @description - Users should create comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should create comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async createComment(req, res) {
     const { comment } = req.body;
     const { slug } = req.params;
@@ -41,11 +41,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to comment a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to comment a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async commentAcomment(req, res) {
     const { comment } = req.body;
     const { slug, commentId } = req.params;
@@ -75,11 +75,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to edit a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to edit a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async editComment(req, res) {
     const { comment } = req.body;
     const { commentId } = req.params;
@@ -118,11 +118,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to delete a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to delete a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async deleteComment(req, res) {
     const { id, firstName, roles } = req.user;
     const { commentId } = req.params;
@@ -141,13 +141,14 @@ export default class comments {
       if (nestedComments[0]) {
         await models.Comment.update(
           {
-            comment:
-              'This comment has been deleted!'
+            comment: 'This comment has been deleted!'
           },
           { where: { id: commentId } }
         ).then(() => {
           return res.status(200).json({
-            message: roles.includes('moderator' || 'admin') ? 'Comment deleted by moderator' : 'Comment deleted!'
+            message: roles.includes('moderator' || 'admin')
+              ? 'Comment deleted by moderator'
+              : 'Comment deleted!'
           });
         });
       } else {
@@ -168,11 +169,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to get an article with its comments
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to get an article with its comments
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async getComment(req, res) {
     const { slug } = req.params;
     const findSlug = await models.Article.findAll({
@@ -188,23 +189,20 @@ export default class comments {
     }
     await models.Article.update(
       {
-        views: findSlug[0].dataValues.views += 1,
+        views: (findSlug[0].dataValues.views += 1)
       },
       { where: { slug } }
     );
     await models.Article.findAll({
-      attributes: [
-        'title',
-        'description',
-        'body'
-      ],
+      attributes: ['title', 'description', 'body'],
       where: {
         slug
       },
       include: [
         {
           model: models.Comment,
-          attributes: ['comment'],
+          order: [['Task', 'createdAt', 'ASC']],
+          attributes: ['comment', 'updatedAt', 'id'],
           where: {
             articleId: findSlug[0].dataValues.id,
             commentId: null
@@ -212,7 +210,19 @@ export default class comments {
           include: [
             {
               model: models.Comment,
-              attributes: ['comment']
+              attributes: ['comment', 'updatedAt', 'id'],
+              include: [
+                {
+                  as: 'commentAuthor',
+                  model: models.User,
+                  attributes: ['avatar', 'firstName', 'lastName', 'username']
+                }
+              ]
+            },
+            {
+              as: 'commentAuthor',
+              model: models.User,
+              attributes: ['avatar', 'firstName', 'lastName', 'username']
             }
           ]
         }
@@ -227,11 +237,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to like a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to like a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async likeComment(req, res) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
@@ -264,11 +274,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to dislike a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to dislike a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async dislikeComment(req, res) {
     const { commentId } = req.params;
     const { id, firstName } = req.user;
@@ -301,11 +311,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to like a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to like a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async countLikes(req, res) {
     const { commentId } = req.params;
 
@@ -326,11 +336,11 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to dislike a comment
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to dislike a comment
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async countDislikes(req, res) {
     const { commentId } = req.params;
 
@@ -352,25 +362,29 @@ export default class comments {
   }
 
   /**
-  * @description - Users should be able to track edit history
-  * @param {Object} req - Request Object
-  * @param {Object} res  - Response Object
-  * @returns {Object} - Response object
-  */
+   * @description - Users should be able to track edit history
+   * @param {Object} req - Request Object
+   * @param {Object} res  - Response Object
+   * @returns {Object} - Response object
+   */
   static async commentHistory(req, res) {
     const { commentId } = req.params;
     const { id, roles } = req.user;
     const findHistory = await models.CommentsHistory.findAll({
       where: {
         commentId
-      }
+      },
+      order: [['updatedAt', 'DESC']]
     });
     if (findHistory.length === 0) {
       return res.status(404).json({
         message: 'No edit history for this comment!'
       });
     }
-    if (findHistory[0].dataValues.userId === id || roles.includes('moderator' || 'admin')) {
+    if (
+      findHistory[0].dataValues.userId === id
+      || roles.includes('moderator' || 'admin')
+    ) {
       return res.status(200).json({
         data: {
           findHistory

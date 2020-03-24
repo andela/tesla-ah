@@ -14,6 +14,7 @@ import isThisArticleBlocked from '../../middleware/isThisArticleBlocked';
 import bookmarkController from '../controllers/bookmark';
 import checkLikesandDislikes from '../../middleware/checkLikesDislikes';
 import paginate from '../../middleware/paginate';
+import myArticlePaginate from '../../middleware/myArticlePaginate';
 import shareArticle from '../../middleware/shareArticle';
 import stats from '../controllers/stats';
 import highlight from '../controllers/highlightController';
@@ -44,7 +45,8 @@ const {
   unBlockArticle,
   share,
   getBlockedArticles,
-  getReportedArticles
+  getReportedArticles,
+  getMyOwnArticles
 } = articlesController;
 const { verifyToken, checkIsModerator } = Auth;
 const { createRatings, UpdateRatings } = RatingController;
@@ -61,7 +63,8 @@ const { highlights } = checkHighlight;
 
 articlesRouter
   .post('/', verifyToken, upload.fields([{ name: 'gallery', maxCount: 10 }]), validateBody('createArticle'), createArticle)
-  .get('/', paginate, searchForArticle, getAllArticle);
+  .get('/', paginate, searchForArticle, getAllArticle)
+  .get('/user', verifyToken, myArticlePaginate, getMyOwnArticles);
 
 articlesRouter
   .get('/:slug', slugExist, isThisArticleBlocked, getOneArticle)
@@ -97,11 +100,11 @@ articlesRouter.post('/comments/:commentId/dislike', verifyToken, checkParameter,
 articlesRouter.get('/comments/:commentId/dislikes', checkParameter, countDislikes);
 articlesRouter.get('/comments/:commentId/likes', checkParameter, countLikes);
 // sharing articles
-articlesRouter.get('/:slug/share/twitter', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/facebook', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/linkedin', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/pinterest', verifyToken, slugExist, shareArticle, share);
-articlesRouter.get('/:slug/share/email', verifyToken, slugExist, shareArticle, share);
+articlesRouter.get('/:slug/share/:provider', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/facebook', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/linkedin', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/pinterest', slugExist, shareArticle, share);
+// articlesRouter.get('/:slug/share/email', slugExist, shareArticle, share);
 
 // sharing highlights
 

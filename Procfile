@@ -1,1 +1,1 @@
-web: NODE_ENV=staging yarn start  
+web: NODE_ENV=staging yarn start 

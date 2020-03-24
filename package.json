@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
+    "prebuild": "./node_modules/.bin/sequelize db:migrate",
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
     "test": "nyc --reporter=html --reporter=text mocha ./test/*.js --exit --require @babel/register --require regenerator-runtime",
@@ -22,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^15.0.3",
-    "async": "^2.6.3",
+    "async": "^3.1.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
@@ -53,9 +54,11 @@
     "pg-hstore": "^2.3.3",
     "prettier": "^1.18.2",
     "ratingpercentage": "^1.0.7",
+    "react-toastify": "^5.3.2",
     "regenerator-runtime": "^0.13.2",
     "request": "^2.88.0",
     "sequelize": "^5.8.7",
+    "sequelize-cli": "^5.5.0",
     "slug": "^1.1.0",
     "social-share": "^0.1.0",
     "socket.io": "^2.2.0",

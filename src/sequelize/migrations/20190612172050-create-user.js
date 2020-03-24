@@ -43,6 +43,9 @@ module.exports = {
     verified: {
       type: Sequelize.BOOLEAN
     },
+    roles: {
+      type: Sequelize.ARRAY(Sequelize.STRING)
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

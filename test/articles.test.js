@@ -35,7 +35,7 @@ describe('POST and GET /api/articles', () => {
     unverifiedToken = await generateToken(user1.dataValues);
   });
 
-  it('it should return an error if there is no any article', (done) => {
+  it('it should return a message if there is no any article', (done) => {
     chai
       .request(app)
       .get('/api/articles')
@@ -68,7 +68,7 @@ describe('POST and GET /api/articles', () => {
       .send(invalidArticle)
       .end((err, res) => {
         expect(res.body).to.be.an('object');
-        expect(res.body.data.message).to.be.an('array');
+        expect(res.body.message).to.be.an('string');
         done();
       });
   });
@@ -196,7 +196,7 @@ describe('PUT and DELETE /api/articles/:slug', () => {
       .end((err, res) => {
         expect(res.body).to.be.an('object');
         expect(res.status).to.deep.equal(400);
-        expect(res.body.data.message).to.be.an('array');
+        expect(res.body.message).to.be.an('string');
         done();
       });
   });

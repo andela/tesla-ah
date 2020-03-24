@@ -7,6 +7,7 @@ import ratingsRouter from './ratingsRouter';
 import bookmarkRouter from './bookmark';
 import termsAndConditionsRouter from './termsConditionsRouter';
 import chatRouter from './chatRouter';
+import uploadRouter from './uploadRouter';
 
 const api = express();
 
@@ -19,5 +20,6 @@ api.use('/ratings', ratingsRouter);
 api.use('/bookmarks', bookmarkRouter);
 api.use('/termsandconditions', termsAndConditionsRouter);
 api.use('/chats', chatRouter);
+api.use('/upload', uploadRouter);
 
 export default api;

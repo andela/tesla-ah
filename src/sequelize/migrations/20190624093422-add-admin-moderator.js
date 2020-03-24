@@ -1,10 +1,11 @@
 export default {
+  // eslint-disable-next-line no-unused-vars
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('Users', 'isAdmin');
-    return queryInterface.addColumn('Users', 'roles', {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      defaultValue: ['user'],
-    });
+    // await queryInterface.removeColumn('Users', 'isAdmin');
+    // return queryInterface.addColumn('Users', 'roles', {
+    //   type: Sequelize.ARRAY(Sequelize.STRING),
+    //   defaultValue: ['user'],
+    // });
   },
 
   down: async (queryInterface, Sequelize) => {

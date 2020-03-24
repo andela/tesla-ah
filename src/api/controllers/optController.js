@@ -7,6 +7,50 @@ const { Opt } = db;
  */
 class OptController {
   /**
+   * @description User should subscribe with email
+   * @param {Object} req Request object
+   * @param {Object} res Response object
+   * @returns {Object} Response object
+   */
+  static async OptedInEmail(req, res) {
+    const { id } = req.user;
+    const optedin = await Opt.findOne({
+      where: {
+        userId: id,
+        type: 'email'
+      }
+    });
+    if (optedin) {
+      return res.status(200).json({
+        message: 'You are already opted in!'
+      });
+    }
+    return false;
+  }
+
+  /**
+   * @description User is already opted in
+   * @param {Object} req Request object
+   * @param {Object} res  Response object
+   * @returns {Object} Response object
+   */
+  static async OptedInApp(req, res) {
+    const { id } = req.user;
+    const optedin = await Opt.findOne({
+      where: {
+        userId: id,
+        type: 'inapp'
+      }
+    });
+    if (optedin) {
+      return res.status(200).json({
+        message: 'You are already opted-in!'
+      });
+    }
+    return false;
+  }
+
+  /**
    * @description User should be able  to
    * @param {Object} req Request object
    * @param {Object} res  Response object

@@ -16,12 +16,8 @@ const {
   getAllProfile
 } = ProfilesController;
 
-profilesRouter.get(
-  '/following',
-  verifyToken,
-  following
-);
-profilesRouter.get('/followers', verifyToken, followers);
+profilesRouter.get('/:username/following', following);
+profilesRouter.get('/:username/followers', followers);
 
 profilesRouter.get('/', getAllProfile);
 profilesRouter.get('/:username', getProfile);
